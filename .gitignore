@@ -1,14 +1,14 @@
 config.xlsx
 ~*.xlsx
+~*.docx
 project_env/
 build/*
 __pycache__
 *.py[cod]
 *$py.class
 .mypy_cache/
-stateFiles/
 config.json
-DataFiles/
+assets/
 
 # Distribution / packaging 
 .Python build/ 
