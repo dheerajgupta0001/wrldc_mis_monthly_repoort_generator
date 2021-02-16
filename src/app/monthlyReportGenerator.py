@@ -5,6 +5,8 @@ from typing import List
 from docxtpl import DocxTemplate, InlineImage
 from src.app.section_1_1.section_1_1_1 import fetchSection1_1_1Context
 from src.app.section_1_1.section_1_1_2 import fetchSection1_1_2Context
+from src.app.section_1_1.section_1_1_3 import fetchSection1_1_3Context
+from src.app.section_1_1.section_1_1_4 import fetchSection1_1_4Context
 from src.utils.addMonths import addMonths
 # from docx2pdf import convert
 
@@ -54,7 +56,35 @@ class MonthlyReportGenerator:
             )
             print(err)
 
+        # get section 1.1.2 data
+        try:
+            secData_1_1_3 = fetchSection1_1_3Context(
+                self.appDbConStr , startDt , endDt
+            )
+            reportContext.update(secData_1_1_3)
+            print(
+                "section 1_1_3 context setting complete"
+            )
+        except Exception as err:
+            print(
+                "error while fetching section 1_1_3"
+            )
+            print(err)
 
+        # get section 1.1.2 data
+        try:
+            secData_1_1_4 = fetchSection1_1_4Context(
+                self.appDbConStr , startDt , endDt
+            )
+            reportContext.update(secData_1_1_4)
+            print(
+                "section 1_1_4 context setting complete"
+            )
+        except Exception as err:
+            print(
+                "error while fetching section 1_1_4"
+            )
+            print(err)
         return reportContext
 
     def generateReportWithContext(self, reportContext: IReportCxt, tmplPath: str, dumpFolder: str) -> bool:
