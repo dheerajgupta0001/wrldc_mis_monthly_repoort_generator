@@ -9,6 +9,8 @@ __pycache__
 .mypy_cache/
 config.json
 assets/
+dumps/
+
 
 # Distribution / packaging 
 .Python build/ 

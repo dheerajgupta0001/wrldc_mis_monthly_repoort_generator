@@ -1,9 +1,10 @@
 import os
 import datetime as dt
-from src.typeDefs.appConfig import IAppConfig
 from src.typeDefs.reportContext import IReportCxt
 from typing import List
 from docxtpl import DocxTemplate, InlineImage
+from src.app.section_1_1.section_1_1_1 import fetchSection1_1_1Context
+from src.utils.addMonths import addMonths
 # from docx2pdf import convert
 
 
@@ -23,16 +24,20 @@ class MonthlyReportGenerator:
         # create context for weekly report
         reportContext: IReportCxt = {}
 
-        # get major generating unit outages
+        startDt = dt.datetime(monthDt.year, monthDt.month, 1)
+        endDt = addMonths(startDt, 1) - dt.timedelta(days=1)
+        # get section 1.1.1 data
         try:
-            reportContext['genOtgs'] = fetchMajorGenUnitOutages(
-                self.appDbConStr, startDate, endDate)
+            secData_1_1_1 = fetchSection1_1_1Context(
+                self.appDbConStr, startDt, endDt)
             print(
-                "major generating outages context setting complete")
+                "section 1_1_1 context setting complete")
         except Exception as err:
             print(
-                "error while fetching major generating outages")
+                "error while fetching section 1_1_1")
             print(err)
+
+        reportContext.update(secData_1_1_1)
 
         return reportContext
 
@@ -46,8 +51,6 @@ class MonthlyReportGenerator:
         Returns:
             bool: True if process is success, else False
         """
-        monthDateLogString = dt.datetime.strftime(
-            reportContext['monthDtObj'], '%Y-%m-%d')
         try:
             doc = DocxTemplate(tmplPath)
             # # signature Image
@@ -60,7 +63,7 @@ class MonthlyReportGenerator:
             dumpFileFullPath = os.path.join(dumpFolder, dumpFileName)
             doc.save(dumpFileFullPath)
         except Exception as err:
-            print("error while saving monthly report from context for month {0}".format(monthDateLogString))
+            print("error while saving monthly report from context for month ")
             print(err)
             return False
         return True
