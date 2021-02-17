@@ -27,6 +27,8 @@ class IReportCxt(TypedDict):
     wr_max_cons_mu: float
     wr_max_cons_mu_date: str
     wr_avg_cons_mu_perc_inc: float
+    wr_max_cons_date: str
+    wr_avg_cons_inc_wrt_last_yr: float
     wr_avg_cons_mu_last_yr: float
     # section 1.1.iv
     wr_tot_req_mu: float
