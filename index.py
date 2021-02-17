@@ -13,7 +13,7 @@ appDbConStr: str = appConfig['appDbConnStr']
 dumpFolder: str = appConfig['dumpFolder']
 
 # generate report word file
-tmplPath: str = "templates/monthly_rep_template.docx"
+tmplPath: str = "assests/monthly_rep_template.docx"
 
 # create weekly report
 mnthlyRprtGntr = MonthlyReportGenerator(appDbConStr)
