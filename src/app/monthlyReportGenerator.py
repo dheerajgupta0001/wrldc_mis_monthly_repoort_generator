@@ -85,22 +85,6 @@ class MonthlyReportGenerator:
                 print(
                     "error while fetching section 1_1_3")
 
-        if self.sectionCtrls["1_4_2"]:
-            # get section 1.4.2 data
-            try:
-                secData_1_4_2 = fetchSection1_4_2Context(
-                    self.appDbConStr, startDt, endDt
-                )
-                reportContext.update(secData_1_4_2)
-                print(
-                    "section 1_4_2 context setting complete"
-                )
-            except Exception as err:
-                print(
-                    "error while fetching section 1_4_2"
-                )
-                print(err)
-
         if self.sectionCtrls["1_1_4"]:
             # get section 1.1.2 data
             try:
@@ -128,6 +112,22 @@ class MonthlyReportGenerator:
                 )
             except Exception as err:
                 print("error while fetching section 1_3_a")
+                print(err)
+        
+        if self.sectionCtrls["1_4_2"]:
+            # get section 1.4.2 data
+            try:
+                secData_1_4_2 = fetchSection1_4_2Context(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_4_2)
+                print(
+                    "section 1_4_2 context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_4_2"
+                )
                 print(err)
         return reportContext
 
