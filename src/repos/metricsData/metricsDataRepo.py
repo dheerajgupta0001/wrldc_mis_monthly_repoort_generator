@@ -1,9 +1,11 @@
 from typing import List
 import datetime as dt
 from src.typeDefs.metricsDataRecord import IMetricsDataRecord
+from src.typeDefs.voltDataRecord import IVoltDataRecord
 from src.repos.metricsData.getEntityMetricHourlyData import getEntityMetricHourlyData
 from src.repos.metricsData.getEntityMetricDailyData import getEntityMetricDailyData
 from src.repos.metricsData.getAllEntityMetricMonthlyData import getAllEntityMetricMonthlyData
+from src.repos.metricsData.getDailyVoltDataByLevel import getDailyVoltDataByLevel
 
 
 class MetricsDataRepo():
@@ -38,3 +40,6 @@ class MetricsDataRepo():
             bool: returns true if process is ok
         """
         return getAllEntityMetricMonthlyData(appDbConnStr=self.appDbConnStr, metricName=metricName, startDt=startDt, endDt=endDt)
+
+    def getDailyVoltDataByLevel(self, voltLvl: int, metricName: str, startDt: dt.datetime, endDt: dt.datetime) -> List[IVoltDataRecord]:
+        return getDailyVoltDataByLevel(appDbConnStr=self.appDbConnStr, lvl=voltLvl, metricName=metricName, startDt=startDt, endDt=endDt)
