@@ -7,7 +7,9 @@ from src.app.section_1_1.section_1_1_1 import fetchSection1_1_1Context
 from src.app.section_1_1.section_1_1_2 import fetchSection1_1_2Context
 from src.app.section_1_1.section_1_1_3 import fetchSection1_1_3Context
 from src.app.section_1_1.section_1_1_4 import fetchSection1_1_4Context
+from src.app.section_1_3.section_1_3_a import fetchSection1_3_aContext
 from src.utils.addMonths import addMonths
+from src.typeDefs.section_1_3.section_1_3_a import ISection_1_3_a
 # from docx2pdf import convert
 
 
@@ -40,11 +42,11 @@ class MonthlyReportGenerator:
             print(
                 "error while fetching section 1_1_1")
             print(err)
-        
+
         # get section 1.1.2 data
         try:
             secData_1_1_2 = fetchSection1_1_2Context(
-                self.appDbConStr , startDt , endDt
+                self.appDbConStr, startDt, endDt
             )
             reportContext.update(secData_1_1_2)
             print(
@@ -59,7 +61,7 @@ class MonthlyReportGenerator:
         # get section 1.1.2 data
         try:
             secData_1_1_3 = fetchSection1_1_3Context(
-                self.appDbConStr , startDt , endDt
+                self.appDbConStr, startDt, endDt
             )
             reportContext.update(secData_1_1_3)
             print(
@@ -74,7 +76,7 @@ class MonthlyReportGenerator:
         # get section 1.1.2 data
         try:
             secData_1_1_4 = fetchSection1_1_4Context(
-                self.appDbConStr , startDt , endDt
+                self.appDbConStr, startDt, endDt
             )
             reportContext.update(secData_1_1_4)
             print(
@@ -85,6 +87,21 @@ class MonthlyReportGenerator:
                 "error while fetching section 1_1_4"
             )
             print(err)
+
+        # get section 1.1.2 data
+        try:
+            secData_1_3_a: ISection_1_3_a = fetchSection1_3_aContext(
+                self.appDbConStr, startDt, endDt
+            )
+            reportContext.update(secData_1_3_a)
+            print(
+                "section 1_3_a context setting complete"
+            )
+        except Exception as err:
+            print(
+                "error while fetching section 1_3_a"
+            )
+            # print(err)
         return reportContext
 
     def generateReportWithContext(self, reportContext: IReportCxt, tmplPath: str, dumpFolder: str) -> bool:
@@ -99,10 +116,6 @@ class MonthlyReportGenerator:
         """
         try:
             doc = DocxTemplate(tmplPath)
-            # # signature Image
-            # signatureImgPath = 'assets/signature.png'
-            # signImg = InlineImage(doc, signatureImgPath)
-            # reportContext['signature'] = signImg
             doc.render(reportContext)
             dumpFileName = 'Monthly_Report_{0}.docx'.format(
                 reportContext['month_name'])
