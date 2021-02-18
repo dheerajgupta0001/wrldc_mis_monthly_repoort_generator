@@ -12,8 +12,13 @@ appConfig = getJsonConfig()
 appDbConStr: str = appConfig['appDbConnStr']
 dumpFolder: str = appConfig['dumpFolder']
 
+<<<<<<< HEAD
 # generate report word file
 tmplPath: str = "assests/monthly_rep_template.docx"
+=======
+# generate report word file monthly_rep_template
+tmplPath: str = "templates/monthly_rep_template.docx"
+>>>>>>> efaf8445d5581d145bd19e16b88feb316c470437
 
 # create weekly report
 mnthlyRprtGntr = MonthlyReportGenerator(appDbConStr)
