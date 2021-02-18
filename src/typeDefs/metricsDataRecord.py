@@ -7,3 +7,8 @@ class IMetricsDataRecord(TypedDict):
     entity_tag: str
     metric_name: str
     data_value: float
+
+class IFreqMetricsDataRecord(TypedDict):
+    time_stamp: dt.datetime
+    metric_name: str
+    data_value: float
