@@ -100,7 +100,7 @@ def fetchSection1_3_bContext(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
     # Update the so far highest table if req ,avail > so far highest
 
     for rIter in range(dataRecords.shape[0]):
-        row = dataRecords.loc[rIter,:]
+        row = dataRecords.iloc[rIter,:]
 
         constituent = row['constituent']
         
@@ -114,10 +114,12 @@ def fetchSection1_3_bContext(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
         soFarHighestAvail = row[metricValueRename['soFarHighestAvailability']]
 
         if monthPeakReq > soFarHighestReq:
+            row['shortage_Y'] = updateShortage_Y(row['shortage_Y'] ,soFarHighestReq, soFarHighestAvail)
             metricName = metricValueRename['peakRequirement']
             mRepo.updateSoFarHighestTable(constituent,metricName,targetMonth,monthPeakReq,monthPeakReqTime)
 
         if monthPeakAvail > soFarHighestAvail:
+            row['shortage_Y'] = updateShortage_Y(row['shortage_Y'] ,soFarHighestReq, soFarHighestAvail)
             metricName = metricValueRename['peakAvailability']
             mRepo.updateSoFarHighestTable(constituent,metricName,targetMonth,monthPeakAvail,monthPeakAvailTime)
            
@@ -148,4 +150,6 @@ def fetchSection1_3_bContext(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
     
     return power_req_so_far_hgst
 
-
+def updateShortage_Y(shortage_Y , req , avail):
+    shortage_Y  = round(100 *(req - avail)/avail , 2)
+    return shortage_Y
