@@ -9,8 +9,10 @@ from src.app.section_1_1.section_1_1_3 import fetchSection1_1_3Context
 from src.app.section_1_1.section_1_1_4 import fetchSection1_1_4Context
 from src.app.section_1_4.section_1_4_2 import fetchSection1_4_2Context
 from src.app.section_1_3.section_1_3_a import fetchSection1_3_aContext
+from src.app.section_1_3.section_1_3_b import fetchSection1_3_bContext
 from src.utils.addMonths import addMonths
 from src.typeDefs.section_1_3.section_1_3_a import ISection_1_3_a
+from src.typeDefs.section_1_3.section_1_3_b import ISection_1_3_b
 # from docx2pdf import convert
 
 
@@ -23,7 +25,8 @@ class MonthlyReportGenerator:
         '1_1_3': True,
         '1_4_2': True,
         '1_1_4': True,
-        '1_3_a': True
+        '1_3_a': True,
+        '1_3_b': True
     }
 
     def __init__(self, appDbConStr: str, secCtrls: dict = {}):
@@ -113,7 +116,17 @@ class MonthlyReportGenerator:
             except Exception as err:
                 print("error while fetching section 1_3_a")
                 print(err)
-        
+        if self.sectionCtrls['1_3_b']:
+            try:
+                secData_1_3_b : ISection_1_3_b = fetchSection1_3_bContext(
+                    self.appDbConStr , startDt , endDt
+                )
+                reportContext.update(secData_1_3_b)
+                print('section_1_3_b context setting complete')
+            except Exception as err:
+                print("error while fetching section 1_3_b")
+                print(err)
+
         if self.sectionCtrls["1_4_2"]:
             # get section 1.4.2 data
             try:
