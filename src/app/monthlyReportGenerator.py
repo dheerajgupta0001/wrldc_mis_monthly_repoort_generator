@@ -7,6 +7,7 @@ from src.app.section_1_1.section_1_1_1 import fetchSection1_1_1Context
 from src.app.section_1_1.section_1_1_2 import fetchSection1_1_2Context
 from src.app.section_1_1.section_1_1_3 import fetchSection1_1_3Context
 from src.app.section_1_1.section_1_1_4 import fetchSection1_1_4Context
+from src.app.section_1_1.section_1_1_freq import fetchSection1_1_freq_Context
 from src.app.section_1_1.section_1_1_volt import fetchSection1_1_voltContext
 from src.app.section_1_3.section_1_3_a import fetchSection1_3_aContext
 from src.app.section_1_4.section_1_4_2 import fetchSection1_4_2Context
@@ -23,6 +24,7 @@ class MonthlyReportGenerator:
         '1_1_2': True,
         '1_1_3': True,
         '1_1_4': True,
+        '1_1_freq': True,
         '1_1_volt': True,
         '1_4_2': True,
         '1_3_a': True,
@@ -119,6 +121,21 @@ class MonthlyReportGenerator:
                 )
                 print(err)
 
+        if self.sectionCtrls["1_1_freq"]:
+            # get section 1.1.freq data
+            try:
+                secData_1_1_freq = fetchSection1_1_freq_Context(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_1_freq)
+                print(
+                    "section 1_1_freq context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_1_freq"
+                )
+                print(err)
         # get section 1.3.a data
         if self.sectionCtrls["1_3_a"]:
             try:
