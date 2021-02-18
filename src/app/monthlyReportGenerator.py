@@ -7,8 +7,9 @@ from src.app.section_1_1.section_1_1_1 import fetchSection1_1_1Context
 from src.app.section_1_1.section_1_1_2 import fetchSection1_1_2Context
 from src.app.section_1_1.section_1_1_3 import fetchSection1_1_3Context
 from src.app.section_1_1.section_1_1_4 import fetchSection1_1_4Context
-from src.app.section_1_4.section_1_4_2 import fetchSection1_4_2Context
+from src.app.section_1_1.section_1_1_volt import fetchSection1_1_voltContext
 from src.app.section_1_3.section_1_3_a import fetchSection1_3_aContext
+from src.app.section_1_4.section_1_4_2 import fetchSection1_4_2Context
 from src.utils.addMonths import addMonths
 from src.typeDefs.section_1_3.section_1_3_a import ISection_1_3_a
 # from docx2pdf import convert
@@ -21,9 +22,10 @@ class MonthlyReportGenerator:
         '1_1_1': True,
         '1_1_2': True,
         '1_1_3': True,
-        '1_4_2': True,
         '1_1_4': True,
-        '1_3_a': True
+        '1_1_volt': True,
+        '1_4_2': True,
+        '1_3_a': True,
     }
 
     def __init__(self, appDbConStr: str, secCtrls: dict = {}):
@@ -100,6 +102,23 @@ class MonthlyReportGenerator:
                     "error while fetching section 1_1_4"
                 )
                 print(err)
+
+        # get section 1.1 volt data
+        if self.sectionCtrls["1_1_volt"]:
+            try:
+                secData_1_1_volt = fetchSection1_1_voltContext(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_1_volt)
+                print(
+                    "section 1_1_volt context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_1_volt"
+                )
+                print(err)
+
         # get section 1.3.a data
         if self.sectionCtrls["1_3_a"]:
             try:
@@ -113,7 +132,7 @@ class MonthlyReportGenerator:
             except Exception as err:
                 print("error while fetching section 1_3_a")
                 print(err)
-        
+
         if self.sectionCtrls["1_4_2"]:
             # get section 1.4.2 data
             try:
