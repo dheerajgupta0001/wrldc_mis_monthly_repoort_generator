@@ -1,5 +1,6 @@
-from typing import TypedDict
+from typing import TypedDict, List
 import datetime as dt
+from src.typeDefs.section_1_3.section_1_3_a import ISection_1_3_a
 
 class IReportCxt(TypedDict):
     monthDtObj: dt.datetime
@@ -37,3 +38,6 @@ class IReportCxt(TypedDict):
     wr_max_req_mu_date: str
     wr_avg_req_mu_perc_inc: float
     wr_avg_req_mu_last_yr: float
+
+    # section 1.3.a
+    energy_req_avail: List[ISection_1_3_a["energy_req_avail"]]

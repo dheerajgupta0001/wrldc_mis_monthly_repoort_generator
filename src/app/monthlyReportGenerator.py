@@ -8,7 +8,9 @@ from src.app.section_1_1.section_1_1_2 import fetchSection1_1_2Context
 from src.app.section_1_1.section_1_1_3 import fetchSection1_1_3Context
 from src.app.section_1_1.section_1_1_4 import fetchSection1_1_4Context
 from src.app.section_1_4.section_1_4_2 import fetchSection1_4_2Context
+from src.app.section_1_3.section_1_3_a import fetchSection1_3_aContext
 from src.utils.addMonths import addMonths
+from src.typeDefs.section_1_3.section_1_3_a import ISection_1_3_a
 # from docx2pdf import convert
 
 
@@ -20,10 +22,11 @@ class MonthlyReportGenerator:
         '1_1_2': True,
         '1_1_3': True,
         '1_4_2': True,
-        '1_1_4': True
+        '1_1_4': True,
+        '1_3_a': True
     }
 
-    def __init__(self, appDbConStr: str, secCtrls: dict):
+    def __init__(self, appDbConStr: str, secCtrls: dict = {}):
         self.appDbConStr = appDbConStr
         self.sectionCtrls.update(secCtrls)
 
@@ -113,10 +116,23 @@ class MonthlyReportGenerator:
                     "error while fetching section 1_1_4"
                 )
                 print(err)
+        # get section 1.3.a data
+        if self.sectionCtrls["1_3_a"]:
+            try:
+                secData_1_3_a: ISection_1_3_a = fetchSection1_3_aContext(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_3_a)
+                print(
+                    "section 1_3_a context setting complete"
+                )
+            except Exception as err:
+                print("error while fetching section 1_3_a")
+                print(err)
         return reportContext
 
     def generateReportWithContext(self, reportContext: IReportCxt, tmplPath: str, dumpFolder: str) -> bool:
-        """generate the report file at the desired dump folder location 
+        """generate the report file at the desired dump folder location
         based on the template file and report context object
         Args:
             reportContext (IReportCxt): report context object
@@ -127,14 +143,12 @@ class MonthlyReportGenerator:
         """
         try:
             doc = DocxTemplate(tmplPath)
-            
             # populate section 1.4.2 plot image in word file
-            if self.sectionCtrls["1_1_4"]:
+            if self.sectionCtrls["1_4_2"]:
                 plot_1_4_2_path = 'assets/section_1_4_2.png'
                 plot_1_4_2_img = InlineImage(doc, plot_1_4_2_path)
                 reportContext['plot_1_4_2'] = plot_1_4_2_img
-            
-            # render document
+
             doc.render(reportContext)
 
             # derive document path and save
