@@ -85,6 +85,7 @@ class MonthlyReportGenerator:
             )
             print(err)
 
+
         # get section 1.1.2 data
         try:
             secData_1_1_4 = fetchSection1_1_4Context(
@@ -113,10 +114,10 @@ class MonthlyReportGenerator:
         """
         try:
             doc = DocxTemplate(tmplPath)
-            # # signature Image
-            # signatureImgPath = 'assets/signature.png'
-            # signImg = InlineImage(doc, signatureImgPath)
-            # reportContext['signature'] = signImg
+            ## populate section 1.4.2 plot image in word file
+            plot_1_4_2_path = 'assets/section_1_4_2.png'
+            plot_1_4_2_img = InlineImage(doc, plot_1_4_2_path)
+            reportContext['plot_1_4_2'] = plot_1_4_2_img
             doc.render(reportContext)
             dumpFileName = 'Monthly_Report_{0}.docx'.format(
                 reportContext['month_name'])

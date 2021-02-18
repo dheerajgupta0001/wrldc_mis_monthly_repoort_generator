@@ -5,6 +5,7 @@ from src.utils.addMonths import addMonths
 import pandas as pd
 from src.utils.convertDtToDayNum import convertDtToDayNum
 import matplotlib.pyplot as plt
+import math
 
 
 def fetchSection1_4_2Context(appDbConnStr: str, startDt: dt.datetime, endDt: dt.datetime) -> ISection_1_4_2:
@@ -15,9 +16,11 @@ def fetchSection1_4_2Context(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
         'wr', 'Demand(MW)', startDt, endDt)
     demVals = [x['data_value'] for x in wrDemVals]
     wr_max_dem = max(demVals)
-    wr_max_dem_date_str = dt.datetime.strftime(
-        wrDemVals[demVals.index(wr_max_dem)]['time_stamp'], "%d-%b-%y")
+    wrMaxDemDt = wrDemVals[demVals.index(wr_max_dem)]['time_stamp']
+    wr_max_dem_date_str = dt.datetime.strftime(wrMaxDemDt, "%d-%b-%y")
     wr_avg_dem = sum(demVals)/len(demVals)
+    wrMaxDemTimestampStr = dt.datetime.strftime(
+        wrMaxDemDt, "%d-%b-%y %H:%M")+" hrs"
 
     lastYrStartDt = addMonths(startDt, -12)
     lastYrEndDt = addMonths(endDt, -12)
@@ -63,10 +66,15 @@ def fetchSection1_4_2Context(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
     pltDataDf = pd.DataFrame(pltDataObjs)
     pltDataDf = pltDataDf.pivot(
         index='Date', columns='colName', values='val')
+    pltDataDf.reset_index(inplace=True)
+    pltDataDf["Date"] = [math.floor(x) for x in pltDataDf["Date"]]
+    pltDataDf = pltDataDf.groupby(by="Date").max()
+    # save plot data as excel
+    pltDataDf.to_excel("assets/plot_1_4_2.xlsx", index=True)
 
     # derive plot title
-    pltTitle = 'Demand met {0}, {1} & {2}'.format(
-        monthName, prev_month_name, monthNameLastYear)
+    pltTitle = 'Demand met {0}, {1} & {2} \n Max. {3} MW on dt. {4} \n Average Load Growth {5}{6} against last year'.format(
+        monthName, prev_month_name, monthNameLastYear, format(round(wr_max_dem), ","), wrMaxDemTimestampStr, wr_avg_dem_perc_change_last_year, "%")
 
     # create a plotting area and get the figure, axes handle in return
     fig, ax = plt.subplots()
@@ -78,19 +86,22 @@ def fetchSection1_4_2Context(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
     # plot data and get the line artist object in return
     laThisMonth, = ax.plot(
         pltDataDf.index.values, pltDataDf[monthName].values, color='#ff0000')
-    laThisMonth.set_label('Demand met ' + monthName)
+    laThisMonth.set_label(monthName)
 
     laLastYear, = ax.plot(
         pltDataDf.index.values, pltDataDf[monthNameLastYear].values, color='#00ff00')
-    laLastYear.set_label('Demand met ' + monthNameLastYear)
+    laLastYear.set_label(monthNameLastYear)
 
     laPrevMonth, = ax.plot(
         pltDataDf.index.values, pltDataDf[prev_month_name].values, color='#A52A2A')
-    laPrevMonth.set_label('Demand met ' + prev_month_name)
+    laPrevMonth.set_label(prev_month_name)
 
+    # enable y axis grid lines
+    ax.yaxis.grid(True)
     # enable legends
-    ax.legend(loc='lower center')
-
+    ax.legend(bbox_to_anchor=(0.0, -0.3, 1, 0), loc='lower center',
+              ncol=3, mode="expand", borderaxespad=0.)
+    fig.subplots_adjust(bottom=0.25, top=0.8)
     fig.savefig('assets/section_1_4_2.png')
 
     secData: ISection_1_4_2 = {
