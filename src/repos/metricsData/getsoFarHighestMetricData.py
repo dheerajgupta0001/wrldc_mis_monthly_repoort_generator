@@ -10,8 +10,8 @@ def getSoFarHighestAllEntityData(appDbConnStr: str, metricName: str, report_mont
             select constituent , data_value , data_time 
             from MIS_WAREHOUSE.SO_FAR_HIGHEST_MONTHLY sfh
             where 
-            sfh.METRIC_NAME = :0
-            and TRUNC(sfh.report_month) = :1
+            sfh.METRIC_NAME = :1
+            and TRUNC(sfh.report_month) = :2
             GROUP BY constituent
             order by constituent asc
         """

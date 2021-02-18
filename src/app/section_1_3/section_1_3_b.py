@@ -24,7 +24,7 @@ def fetchSection1_3_bContext(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
         'soFarHighestRequirement': 'So Far Highest Requirement (MW) ',
         'soFarHighestAvailability' : 'So Far Highest Availability (MW) ',
         'so_far_highest_req_time':'So Far Highest Requirement Date and Time',
-        'so_far_highest_avail_time':'So Far Highest Requirement Date and Time'
+        'so_far_highest_avail_time':'So Far Highest Availability Date and Time'
     }
     constConfig = {}
     for c in constituentsInfos:
@@ -44,7 +44,7 @@ def fetchSection1_3_bContext(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
 
     allEntityPeakReqMWDf = allEntityPeakAvailMWDf
     allEntityPeakReqMWDf['data_value'] = allEntityPeakAvailMWDf['data_value'] + allEntityPeakloadSheddingMWDf['data_value']
-# check if upper stmt works or not
+    # check if upper stmt works or not
     allEntityPeakAvailMWDf = allEntityPeakAvailMWDf.rename(columns={
         'data_value':metricValueRename['peakAvailability'],'time_stamp':'time_stamp_req'})
     allEntityPeakReqMWDf = allEntityPeakReqMWDf.rename(columns={
@@ -115,13 +115,17 @@ def fetchSection1_3_bContext(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
 
         if monthPeakReq > soFarHighestReq:
             row['shortage_Y'] = updateShortage_Y(row['shortage_Y'] ,soFarHighestReq, soFarHighestAvail)
-            metricName = metricValueRename['peakRequirement']
-            mRepo.updateSoFarHighestTable(constituent,metricName,targetMonth,monthPeakReq,monthPeakReqTime)
 
         if monthPeakAvail > soFarHighestAvail:
             row['shortage_Y'] = updateShortage_Y(row['shortage_Y'] ,soFarHighestReq, soFarHighestAvail)
-            metricName = metricValueRename['peakAvailability']
-            mRepo.updateSoFarHighestTable(constituent,metricName,targetMonth,monthPeakAvail,monthPeakAvailTime)
+        
+        if(metricValueRename['so_far_highest_req_time'] == 'So Far Highest Requirement Date and Time'):
+            metricName = metricValueRename['so_far_highest_req_time']
+            mRepo.insertSoFarHighest(constituent,metricName,targetMonth,monthPeakReq,monthPeakReqTime)
+        
+        elif(metricValueRename['so_far_highest_req_time'] == 'So Far Highest Availability Date and Time'):
+            metricName = metricValueRename['so_far_highest_avail_time']
+            mRepo.insertSoFarHighest(constituent,metricName,targetMonth,monthPeakReq,monthPeakAvailTime)
            
     power_req_so_far_hgst: List[ISection_1_3_b["power_req_and_avail_and_so_far_highest"]] = []
 

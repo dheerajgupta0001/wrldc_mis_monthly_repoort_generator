@@ -10,8 +10,8 @@ def getAllEntityMetricHourlyData(appDbConnStr: str, metricName: str, startDt: dt
             select entity_tag , max(data_value) as data_value, time_stamp
             from mis_warehouse.state_files_data sfh
             where 
-            sfh.METRIC_NAME = :0
-            and TRUNC(sfh.time_stamp) between TRUNC(:1) and TRUNC(:2)
+            sfh.METRIC_NAME = :1
+            and TRUNC(sfh.time_stamp) between TRUNC(:2) and TRUNC(:3)
             group by entity_tag
             order by entity_tag asc
         """
