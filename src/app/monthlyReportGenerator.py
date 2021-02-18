@@ -118,7 +118,7 @@ class MonthlyReportGenerator:
                 print(err)
         if self.sectionCtrls['1_3_b']:
             try:
-                secData_1_3_b : ISection_1_3_b = fetchSection1_3_bContext(
+                secData_1_3_b : List[ISection_1_3_b] = fetchSection1_3_bContext(
                     self.appDbConStr , startDt , endDt
                 )
                 reportContext.update(secData_1_3_b)
