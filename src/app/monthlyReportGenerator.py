@@ -15,8 +15,17 @@ from src.utils.addMonths import addMonths
 class MonthlyReportGenerator:
     appDbConStr: str = ''
 
-    def __init__(self, appDbConStr: str):
+    sectionCtrls = {
+        '1_1_1': True,
+        '1_1_2': True,
+        '1_1_3': True,
+        '1_4_2': True,
+        '1_1_4': True
+    }
+
+    def __init__(self, appDbConStr: str, secCtrls: dict):
         self.appDbConStr = appDbConStr
+        self.sectionCtrls.update(secCtrls)
 
     def getReportContextObj(self, monthDt: dt.datetime) -> IReportCxt:
         """get the report context object for populating the weekly report template
@@ -30,76 +39,80 @@ class MonthlyReportGenerator:
 
         startDt = dt.datetime(monthDt.year, monthDt.month, 1)
         endDt = addMonths(startDt, 1) - dt.timedelta(days=1)
-        # get section 1.1.1 data
-        try:
-            secData_1_1_1 = fetchSection1_1_1Context(
-                self.appDbConStr, startDt, endDt)
-            reportContext.update(secData_1_1_1)
-            print(
-                "section 1_1_1 context setting complete")
-        except Exception as err:
-            print(
-                "error while fetching section 1_1_1")
-            print(err)
+        if self.sectionCtrls["1_1_1"]:
+            # get section 1.1.1 data
+            try:
+                secData_1_1_1 = fetchSection1_1_1Context(
+                    self.appDbConStr, startDt, endDt)
+                reportContext.update(secData_1_1_1)
+                print(
+                    "section 1_1_1 context setting complete")
+            except Exception as err:
+                print(
+                    "error while fetching section 1_1_1")
+                print(err)
 
-        # get section 1.1.2 data
-        try:
-            secData_1_1_2 = fetchSection1_1_2Context(
-                self.appDbConStr, startDt, endDt
-            )
-            reportContext.update(secData_1_1_2)
-            print(
-                "section 1_1_2 context setting complete"
-            )
-        except Exception as err:
-            print(
-                "error while fetching section 1_1_2"
-            )
-            print(err)
+        if self.sectionCtrls["1_1_2"]:
+            # get section 1.1.2 data
+            try:
+                secData_1_1_2 = fetchSection1_1_2Context(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_1_2)
+                print(
+                    "section 1_1_2 context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_1_2"
+                )
+                print(err)
 
-        # get section 1.1.2 data
-        try:
-            secData_1_1_3 = fetchSection1_1_3Context(
-                self.appDbConStr , startDt , endDt
-            )
-            reportContext.update(secData_1_1_3)
-            print(
-                "section 1_1_3 context setting complete"
-            )
-        except Exception as err:
-            print(
-                "error while fetching section 1_1_3")
-        
-        # get section 1.4.2 data
-        try:
-            secData_1_4_2 = fetchSection1_4_2Context(
-                self.appDbConStr, startDt, endDt
-            )
-            reportContext.update(secData_1_4_2)
-            print(
-                "section 1_4_2 context setting complete"
-            )
-        except Exception as err:
-            print(
-                "error while fetching section 1_4_2"
-            )
-            print(err)
+        if self.sectionCtrls["1_1_3"]:
+            # get section 1.1.2 data
+            try:
+                secData_1_1_3 = fetchSection1_1_3Context(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_1_3)
+                print(
+                    "section 1_1_3 context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_1_3")
 
+        if self.sectionCtrls["1_4_2"]:
+            # get section 1.4.2 data
+            try:
+                secData_1_4_2 = fetchSection1_4_2Context(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_4_2)
+                print(
+                    "section 1_4_2 context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_4_2"
+                )
+                print(err)
 
-        # get section 1.1.2 data
-        try:
-            secData_1_1_4 = fetchSection1_1_4Context(
-                self.appDbConStr , startDt , endDt
-            )
-            reportContext.update(secData_1_1_4)
-            print(
-                "section 1_1_4 context setting complete"
-            )
-        except Exception as err:
-            print(
-                "error while fetching section 1_1_4"
-            )
-            print(err)
+        if self.sectionCtrls["1_1_4"]:
+            # get section 1.1.2 data
+            try:
+                secData_1_1_4 = fetchSection1_1_4Context(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_1_4)
+                print(
+                    "section 1_1_4 context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_1_4"
+                )
+                print(err)
         return reportContext
 
     def generateReportWithContext(self, reportContext: IReportCxt, tmplPath: str, dumpFolder: str) -> bool:
@@ -114,11 +127,17 @@ class MonthlyReportGenerator:
         """
         try:
             doc = DocxTemplate(tmplPath)
-            ## populate section 1.4.2 plot image in word file
-            plot_1_4_2_path = 'assets/section_1_4_2.png'
-            plot_1_4_2_img = InlineImage(doc, plot_1_4_2_path)
-            reportContext['plot_1_4_2'] = plot_1_4_2_img
+            
+            # populate section 1.4.2 plot image in word file
+            if self.sectionCtrls["1_1_4"]:
+                plot_1_4_2_path = 'assets/section_1_4_2.png'
+                plot_1_4_2_img = InlineImage(doc, plot_1_4_2_path)
+                reportContext['plot_1_4_2'] = plot_1_4_2_img
+            
+            # render document
             doc.render(reportContext)
+
+            # derive document path and save
             dumpFileName = 'Monthly_Report_{0}.docx'.format(
                 reportContext['month_name'])
             dumpFileFullPath = os.path.join(dumpFolder, dumpFileName)
