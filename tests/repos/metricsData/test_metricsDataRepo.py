@@ -29,3 +29,13 @@ class TestMetricsDataRepo(unittest.TestCase):
         samples = mRepo.getDailyVoltDataByLevel(
             765, "%Time >420 or 800", startDt, endDt)
         self.assertFalse(len(samples) == 0)
+
+    def test_getSoFarHighestAllEntityData(self) -> None:
+        """tests the function that gets hourly data of entity metric
+        """
+        appDbConnStr = self.jsonConf['appDbConnStr']
+        mRepo = MetricsDataRepo(appDbConnStr)
+        startDt = dt.datetime(2020, 12, 1)
+        samples = mRepo.getSoFarHighestAllEntityData(
+            "soFarHighestRequirement", startDt)
+        self.assertFalse(len(samples) == 0)

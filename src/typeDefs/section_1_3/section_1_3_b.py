@@ -1,7 +1,7 @@
-from typing import TypedDict
+from typing import TypedDict, List
 
 
-class ISection_1_3_b(TypedDict):
+class ISoFarHighestDataRow(TypedDict):
     entity: str
     peakReqMW: float
     peakAvailMW: float
@@ -13,6 +13,5 @@ class ISection_1_3_b(TypedDict):
     highestAvailMWDateStr: str
 
 
-# class ISection_1_3_b(TypedDict):
-#     energy_req_avail: List[IEnergyDetails]
-#     recent_fin_month_name: str
+class ISection_1_3_b(TypedDict):
+    so_far_hig_req_avail: List[ISoFarHighestDataRow]
