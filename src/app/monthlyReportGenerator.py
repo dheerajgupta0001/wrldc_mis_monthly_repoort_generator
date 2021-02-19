@@ -9,10 +9,11 @@ from src.app.section_1_1.section_1_1_3 import fetchSection1_1_3Context
 from src.app.section_1_1.section_1_1_4 import fetchSection1_1_4Context
 from src.app.section_1_1.section_1_1_freq import fetchSection1_1_freq_Context
 from src.app.section_1_1.section_1_1_volt import fetchSection1_1_voltContext
+from src.app.section_1_1.section_1_1_hydro import fetchSection1_1_hydroContext
 from src.app.section_1_3.section_1_3_a import fetchSection1_3_aContext
 from src.app.section_1_4.section_1_4_2 import fetchSection1_4_2Context
 from src.app.section_1_3.section_1_3_b import fetchSection1_3_bContext
-from src.app.section_1_5.section_1_5_3 import fetchSection1_5_3Context 
+from src.app.section_1_5.section_1_5_3 import fetchSection1_5_3Context
 from src.utils.addMonths import addMonths
 from src.typeDefs.section_1_3.section_1_3_a import ISection_1_3_a
 from src.typeDefs.section_1_3.section_1_3_b import ISection_1_3_b
@@ -29,6 +30,7 @@ class MonthlyReportGenerator:
         '1_1_4': True,
         '1_1_freq': True,
         '1_1_volt': True,
+        '1_1_hydro': True,
         '1_4_2': True,
         '1_3_a': True,
         '1_3_b': True,
@@ -141,6 +143,23 @@ class MonthlyReportGenerator:
                     "error while fetching section 1_1_freq"
                 )
                 print(err)
+
+        if self.sectionCtrls["1_1_hydro"]:
+            # get section 1.1.hydro data
+            try:
+                secData_1_1_hydro = fetchSection1_1_hydroContext(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_1_hydro)
+                print(
+                    "section 1_1_hydro context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_1_hydro"
+                )
+                print(err)
+
         # get section 1.3.a data
         if self.sectionCtrls["1_3_a"]:
             try:
@@ -154,12 +173,12 @@ class MonthlyReportGenerator:
             except Exception as err:
                 print("error while fetching section 1_3_a")
                 print(err)
-        
+
         # get section 1.3.b data
         if self.sectionCtrls['1_3_b']:
             try:
-                secData_1_3_b : List[ISection_1_3_b] = fetchSection1_3_bContext(
-                    self.appDbConStr , startDt , endDt
+                secData_1_3_b: List[ISection_1_3_b] = fetchSection1_3_bContext(
+                    self.appDbConStr, startDt, endDt
                 )
                 reportContext.update(secData_1_3_b)
                 print('section_1_3_b context setting complete')
