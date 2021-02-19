@@ -14,6 +14,8 @@ from src.app.section_1_3.section_1_3_a import fetchSection1_3_aContext
 from src.app.section_1_4.section_1_4_2 import fetchSection1_4_2Context
 from src.app.section_1_3.section_1_3_b import fetchSection1_3_bContext
 from src.app.section_1_5.section_1_5_3 import fetchSection1_5_3Context
+from src.app.section_1_7.section_1_7 import fetchSection1_7Context
+
 from src.utils.addMonths import addMonths
 from src.typeDefs.section_1_3.section_1_3_a import ISection_1_3_a
 from src.typeDefs.section_1_3.section_1_3_b import ISection_1_3_b
@@ -34,7 +36,8 @@ class MonthlyReportGenerator:
         '1_4_2': True,
         '1_3_a': True,
         '1_3_b': True,
-        '1_5_3': True
+        '1_5_3': True,
+        '1_7':True
     }
 
     def __init__(self, appDbConStr: str, secCtrls: dict = {}):
@@ -215,6 +218,21 @@ class MonthlyReportGenerator:
             except Exception as err:
                 print(
                     "error while fetching section 1_5_3"
+                )
+                print(err)
+        
+        if self.sectionCtrls["1_7"]:
+            try:
+                secData_1_7 = fetchSection1_7Context(
+                    self.appDbConStr , startDt , endDt
+                )
+                reportContext.update(secData_1_7)
+                print(
+                    "section 1_7 context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "Error while fetching section 1_7"
                 )
                 print(err)
         return reportContext
