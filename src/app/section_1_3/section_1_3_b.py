@@ -50,19 +50,21 @@ def fetchSection1_3_bContext(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
 
         prevHighestReqObj = soFarHighestReqLookUp[constInfo["entity_tag"]]
         newHighestReq = maxReq
-        newHighestReqTime = maxReqDt
+        newHighestReqTime = maxReqDt.to_pydatetime()
         if newHighestReq < prevHighestReqObj["value"]:
             newHighestReq = prevHighestReqObj["value"]
-            newHighestReqTime = prevHighestReqObj["data_time"]
+            newHighestReqTime = prevHighestReqObj["ts"]
 
         prevHighestAvailObj = soFarHighestAvailLookUp[constInfo["entity_tag"]]
         newHighestAvail = maxAvail
-        newHighestAvailTime = maxAvailDt
+        newHighestAvailTime = maxAvailDt.to_pydatetime()
         if newHighestAvail < prevHighestAvailObj["value"]:
             newHighestAvail = prevHighestAvailObj["value"]
-            newHighestAvailTime = prevHighestAvailObj["data_time"]
+            newHighestAvailTime = prevHighestAvailObj["ts"]
         newHighestShortagePerc = round(
             100*(newHighestReq-newHighestAvail)/newHighestAvail, 2)
+        newHighestAvailTime = newHighestAvailTime
+        newHighestReqTime = newHighestReqTime
         mRepo.insertSoFarHighest(
             constInfo['entity_tag'], "soFarHighestAvailability", startDt, newHighestAvail, newHighestAvailTime)
         mRepo.insertSoFarHighest(

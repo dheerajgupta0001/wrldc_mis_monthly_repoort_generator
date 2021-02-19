@@ -7,12 +7,11 @@ from src.typeDefs.soFarHighestDataRecord import ISoFarHighestDataRecord
 def getSoFarHighestAllEntityData(appDbConnStr: str, metricName: str, report_month: dt.datetime) -> List[ISoFarHighestDataRecord]:
 
     metricsFetchSql = """
-            select constituent , data_value , data_time 
+            select constituent, data_value, data_time 
             from MIS_WAREHOUSE.SO_FAR_HIGHEST_MONTHLY sfh
             where 
             sfh.METRIC_NAME = :1
             and TRUNC(sfh.report_month) = :2
-            order by constituent asc
         """
 
     # initialise codes to be returned
@@ -47,11 +46,11 @@ def getSoFarHighestAllEntityData(appDbConnStr: str, metricName: str, report_mont
     # iterate through each row to populate so far highest rows
     for row in dbRows:
         constituent: ISoFarHighestDataRecord['constituent'] = row[colNames.index(
-            'constituent')]
+            'CONSTITUENT')]
         data_value: ISoFarHighestDataRecord['data_value'] = row[colNames.index(
-            'data_value')]
+            'DATA_VALUE')]
         data_time: ISoFarHighestDataRecord['data_time'] = row[colNames.index(
-            'data_time')]
+            'DATA_TIME')]
 
         sampl: ISoFarHighestDataRecord = {
             "constituent": constituent,

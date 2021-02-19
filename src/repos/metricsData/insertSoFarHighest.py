@@ -21,12 +21,13 @@ def insertSoFarHighest(appDbConnStr: str, constituent: str, metricName: str, rep
         # get cursor and execute fetch sql
         dbCur = dbConn.cursor()
 
-        existingEntityRecords = (constituent, metricName , report_month )
-                                
-        dbCur.execute("ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD HH24:MI:SS' ")
-        dbCur.execute("Delete from MIS_WAREHOUSE.SO_FAR_HIGHEST_MONTHLY where constituent:=1 and metric_name= :2 and report_month = :3" , existingEntityRecords)
-        dbCur.execute(insertSql, (data_value, data_time,
-                                  constituent, metricName, report_month))
+        existingEntityRecords = (constituent, metricName, report_month)
+
+        dbCur.execute(
+            "delete from MIS_WAREHOUSE.SO_FAR_HIGHEST_MONTHLY where constituent = :1 and metric_name = :2 and report_month = :3", existingEntityRecords)
+        dbCur.execute(insertSql, (constituent, metricName, report_month,
+                                  data_value, data_time))
+        dbConn.commit()
         isInserted = True
     except Exception as err:
         print('Error while inserting so far highest data for month ', report_month)
