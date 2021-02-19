@@ -35,7 +35,7 @@ def fetchSection1_1_3Context(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
 
     wr_avg_cons_mu_perc_inc = round(100 *
                                       (wr_avg_cons_mu - wr_avg_cons_mu_last_yr)/wr_avg_cons_mu_last_yr, 2)
-    secData: ISection_1_1_1 = {
+    secData: ISection_1_1_3 = {
         'wr_tot_cons_mu': wr_tot_cons_mu,
         'wr_avg_cons_mu': wr_avg_cons_mu,
         'wr_max_cons_mu': wr_max_cons_mu,
