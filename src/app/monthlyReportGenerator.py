@@ -12,6 +12,7 @@ from src.app.section_1_1.section_1_1_volt import fetchSection1_1_voltContext
 from src.app.section_1_3.section_1_3_a import fetchSection1_3_aContext
 from src.app.section_1_4.section_1_4_2 import fetchSection1_4_2Context
 from src.app.section_1_3.section_1_3_b import fetchSection1_3_bContext
+from src.app.section_1_5.section_1_5_3 import fetchSection1_5_3Context 
 from src.utils.addMonths import addMonths
 from src.typeDefs.section_1_3.section_1_3_a import ISection_1_3_a
 from src.typeDefs.section_1_3.section_1_3_b import ISection_1_3_b
@@ -31,6 +32,7 @@ class MonthlyReportGenerator:
         '1_4_2': True,
         '1_3_a': True,
         '1_3_b': True,
+        '1_5_3': True
     }
 
     def __init__(self, appDbConStr: str, secCtrls: dict = {}):
@@ -180,6 +182,22 @@ class MonthlyReportGenerator:
                     "error while fetching section 1_4_2"
                 )
                 print(err)
+
+        if self.sectionCtrls["1_5_3"]:
+            # get section 1.5.3 data
+            try:
+                secData_1_5_3 = fetchSection1_5_3Context(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_5_3)
+                print(
+                    "section 1_4_2 context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_5_3"
+                )
+                print(err)
         return reportContext
 
     def generateReportWithContext(self, reportContext: IReportCxt, tmplPath: str, dumpFolder: str) -> bool:
@@ -199,6 +217,12 @@ class MonthlyReportGenerator:
                 plot_1_4_2_path = 'assets/section_1_4_2.png'
                 plot_1_4_2_img = InlineImage(doc, plot_1_4_2_path)
                 reportContext['plot_1_4_2'] = plot_1_4_2_img
+
+            # populate section 1.5.3 plot image in word file
+            if self.sectionCtrls["1_5_3"]:
+                plot_1_5_3_path = 'assets/section_1_5_3.png'
+                plot_1_5_3_img = InlineImage(doc, plot_1_5_3_path)
+                reportContext['plot_1_5_3'] = plot_1_5_3_img
 
             doc.render(reportContext)
 
