@@ -9,7 +9,6 @@ from src.repos.metricsData.getAllEntityMetricMonthlyData import getAllEntityMetr
 from src.repos.metricsData.getFreqDailyData import getFreqDailyData
 from src.repos.metricsData.getDailyVoltDataByLevel import getDailyVoltDataByLevel
 from src.repos.metricsData.getSoFarHighestMetricData import getSoFarHighestAllEntityData
-from src.repos.metricsData.getAllEntityMetricHourlyData import getAllEntityMaxMetricDataFromHourly
 from src.repos.metricsData.insertSoFarHighest import insertSoFarHighest
 
 
@@ -61,12 +60,6 @@ class MetricsDataRepo():
         Gives all constituents so far highest data from so far highest table
         """
         return getSoFarHighestAllEntityData(appDbConnStr=self.appDbConnStr, metricName=metricName, report_month=report_month)
-
-    def getAllEntityMaxMetricDataFromHourly(self, metricName: str, startDt: dt.datetime, endDt: dt.datetime) -> List[IMetricsDataRecord]:
-        """
-        Gives all constituents so hourly data for a metric name for given startdt and enddt
-        """
-        return getAllEntityMaxMetricDataFromHourly(appDbConnStr=self.appDbConnStr, metricName=metricName, startDt=startDt, endDt=endDt)
 
     def insertSoFarHighest(self, constituent: str, metricName: str, report_month: dt.datetime, data_value: float, data_time: dt.datetime) -> bool:
         """Update So Far Highest Table if Metric value for current month is greater than 
