@@ -8,7 +8,7 @@ from src.repos.metricsData.getEntityMetricDailyData import getEntityMetricDailyD
 from src.repos.metricsData.getAllEntityMetricMonthlyData import getAllEntityMetricMonthlyData
 from src.repos.metricsData.getFreqDailyData import getFreqDailyData
 from src.repos.metricsData.getDailyVoltDataByLevel import getDailyVoltDataByLevel
-from src.repos.metricsData.getSoFarHighestMetricData import getSoFarHighestAllEntityData
+from src.repos.metricsData.getSoFarHighestAllEntityData import getSoFarHighestAllEntityData
 from src.repos.metricsData.insertSoFarHighest import insertSoFarHighest
 
 
