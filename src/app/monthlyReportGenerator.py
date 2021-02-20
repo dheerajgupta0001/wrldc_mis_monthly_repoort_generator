@@ -26,17 +26,17 @@ class MonthlyReportGenerator:
     appDbConStr: str = ''
 
     sectionCtrls = {
-        '1_1_1': True,
-        '1_1_2': True,
-        '1_1_3': True,
-        '1_1_4': True,
-        '1_1_freq': True,
-        '1_1_volt': True,
-        '1_1_hydro': True,
-        '1_4_2': True,
-        '1_3_a': True,
-        '1_3_b': True,
-        '1_5_3': True,
+        '1_1_1': False,
+        '1_1_2': False,
+        '1_1_3': False,
+        '1_1_4': False,
+        '1_1_freq': False,
+        '1_1_volt': False,
+        '1_1_hydro': False,
+        '1_4_2': False,
+        '1_3_a': False,
+        '1_3_b': False,
+        '1_5_3': False,
         '1_7':True
     }
 
