@@ -8,6 +8,7 @@ import pandas as pd
 def fetchSection1_1_1Context(appDbConnStr: str, startDt: dt.datetime, endDt: dt.datetime) -> ISection_1_1_1:
     monthDtObj = dt.datetime(startDt.year, startDt.month, 1)
     month_name = dt.datetime.strftime(startDt, "%b' %y")
+    full_month_name = dt.datetime.strftime(startDt, "%B %Y")
     mRepo = MetricsDataRepo(appDbConnStr)
     # get WR Unrestricted demand hourly values for this month and prev yr month
     wrDemVals = mRepo.getEntityMetricHourlyData(
@@ -51,6 +52,7 @@ def fetchSection1_1_1Context(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
     secData: ISection_1_1_1 = {
         'monthDtObj': monthDtObj,
         'month_name': month_name,
+        'full_month_name': full_month_name,
         'last_yr_month_name': last_yr_month_name,
         'wr_max_unres_dem': wr_max_unres_dem,
         'wr_max_unres_dem_time_str': wr_max_unres_dem_time_str,

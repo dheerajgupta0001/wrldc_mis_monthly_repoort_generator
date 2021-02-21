@@ -36,7 +36,18 @@ def fetchSection1_5_2Context(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
     pltDataDf = pd.DataFrame(pltDataObjs)
     pltDataDf = pltDataDf.pivot(
         index='MONTH', columns='colName', values='val')
-
+    
+    maxTs = pltDataDf.index.max()
+    for rIter in range(pltDataDf.shape[0]):
+        # check if Prev fin Yr data column is not Nan, if yes set this year data column
+        lastYrDt = pltDataDf.index[rIter].to_pydatetime()
+        if not pd.isna(pltDataDf[prevFinYrName].iloc[rIter]):
+            thisYrTs = pd.Timestamp(addMonths(lastYrDt, 12))
+            if thisYrTs <= maxTs:
+                thisYrVal = pltDataDf[finYrName].loc[thisYrTs]
+                pltDataDf.at[pd.Timestamp(lastYrDt), finYrName] = thisYrVal
+    pltDataDf = pltDataDf[~pltDataDf[prevFinYrName].isna()]
+    
     # save plot data as excel
     pltDataDf.to_excel("assets/plot_1_5_2.xlsx", index=True)
 
@@ -60,12 +71,12 @@ def fetchSection1_5_2Context(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
     # ax.set_xlim(xmin=finYrStart)
 
     # plot data and get the line artist object in return
-    laThisYr, = ax.plot(
-        pltDataDf.index.values, pltDataDf[finYrName].values, color='#0000ff')
+    laThisYr, = ax.plot(pltDataDf.index.values,
+                        pltDataDf[finYrName].values, color='#0000ff')
     laThisYr.set_label(finYrName)
 
-    laLastYear, = ax.plot(
-        [addMonths(x, 12) for x in pd.Series(pltDataDf.index).dt.to_pydatetime()], pltDataDf[prevFinYrName].values, color='#ff0000')
+    laLastYear, = ax.plot(pltDataDf.index.values,
+                          pltDataDf[prevFinYrName].values, color='#ff0000')
     laLastYear.set_label(prevFinYrName)
 
     # enable axis grid lines

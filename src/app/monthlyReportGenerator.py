@@ -313,7 +313,7 @@ class MonthlyReportGenerator:
 
             # derive document path and save
             dumpFileName = 'Monthly_Report_{0}.docx'.format(
-                reportContext['month_name'])
+                reportContext['full_month_name'])
             dumpFileFullPath = os.path.join(dumpFolder, dumpFileName)
             doc.save(dumpFileFullPath)
         except Exception as err:
