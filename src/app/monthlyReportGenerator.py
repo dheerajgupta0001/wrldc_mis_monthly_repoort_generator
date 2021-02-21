@@ -15,6 +15,7 @@ from src.app.section_1_3.section_1_3_a import fetchSection1_3_aContext
 from src.app.section_1_4.section_1_4_2 import fetchSection1_4_2Context
 from src.app.section_1_3.section_1_3_b import fetchSection1_3_bContext
 from src.app.section_1_5.section_1_5_1 import fetchSection1_5_1Context
+from src.app.section_1_5.section_1_5_2 import fetchSection1_5_2Context
 from src.app.section_1_5.section_1_5_3 import fetchSection1_5_3Context
 from src.utils.addMonths import addMonths
 from src.typeDefs.section_1_3.section_1_3_a import ISection_1_3_a
@@ -38,6 +39,7 @@ class MonthlyReportGenerator:
         '1_3_a': True,
         '1_3_b': True,
         '1_5_1': True,
+        '1_5_2': True,
         '1_5_3': True
     }
 
@@ -238,6 +240,22 @@ class MonthlyReportGenerator:
                 )
                 print(err)
 
+        if self.sectionCtrls["1_5_2"]:
+            # get section 1.5.2 data
+            try:
+                secData_1_5_2 = fetchSection1_5_2Context(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_5_2)
+                print(
+                    "section 1_5_2 context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_5_2"
+                )
+                print(err)
+
         if self.sectionCtrls["1_5_3"]:
             # get section 1.5.3 data
             try:
@@ -272,6 +290,18 @@ class MonthlyReportGenerator:
                 plot_1_4_2_path = 'assets/section_1_4_2.png'
                 plot_1_4_2_img = InlineImage(doc, plot_1_4_2_path)
                 reportContext['plot_1_4_2'] = plot_1_4_2_img
+
+            # populate section 1.5.1 plot image in word file
+            if self.sectionCtrls["1_5_1"]:
+                plot_1_5_1_path = 'assets/section_1_5_1.png'
+                plot_1_5_1_img = InlineImage(doc, plot_1_5_1_path)
+                reportContext['plot_1_5_1'] = plot_1_5_1_img
+
+            # populate section 1.5.2 plot image in word file
+            if self.sectionCtrls["1_5_2"]:
+                plot_1_5_2_path = 'assets/section_1_5_2.png'
+                plot_1_5_2_img = InlineImage(doc, plot_1_5_2_path)
+                reportContext['plot_1_5_2'] = plot_1_5_2_img
 
             # populate section 1.5.3 plot image in word file
             if self.sectionCtrls["1_5_3"]:

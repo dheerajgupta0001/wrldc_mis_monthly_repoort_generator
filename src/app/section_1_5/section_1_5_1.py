@@ -9,7 +9,6 @@ import matplotlib.dates as mdates
 
 
 def fetchSection1_5_1Context(appDbConnStr: str, startDt: dt.datetime, endDt: dt.datetime) -> dict:
-    # TODO complete this
     # get WR demand from recent Fin year start till this month
     # and WR demand from 2 years back fin year to last fin year
     # example: For Jan 21, we require data from 1-Apr-2019 to 31-Mar-2020 and 1-Apr-2020 to 31 Jan 21
@@ -37,6 +36,11 @@ def fetchSection1_5_1Context(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
     pltDataDf = pd.DataFrame(pltDataObjs)
     pltDataDf = pltDataDf.pivot(
         index='MONTH', columns='colName', values='val')
+    # for rIter in pltDataDf.shape[0]:
+    #     # check if Prev fin Yr data is Nan, if yes exchange with prev year data
+    #     thisYrTs = pltDataDf.index[rIter]
+    #     if pd.isna(pltDataDf[prevFinYrName].iloc[rIter]):
+
     # save plot data as excel
     pltDataDf.to_excel("assets/plot_1_5_1.xlsx", index=True)
 
