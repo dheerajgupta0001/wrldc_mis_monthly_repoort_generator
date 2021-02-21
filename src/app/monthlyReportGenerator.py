@@ -14,6 +14,7 @@ from src.app.section_1_1.section_1_1_wind_solar import fetchSection1_1_WindSolar
 from src.app.section_1_3.section_1_3_a import fetchSection1_3_aContext
 from src.app.section_1_4.section_1_4_2 import fetchSection1_4_2Context
 from src.app.section_1_3.section_1_3_b import fetchSection1_3_bContext
+from src.app.section_1_5.section_1_5_1 import fetchSection1_5_1Context
 from src.app.section_1_5.section_1_5_3 import fetchSection1_5_3Context
 from src.utils.addMonths import addMonths
 from src.typeDefs.section_1_3.section_1_3_a import ISection_1_3_a
@@ -36,6 +37,7 @@ class MonthlyReportGenerator:
         '1_4_2': True,
         '1_3_a': True,
         '1_3_b': True,
+        '1_5_1': True,
         '1_5_3': True
     }
 
@@ -217,6 +219,22 @@ class MonthlyReportGenerator:
             except Exception as err:
                 print(
                     "error while fetching section 1_4_2"
+                )
+                print(err)
+
+        if self.sectionCtrls["1_5_1"]:
+            # get section 1.5.1 data
+            try:
+                secData_1_5_1 = fetchSection1_5_1Context(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_5_1)
+                print(
+                    "section 1_5_1 context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_5_1"
                 )
                 print(err)
 
