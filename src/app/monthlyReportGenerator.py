@@ -9,10 +9,15 @@ from src.app.section_1_1.section_1_1_3 import fetchSection1_1_3Context
 from src.app.section_1_1.section_1_1_4 import fetchSection1_1_4Context
 from src.app.section_1_1.section_1_1_freq import fetchSection1_1_freq_Context
 from src.app.section_1_1.section_1_1_volt import fetchSection1_1_voltContext
+from src.app.section_1_1.section_1_1_hydro import fetchSection1_1_hydroContext
+from src.app.section_1_1.section_1_1_wind_solar import fetchSection1_1_WindSolarContext
 from src.app.section_1_3.section_1_3_a import fetchSection1_3_aContext
 from src.app.section_1_4.section_1_4_2 import fetchSection1_4_2Context
 from src.app.section_1_3.section_1_3_b import fetchSection1_3_bContext
-from src.app.section_1_5.section_1_5_3 import fetchSection1_5_3Context 
+from src.app.section_1_5.section_1_5_1 import fetchSection1_5_1Context
+from src.app.section_1_5.section_1_5_2 import fetchSection1_5_2Context
+from src.app.section_1_5.section_1_5_3 import fetchSection1_5_3Context
+from src.app.section_1_6.section_1_6_1 import fetchSection1_6_1Context
 from src.utils.addMonths import addMonths
 from src.typeDefs.section_1_3.section_1_3_a import ISection_1_3_a
 from src.typeDefs.section_1_3.section_1_3_b import ISection_1_3_b
@@ -29,10 +34,16 @@ class MonthlyReportGenerator:
         '1_1_4': True,
         '1_1_freq': True,
         '1_1_volt': True,
+        '1_1_hydro': True,
+        '1_1_wind_solar': True,
         '1_4_2': True,
         '1_3_a': True,
         '1_3_b': True,
-        '1_5_3': True
+        '1_5_1': True,
+        '1_5_2': True,
+        '1_5_3': True,
+        '1_6_1': True,
+        '1_6_2': True
     }
 
     def __init__(self, appDbConStr: str, secCtrls: dict = {}):
@@ -141,6 +152,39 @@ class MonthlyReportGenerator:
                     "error while fetching section 1_1_freq"
                 )
                 print(err)
+
+        if self.sectionCtrls["1_1_hydro"]:
+            # get section 1.1.hydro data
+            try:
+                secData_1_1_hydro = fetchSection1_1_hydroContext(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_1_hydro)
+                print(
+                    "section 1_1_hydro context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_1_hydro"
+                )
+                print(err)
+
+        if self.sectionCtrls["1_1_wind_solar"]:
+            # get section 1.1.wind_solar data
+            try:
+                secData_1_1_wind_solar = fetchSection1_1_WindSolarContext(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_1_wind_solar)
+                print(
+                    "section 1_1_wind_solar context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_1_wind_solar"
+                )
+                print(err)
+
         # get section 1.3.a data
         if self.sectionCtrls["1_3_a"]:
             try:
@@ -154,12 +198,12 @@ class MonthlyReportGenerator:
             except Exception as err:
                 print("error while fetching section 1_3_a")
                 print(err)
-        
+
         # get section 1.3.b data
         if self.sectionCtrls['1_3_b']:
             try:
-                secData_1_3_b : List[ISection_1_3_b] = fetchSection1_3_bContext(
-                    self.appDbConStr , startDt , endDt
+                secData_1_3_b: List[ISection_1_3_b] = fetchSection1_3_bContext(
+                    self.appDbConStr, startDt, endDt
                 )
                 reportContext.update(secData_1_3_b)
                 print('section_1_3_b context setting complete')
@@ -183,6 +227,38 @@ class MonthlyReportGenerator:
                 )
                 print(err)
 
+        if self.sectionCtrls["1_5_1"]:
+            # get section 1.5.1 data
+            try:
+                secData_1_5_1 = fetchSection1_5_1Context(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_5_1)
+                print(
+                    "section 1_5_1 context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_5_1"
+                )
+                print(err)
+
+        if self.sectionCtrls["1_5_2"]:
+            # get section 1.5.2 data
+            try:
+                secData_1_5_2 = fetchSection1_5_2Context(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_5_2)
+                print(
+                    "section 1_5_2 context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_5_2"
+                )
+                print(err)
+
         if self.sectionCtrls["1_5_3"]:
             # get section 1.5.3 data
             try:
@@ -196,6 +272,22 @@ class MonthlyReportGenerator:
             except Exception as err:
                 print(
                     "error while fetching section 1_5_3"
+                )
+                print(err)
+
+        if self.sectionCtrls["1_6_1"]:
+            # get section 1.6.1 data
+            try:
+                secData_1_6_1 = fetchSection1_6_1Context(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_6_1)
+                print(
+                    "section 1_6_1 context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_6_1"
                 )
                 print(err)
         return reportContext
@@ -218,17 +310,35 @@ class MonthlyReportGenerator:
                 plot_1_4_2_img = InlineImage(doc, plot_1_4_2_path)
                 reportContext['plot_1_4_2'] = plot_1_4_2_img
 
+            # populate section 1.5.1 plot image in word file
+            if self.sectionCtrls["1_5_1"]:
+                plot_1_5_1_path = 'assets/section_1_5_1.png'
+                plot_1_5_1_img = InlineImage(doc, plot_1_5_1_path)
+                reportContext['plot_1_5_1'] = plot_1_5_1_img
+
+            # populate section 1.5.2 plot image in word file
+            if self.sectionCtrls["1_5_2"]:
+                plot_1_5_2_path = 'assets/section_1_5_2.png'
+                plot_1_5_2_img = InlineImage(doc, plot_1_5_2_path)
+                reportContext['plot_1_5_2'] = plot_1_5_2_img
+
             # populate section 1.5.3 plot image in word file
             if self.sectionCtrls["1_5_3"]:
                 plot_1_5_3_path = 'assets/section_1_5_3.png'
                 plot_1_5_3_img = InlineImage(doc, plot_1_5_3_path)
                 reportContext['plot_1_5_3'] = plot_1_5_3_img
 
+            # populate section 1.5.3 plot image in word file
+            if self.sectionCtrls["1_6_2"]:
+                plot_1_6_2_path = 'assets/section_1_6_2.png'
+                plot_1_6_2_img = InlineImage(doc, plot_1_6_2_path)
+                reportContext['plot_1_6_2'] = plot_1_6_2_img
+
             doc.render(reportContext)
 
             # derive document path and save
             dumpFileName = 'Monthly_Report_{0}.docx'.format(
-                reportContext['month_name'])
+                reportContext['full_month_name'])
             dumpFileFullPath = os.path.join(dumpFolder, dumpFileName)
             doc.save(dumpFileFullPath)
         except Exception as err:
