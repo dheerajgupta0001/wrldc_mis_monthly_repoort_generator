@@ -18,6 +18,8 @@ from src.app.section_1_5.section_1_5_1 import fetchSection1_5_1Context
 from src.app.section_1_5.section_1_5_2 import fetchSection1_5_2Context
 from src.app.section_1_5.section_1_5_3 import fetchSection1_5_3Context
 from src.app.section_1_6.section_1_6_1 import fetchSection1_6_1Context
+from src.app.section_1_7.section_1_7_1 import fetchSection1_7_1Context
+from src.app.section_1_7.section_1_7_2 import fetchSection1_7_2Context
 from src.app.section_1_9.section_1_9 import fetchSection1_9Context
 from src.utils.addMonths import addMonths
 from src.typeDefs.section_1_3.section_1_3_a import ISection_1_3_a
@@ -45,6 +47,8 @@ class MonthlyReportGenerator:
         '1_5_3': True,
         '1_6_1': True,
         '1_6_2': True,
+        '1_7_1': True,
+        '1_7_2': True,
         '1_9': True
     }
 
@@ -293,8 +297,40 @@ class MonthlyReportGenerator:
                 )
                 print(err)
 
+        if self.sectionCtrls["1_7_1"]:
+            # get section 1.7.1 data
+            try:
+                secData_1_7_1 = fetchSection1_7_1Context(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_7_1)
+                print(
+                    "section 1_7_1 context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_7_1"
+                )
+                print(err)
+
+        if self.sectionCtrls["1_7_2"]:
+            # get section 1.7.2 data
+            try:
+                secData_1_7_2 = fetchSection1_7_2Context(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_7_2)
+                print(
+                    "section 1_7_2 context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_7_2"
+                )
+                print(err)
+
         if self.sectionCtrls["1_9"]:
-            # get section 1.6.1 data
+            # get section 1.9 data
             try:
                 secData_1_9 = fetchSection1_9Context(
                     self.appDbConStr, startDt, endDt
