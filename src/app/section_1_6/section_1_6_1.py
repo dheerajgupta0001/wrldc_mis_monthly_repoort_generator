@@ -46,8 +46,12 @@ def fetchSection1_6_1Context(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
     hrs_avg_out_of_band = sum(hrsOutOfBand)/len(hrsOutOfBand)
 
     dailyFdi = [x/24 for x in hrsOutOfBand]
+    max_Fdi = max(dailyFdi)
+    avg_Fdi = sum(dailyFdi)/len(dailyFdi)
 
     perc_time_out_of_band = [x*100 for x in dailyFdi]
+    max_perc_time = max(perc_time_out_of_band)
+    avg_perc_time = sum(perc_time_out_of_band)/len(perc_time_out_of_band)
 
     freqDailyMaxVals = mRepo.getFreqDailyData('max inst f', startDt, endDt)
     freqMaxVals = [x['data_value'] for x in freqDailyMaxVals]
@@ -116,6 +120,23 @@ def fetchSection1_6_1Context(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
 
     sectionData: ISection_1_6_1 = {
         "freq_profile": freqProfileList,
+        "freq_max_less_band": round(freq_max_less_band, 2),
+        "freq_avg_less_band": round(freq_avg_less_band, 2),
+        "freq_max_bet_band": round(freq_max_bet_band, 2),
+        "freq_avg_bet_band": round(freq_avg_bet_band, 2),
+        "freq_max_greater_than_band": round(freq_max_greater_than_band, 2),
+        "freq_avg_greater_than_band": round(freq_avg_greater_than_band, 2),
+        "max_fvi": round(max_fvi, 2),
+        "avg_fvi": round(avg_fvi, 2),
+        "hrs_max_out_of_band": round(hrs_max_out_of_band, 2),
+        "hrs_avg_out_of_band": round(hrs_avg_out_of_band, 2),
+        "max_Fdi": round(max_Fdi, 2),
+        "avg_Fdi": round(avg_Fdi, 2),
+        "max_perc_time": round(max_perc_time, 2),
+        "avg_perc_time": round(avg_perc_time, 2),
+        "max_monthly_freq": round(max_monthly_freq, 2),
+        "min_monthly_freq": round(min_monthly_freq, 2),
+        "avg_monthly_freq": round(avg_monthly_freq, 2)
     }
 
     pltFreqGraphDf = pd.DataFrame(pltFreqGraphObjs)
