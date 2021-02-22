@@ -65,7 +65,7 @@ def getDailyVoltDataByLevel(appDbConnStr: str, lvl: int, metricName: str, startD
         voltLvl: IVoltDataRecord["volt_level"] = row[colNames.index(
             'VOLT_LEVEL')]
         sampl: IVoltDataRecord = {
-            "data_val": dataTime,
+            "data_time": dataTime,
             "entity_name": entity,
             "metric_name": metric,
             "volt_level": voltLvl,
