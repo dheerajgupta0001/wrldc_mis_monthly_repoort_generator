@@ -20,6 +20,7 @@ from src.app.section_1_5.section_1_5_3 import fetchSection1_5_3Context
 from src.app.section_1_6.section_1_6_1 import fetchSection1_6_1Context
 from src.app.section_1_7.section_1_7_1 import fetchSection1_7_1Context
 from src.app.section_1_7.section_1_7_2 import fetchSection1_7_2Context
+from src.app.section_1_7.section_1_7_3 import fetchSection1_7_3Context
 from src.app.section_1_9.section_1_9 import fetchSection1_9Context
 from src.utils.addMonths import addMonths
 from src.typeDefs.section_1_3.section_1_3_a import ISection_1_3_a
@@ -49,6 +50,7 @@ class MonthlyReportGenerator:
         '1_6_2': True,
         '1_7_1': True,
         '1_7_2': True,
+        '1_7_3': True,
         '1_9': True
     }
 
@@ -329,6 +331,22 @@ class MonthlyReportGenerator:
                 )
                 print(err)
 
+        if self.sectionCtrls["1_7_3"]:
+            # get section 1.7.3 data
+            try:
+                secData_1_7_3 = fetchSection1_7_3Context(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_7_3)
+                print(
+                    "section 1_7_3 context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_7_3"
+                )
+                print(err)
+
         if self.sectionCtrls["1_9"]:
             # get section 1.9 data
             try:
@@ -382,11 +400,22 @@ class MonthlyReportGenerator:
                 plot_1_5_3_img = InlineImage(doc, plot_1_5_3_path)
                 reportContext['plot_1_5_3'] = plot_1_5_3_img
 
-            # populate section 1.5.3 plot image in word file
+            # populate section 1.6.2 plot image in word file
             if self.sectionCtrls["1_6_2"]:
                 plot_1_6_2_path = 'assets/section_1_6_2.png'
                 plot_1_6_2_img = InlineImage(doc, plot_1_6_2_path)
                 reportContext['plot_1_6_2'] = plot_1_6_2_img
+
+            # populate section 1.7.3 plot images in word file
+            if self.sectionCtrls["1_7_3"]:
+                plot_1_7_3_base_path = 'assets/section_1_7_3'
+                reportContext['plot_1_7_3'] = []
+                for imgItr in range(reportContext['num_plts_sec_1_7_3']):
+                    imgPath = '{0}_{1}.png'.format(
+                        plot_1_7_3_base_path, imgItr)
+                    img = InlineImage(doc, imgPath)
+                    imgObj = {"img": img}
+                    reportContext['plot_1_7_3'].append(imgObj)
 
             doc.render(reportContext)
 

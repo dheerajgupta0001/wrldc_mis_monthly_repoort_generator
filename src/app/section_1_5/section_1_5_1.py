@@ -55,7 +55,7 @@ def fetchSection1_5_1Context(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
         prevFinYrName, finYrName)
 
     # create a plotting area and get the figure, axes handle in return
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(7.5, 4.8))
     # set plot title
     ax.set_title(pltTitle)
     # set x and y labels
