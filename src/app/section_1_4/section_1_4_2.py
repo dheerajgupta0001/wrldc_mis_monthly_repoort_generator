@@ -77,7 +77,7 @@ def fetchSection1_4_2Context(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
         monthName, prev_month_name, monthNameLastYear, format(round(wr_max_dem), ","), wrMaxDemTimestampStr, wr_avg_dem_perc_change_last_year, "%")
 
     # create a plotting area and get the figure, axes handle in return
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(7.5, 4.5))
     # set plot title
     ax.set_title(pltTitle)
     # set x and y labels
@@ -95,7 +95,8 @@ def fetchSection1_4_2Context(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
     laPrevMonth, = ax.plot(
         pltDataDf.index.values, pltDataDf[prev_month_name].values, color='#A52A2A')
     laPrevMonth.set_label(prev_month_name)
-
+    
+    ax.set_xlim((1, 31), auto=True)
     # enable y axis grid lines
     ax.yaxis.grid(True)
     # enable legends

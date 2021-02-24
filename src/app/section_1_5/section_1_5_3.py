@@ -77,7 +77,7 @@ def fetchSection1_5_3Context(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
         monthName, prev_month_name, monthNameLastYear, round(wr_max_con), round(wr_max_con_prev_month), round(wr_max_con_last_year))
 
     # create a plotting area and get the figure, axes handle in return
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(7.5, 4.5))
     # set plot title
     ax.set_title(pltTitle)
     # set x and y labels
@@ -98,6 +98,7 @@ def fetchSection1_5_3Context(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
 
     # enable y axis grid lines
     ax.yaxis.grid(True)
+    ax.set_xlim((1, 31), auto=True)
     # enable legends
     ax.legend(bbox_to_anchor=(0.0, -0.3, 1, 0), loc='lower center',
               ncol=3, mode="expand", borderaxespad=0.)
