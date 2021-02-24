@@ -12,6 +12,7 @@ from src.app.section_1_1.section_1_1_volt import fetchSection1_1_voltContext
 from src.app.section_1_1.section_1_1_hydro import fetchSection1_1_hydroContext
 from src.app.section_1_1.section_1_1_wind_solar import fetchSection1_1_WindSolarContext
 from src.app.section_1_3.section_1_3_a import fetchSection1_3_aContext
+from src.app.section_1_4.section_1_4_1 import fetchSection1_4_1Context
 from src.app.section_1_4.section_1_4_2 import fetchSection1_4_2Context
 from src.app.section_1_3.section_1_3_b import fetchSection1_3_bContext
 from src.app.section_1_5.section_1_5_1 import fetchSection1_5_1Context
@@ -42,6 +43,7 @@ class MonthlyReportGenerator:
         '1_1_volt': True,
         '1_1_hydro': True,
         '1_1_wind_solar': True,
+        '1_4_1': True,
         '1_4_2': True,
         '1_3_a': True,
         '1_3_b': True,
@@ -54,7 +56,7 @@ class MonthlyReportGenerator:
         '1_7_2': True,
         '1_7_3': True,
         '1_9': True,
-        '1_11_solar':True
+        '1_11_solar': True
     }
 
     def __init__(self, appDbConStr: str, secCtrls: dict = {}):
@@ -220,6 +222,22 @@ class MonthlyReportGenerator:
                 print('section_1_3_b context setting complete')
             except Exception as err:
                 print("error while fetching section 1_3_b")
+                print(err)
+
+        if self.sectionCtrls["1_4_1"]:
+            # get section 1.4.1 data
+            try:
+                secData_1_4_1 = fetchSection1_4_1Context(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_4_1)
+                print(
+                    "section 1_4_1 context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_4_1"
+                )
                 print(err)
 
         if self.sectionCtrls["1_4_2"]:

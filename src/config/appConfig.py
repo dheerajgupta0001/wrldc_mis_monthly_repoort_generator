@@ -1,8 +1,9 @@
 import json
 import pandas as pd
 from typing import List, Any
+from src.typeDefs.config.appConfig import IConstituentConfig
 
-constituentsMappings: List[Any] = []
+constituentsMappings: List[IConstituentConfig] = []
 
 jsonConfig: dict = {}
 
