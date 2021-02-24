@@ -4,13 +4,14 @@ from typing import List, Any
 from src.typeDefs.config.appConfig import IConstituentConfig
 
 constituentsMappings: List[IConstituentConfig] = []
-
+constituentsMappingsRE: List[Any] = []
 jsonConfig: dict = {}
 
 
 def initConfigs():
     loadJsonConfig()
     loadConstituentsMappings()
+    loadREConstituentsMappings()
 
 
 def loadJsonConfig(fName="config.json") -> dict:
@@ -19,6 +20,7 @@ def loadJsonConfig(fName="config.json") -> dict:
         data = json.load(f)
         jsonConfig = data
         return jsonConfig
+
 
 def loadConstituentsMappings(filePath='config.xlsx', sheetname='constituents'):
     global constituentsMappings
@@ -29,10 +31,23 @@ def loadConstituentsMappings(filePath='config.xlsx', sheetname='constituents'):
     return constituentsMappings
 
 
+def loadREConstituentsMappings(filePath='config.xlsx', sheetname='REconstituents'):
+    global constituentsMappingsRE
+    constituentsMappingsREDf = pd.read_excel(filePath, sheet_name=sheetname)
+    constituentsMappingsRE = constituentsMappingsREDf.to_dict('records')
+    return constituentsMappingsRE
+
+
 def getJsonConfig() -> dict:
     global jsonConfig
     return jsonConfig
 
+
 def getConstituentsMappings():
     global constituentsMappings
     return constituentsMappings
+
+
+def getREConstituentsMappings():
+    global constituentsMappingsRE
+    return constituentsMappingsRE

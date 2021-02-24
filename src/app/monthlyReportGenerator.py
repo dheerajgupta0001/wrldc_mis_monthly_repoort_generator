@@ -24,6 +24,7 @@ from src.app.section_1_7.section_1_7_2 import fetchSection1_7_2Context
 from src.app.section_1_7.section_1_7_3 import fetchSection1_7_3Context
 from src.app.section_1_9.section_1_9 import fetchSection1_9Context
 from src.app.section_1_11.section_1_11_solar import fetchSection1_11_SolarContext
+from src.app.section_1_11.section_1_11_wind_c import fetchSection1_11_wind_cContext
 
 from src.utils.addMonths import addMonths
 from src.typeDefs.section_1_3.section_1_3_a import ISection_1_3_a
@@ -36,27 +37,28 @@ class MonthlyReportGenerator:
 
     sectionCtrls = {
         '1_1_1': True,
-        '1_1_2': True,
-        '1_1_3': True,
-        '1_1_4': True,
-        '1_1_freq': True,
-        '1_1_volt': True,
-        '1_1_hydro': True,
-        '1_1_wind_solar': True,
-        '1_4_1': True,
-        '1_4_2': True,
-        '1_3_a': True,
-        '1_3_b': True,
-        '1_5_1': True,
-        '1_5_2': True,
-        '1_5_3': True,
-        '1_6_1': True,
-        '1_6_2': True,
-        '1_7_1': True,
-        '1_7_2': True,
-        '1_7_3': True,
-        '1_9': True,
-        '1_11_solar': True
+        '1_1_2': False,
+        '1_1_3': False,
+        '1_1_4': False,
+        '1_1_freq': False,
+        '1_1_volt': False,
+        '1_1_hydro': False,
+        '1_1_wind_solar': False,
+        '1_4_1': False,
+        '1_4_2': False,
+        '1_3_a': False,
+        '1_3_b': False,
+        '1_5_1': False,
+        '1_5_2': False,
+        '1_5_3': False,
+        '1_6_1': False,
+        '1_6_2': False,
+        '1_7_1': False,
+        '1_7_2': False,
+        '1_7_3': False,
+        '1_9': False,
+        '1_11_solar': False,
+        '1_11_wind_c': True
     }
 
     def __init__(self, appDbConStr: str, secCtrls: dict = {}):
@@ -397,6 +399,22 @@ class MonthlyReportGenerator:
             except Exception as err:
                 print(
                     "error while fetching section 1_11_solar"
+                )
+                print(err)
+
+        if self.sectionCtrls["1_11_wind_c"]:
+            # get section 1.11.wind.c data
+            try:
+                secData_1_11_wind_c = fetchSection1_11_wind_cContext(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_11_wind_c)
+                print(
+                    "section 1_11_wind_c context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_11_wind_c"
                 )
                 print(err)
         return reportContext
