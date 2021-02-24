@@ -3,6 +3,7 @@ import pandas as pd
 from typing import List, Any
 
 constituentsMappings: List[Any] = []
+constituentsMappingsRE: List[Any] = []
 voltMetrics: List[Any] = []
 jsonConfig: dict = {}
 
@@ -11,6 +12,7 @@ def initConfigs():
     loadJsonConfig()
     loadConstituentsMappings()
     loadMetricsInfo()
+    loadREConstituentsMappings()
 
 def loadJsonConfig(fName="config.json") -> dict:
     global jsonConfig
@@ -27,6 +29,12 @@ def loadConstituentsMappings(filePath='config.xlsx', sheetname='constituents'):
     constituentsMappings = constituentsMappingsDf.to_dict('records')
     return constituentsMappings
 
+def loadREConstituentsMappings(filePath='config.xlsx', sheetname='REconstituents'):
+    global constituentsMappingsRE
+    constituentsMappingsREDf = pd.read_excel(filePath, sheet_name=sheetname)
+    constituentsMappingsRE = constituentsMappingsREDf.to_dict('records')
+    return constituentsMappingsRE
+
 def loadMetricsInfo(filePath='config.xlsx', sheetname='volt_metrics'):
     global voltMetrics
     voltMetrics = pd.read_excel(filePath, sheet_name=sheetname)
@@ -41,6 +49,11 @@ def getConstituentsMappings():
     global constituentsMappings
     return constituentsMappings
 
+def getREConstituentsMappings():
+    global constituentsMappingsRE
+    return constituentsMappingsRE
+
 def getVoltMetrics():
     global voltMetrics
     return voltMetrics
+
