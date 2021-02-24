@@ -39,3 +39,12 @@ class TestMetricsDataRepo(unittest.TestCase):
         samples = mRepo.getSoFarHighestAllEntityData(
             "soFarHighestRequirement", startDt)
         self.assertFalse(len(samples) == 0)
+
+    def test_getRawFreq(self) -> None:
+        """tests the function that gets raw frequency data
+        """
+        appDbConnStr = self.jsonConf['appDbConnStr']
+        mRepo = MetricsDataRepo(appDbConnStr)
+        startDt = dt.datetime(2021, 2, 1)
+        samples = mRepo.getRawFreq(startDt, startDt)
+        self.assertFalse(len(samples) == 0)

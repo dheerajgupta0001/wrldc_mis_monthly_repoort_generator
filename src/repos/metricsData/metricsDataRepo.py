@@ -3,6 +3,7 @@ import datetime as dt
 from src.typeDefs.metricsDataRecord import IMetricsDataRecord, IFreqMetricsDataRecord
 from src.typeDefs.soFarHighestDataRecord import ISoFarHighestDataRecord
 from src.typeDefs.voltDataRecord import IVoltDataRecord
+from src.typeDefs.rawFreqRecord import IRawFreqRecord
 from src.repos.metricsData.getEntityMetricHourlyData import getEntityMetricHourlyData
 from src.repos.metricsData.getEntityMetricDailyData import getEntityMetricDailyData
 from src.repos.metricsData.getAllEntityMetricMonthlyData import getAllEntityMetricMonthlyData
@@ -10,6 +11,7 @@ from src.repos.metricsData.getFreqDailyData import getFreqDailyData
 from src.repos.metricsData.getDailyVoltDataByLevel import getDailyVoltDataByLevel
 from src.repos.metricsData.getSoFarHighestAllEntityData import getSoFarHighestAllEntityData
 from src.repos.metricsData.insertSoFarHighest import insertSoFarHighest
+from src.repos.metricsData.getRawFreq import getRawFreq
 
 
 class MetricsDataRepo():
@@ -76,3 +78,6 @@ class MetricsDataRepo():
             bool: True if updates successfully
         """
         return insertSoFarHighest(appDbConnStr=self.appDbConnStr, constituent=constituent, metricName=metricName, report_month=report_month, data_value=data_value, data_time=data_time)
+
+    def getRawFreq(self, startDt: dt.datetime, endDt: dt.datetime) -> List[IRawFreqRecord]:
+        return getRawFreq(appDbConnStr=self.appDbConnStr, startDt=startDt, endDt=endDt)

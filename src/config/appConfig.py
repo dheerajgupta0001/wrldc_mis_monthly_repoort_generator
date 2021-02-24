@@ -1,18 +1,18 @@
 import json
 import pandas as pd
 from typing import List, Any
+from src.typeDefs.config.appConfig import IConstituentConfig
 
-constituentsMappings: List[Any] = []
+constituentsMappings: List[IConstituentConfig] = []
 constituentsMappingsRE: List[Any] = []
-voltMetrics: List[Any] = []
 jsonConfig: dict = {}
 
 
 def initConfigs():
     loadJsonConfig()
     loadConstituentsMappings()
-    loadMetricsInfo()
     loadREConstituentsMappings()
+
 
 def loadJsonConfig(fName="config.json") -> dict:
     global jsonConfig
@@ -20,6 +20,7 @@ def loadJsonConfig(fName="config.json") -> dict:
         data = json.load(f)
         jsonConfig = data
         return jsonConfig
+
 
 def loadConstituentsMappings(filePath='config.xlsx', sheetname='constituents'):
     global constituentsMappings
@@ -41,19 +42,23 @@ def loadMetricsInfo(filePath='config.xlsx', sheetname='volt_metrics'):
     voltMetrics = voltMetrics.to_dict('records')
     return voltMetrics
 
+def loadREConstituentsMappings(filePath='config.xlsx', sheetname='REconstituents'):
+    global constituentsMappingsRE
+    constituentsMappingsREDf = pd.read_excel(filePath, sheet_name=sheetname)
+    constituentsMappingsRE = constituentsMappingsREDf.to_dict('records')
+    return constituentsMappingsRE
+
+
 def getJsonConfig() -> dict:
     global jsonConfig
     return jsonConfig
+
 
 def getConstituentsMappings():
     global constituentsMappings
     return constituentsMappings
 
+
 def getREConstituentsMappings():
     global constituentsMappingsRE
     return constituentsMappingsRE
-
-def getVoltMetrics():
-    global voltMetrics
-    return voltMetrics
-
