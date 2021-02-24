@@ -58,8 +58,19 @@ def fetchReservoirContext(appDbConnStr: str, startDt: dt.datetime, endDt: dt.dat
             # set plot title
             ax.set_title(pltTitle)
             # set y labels
-            ax2.set_xlabel('MUs')
+            ax2.set_ylabel('MUs')
             ax.set_ylabel('Meter')
+
+            # set x axis locator as month
+            ax.xaxis.set_major_locator(mdates.MonthLocator())
+            # set x axis formatter as month name
+            ax.xaxis.set_major_formatter(mdates.DateFormatter('%b'))
+
+            # set x axis locator as month
+            ax2.xaxis.set_major_locator(mdates.MonthLocator())
+            # set x axis formatter as month name
+            ax2.xaxis.set_major_formatter(mdates.DateFormatter('%b'))
+
             # plot data and get the line artist object in return 'GEN.'
 
             clr = ['#00ccff', '#ff8533', '#ff0000', '#9900ff']
@@ -74,7 +85,7 @@ def fetchReservoirContext(appDbConnStr: str, startDt: dt.datetime, endDt: dt.dat
                         pltDataDf['Date'], pltDataDf[pltDataDf.columns[col+1]], color=clr[col], label=pltDataDf.columns[col+1])
             # enable y axis grid lines
             ax.yaxis.grid(True)
-            plt.xticks(rotation=45)
+            # plt.xticks(rotation=45)
             # Ensure a major tick for each week using (interval=1)
             ax.xaxis.set_major_locator(mdates.MonthLocator(interval=1))
 
@@ -118,8 +129,19 @@ def fetchReservoirContext(appDbConnStr: str, startDt: dt.datetime, endDt: dt.dat
             # set plot title
             ax.set_title(pltTitle)
             # set y labels
-            ax2.set_xlabel('MUs')
+            ax2.set_ylabel('MUs')
             ax.set_ylabel('Meter')
+
+            # set x axis locator as month
+            ax.xaxis.set_major_locator(mdates.MonthLocator())
+            # set x axis formatter as month name
+            ax.xaxis.set_major_formatter(mdates.DateFormatter('%b'))
+
+            # set x axis locator as month
+            ax2.xaxis.set_major_locator(mdates.MonthLocator())
+            # set x axis formatter as month name
+            ax2.xaxis.set_major_formatter(mdates.DateFormatter('%b'))
+
             # plot data and get the line artist object in return 'GEN.'
 
             clr = ['#00ccff', '#ff8533', '#ff0000', '#9900ff']
@@ -135,7 +157,7 @@ def fetchReservoirContext(appDbConnStr: str, startDt: dt.datetime, endDt: dt.dat
                                                     color=clr[col], label=lastFinYrPltDataDf.columns[col+1])
             # enable y axis grid lines
             ax.yaxis.grid(True)
-            plt.xticks(rotation=45)
+            # plt.xticks(rotation=45)
             # Ensure a major tick for each week using (interval=1)
             ax.xaxis.set_major_locator(mdates.MonthLocator(interval=1))
 
