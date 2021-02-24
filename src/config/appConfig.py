@@ -10,6 +10,7 @@ jsonConfig: dict = {}
 def initConfigs():
     loadJsonConfig()
     loadConstituentsMappings()
+    loadReservoirsMappings()
 
 
 def loadJsonConfig(fName="config.json") -> dict:
@@ -23,9 +24,15 @@ def loadConstituentsMappings(filePath='config.xlsx', sheetname='constituents'):
     global constituentsMappings
     constituentsMappingsDf = pd.read_excel(filePath, sheet_name=sheetname)
     # Convert Nan to None
-    # fileMappings = fileMappingsDf.where(pd.notnull(fileMappings),None)
     constituentsMappings = constituentsMappingsDf.to_dict('records')
     return constituentsMappings
+
+def loadReservoirsMappings(filePath='config.xlsx', sheetname='reservoir'):
+    global reservoirsMappings
+    reservoirsMappingsDf = pd.read_excel(filePath, sheet_name=sheetname)
+    # Convert Nan to None
+    reservoirsMappings = reservoirsMappingsDf.to_dict('records')
+    return reservoirsMappings
 
 
 def getJsonConfig() -> dict:
@@ -35,3 +42,7 @@ def getJsonConfig() -> dict:
 def getConstituentsMappings():
     global constituentsMappings
     return constituentsMappings
+
+def getReservoirsMappings():
+    global reservoirsMappings
+    return reservoirsMappings

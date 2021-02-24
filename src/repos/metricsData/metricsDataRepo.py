@@ -1,6 +1,6 @@
 from typing import List
 import datetime as dt
-from src.typeDefs.metricsDataRecord import IMetricsDataRecord, IFreqMetricsDataRecord
+from src.typeDefs.metricsDataRecord import IMetricsDataRecord, IFreqMetricsDataRecord, IReservoirDataRecord
 from src.typeDefs.soFarHighestDataRecord import ISoFarHighestDataRecord
 from src.typeDefs.voltDataRecord import IVoltDataRecord
 from src.repos.metricsData.getEntityMetricHourlyData import getEntityMetricHourlyData
@@ -10,6 +10,7 @@ from src.repos.metricsData.getFreqDailyData import getFreqDailyData
 from src.repos.metricsData.getDailyVoltDataByLevel import getDailyVoltDataByLevel
 from src.repos.metricsData.getSoFarHighestAllEntityData import getSoFarHighestAllEntityData
 from src.repos.metricsData.insertSoFarHighest import insertSoFarHighest
+from src.repos.metricsData.getReservoirDailyData import getReservoirDailyData
 
 
 class MetricsDataRepo():
@@ -76,3 +77,10 @@ class MetricsDataRepo():
             bool: True if updates successfully
         """
         return insertSoFarHighest(appDbConnStr=self.appDbConnStr, constituent=constituent, metricName=metricName, report_month=report_month, data_value=data_value, data_time=data_time)
+
+    def getReservoirDailyData(self, entityName: str, metricName: str, startDt: dt.datetime, endDt: dt.datetime) -> List[IReservoirDataRecord]:
+        """fetches an entity metrics time series data from the app db
+        Returns:
+            bool: returns true if process is ok
+        """
+        return getReservoirDailyData(appDbConnStr=self.appDbConnStr, entityName=entityName, metricName=metricName, startDt=startDt, endDt=endDt)

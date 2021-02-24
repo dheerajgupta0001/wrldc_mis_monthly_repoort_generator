@@ -19,6 +19,7 @@ from src.app.section_1_5.section_1_5_2 import fetchSection1_5_2Context
 from src.app.section_1_5.section_1_5_3 import fetchSection1_5_3Context
 from src.app.section_1_6.section_1_6_1 import fetchSection1_6_1Context
 from src.app.section_1_9.section_1_9 import fetchSection1_9Context
+from src.app.section_reservoir.section_reservoir import fetchReservoirContext
 from src.utils.addMonths import addMonths
 from src.typeDefs.section_1_3.section_1_3_a import ISection_1_3_a
 from src.typeDefs.section_1_3.section_1_3_b import ISection_1_3_b
@@ -45,7 +46,8 @@ class MonthlyReportGenerator:
         '1_5_3': True,
         '1_6_1': True,
         '1_6_2': True,
-        '1_9': True
+        '1_9': True,
+        'reservoir': True
     }
 
     def __init__(self, appDbConStr: str, secCtrls: dict = {}):
@@ -64,6 +66,20 @@ class MonthlyReportGenerator:
 
         startDt = dt.datetime(monthDt.year, monthDt.month, 1)
         endDt = addMonths(startDt, 1) - dt.timedelta(days=1)
+
+        if self.sectionCtrls["reservoir"]:
+            # get section reservoir data
+            try:
+                secData_reservoir = fetchReservoirContext(
+                    self.appDbConStr, startDt, endDt)
+                reportContext.update(secData_reservoir)
+                print(
+                    "section reservoir context setting complete")
+            except Exception as err:
+                print(
+                    "error while fetching section reservoir")
+                print(err)
+
         if self.sectionCtrls["1_1_1"]:
             # get section 1.1.1 data
             try:
@@ -351,6 +367,17 @@ class MonthlyReportGenerator:
                 plot_1_6_2_path = 'assets/section_1_6_2.png'
                 plot_1_6_2_img = InlineImage(doc, plot_1_6_2_path)
                 reportContext['plot_1_6_2'] = plot_1_6_2_img
+
+            # populate all reservoir section plot images in word file
+            if self.sectionCtrls["reservoir"]:
+                plot_reservoir_base_path = 'assets/reservoir_section'
+                reportContext['reservoir_section'] = []
+                for imgItr in range(reportContext['num_plts_sec_reservoir']):
+                    imgPath = '{0}_{1}.png'.format(
+                        plot_reservoir_base_path, imgItr)
+                    img = InlineImage(doc, imgPath)
+                    imgObj = {"img": img}
+                    reportContext['reservoir_section'].append(imgObj)
 
             doc.render(reportContext)
 
