@@ -12,3 +12,9 @@ class IFreqMetricsDataRecord(TypedDict):
     time_stamp: dt.datetime
     metric_name: str
     data_value: float
+
+class IReservoirDataRecord(TypedDict):
+    time_stamp: dt.datetime
+    entity_tag: str
+    metric_tag: str
+    data_value: float 
