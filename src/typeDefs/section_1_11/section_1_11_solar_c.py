@@ -7,7 +7,11 @@ class ISoFarHighestDataRow(TypedDict):
     generationMW: float
     highestGenerationMWDateStr: str
     highestGenerationMWTimeStr: str
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> origin
 
 class ISection_1_11_solar_c(TypedDict):
     so_far_hig_solar_gen: List[ISoFarHighestDataRow]

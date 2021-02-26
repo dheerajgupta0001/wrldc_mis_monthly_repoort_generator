@@ -4,7 +4,7 @@ from src.repos.metricsData.metricsDataRepo import MetricsDataRepo
 from src.utils.addMonths import addMonths
 from src.config.appConfig import getREConstituentsMappings
 from src.typeDefs.section_1_11.section_1_11_wind_c import ISoFarHighestDataRow, ISection_1_11_wind_c
-import math
+import pandas as pd
 
 def fetchSection1_11_wind_cContext(appDbConnStr: str, startDt: dt.datetime, endDt: dt.datetime) -> ISection_1_11_wind_c:
     constituentsInfos = getREConstituentsMappings()
@@ -21,7 +21,7 @@ def fetchSection1_11_wind_cContext(appDbConnStr: str, startDt: dt.datetime, endD
     for cIter in range(len(constituentsInfos)):
         constInfo = constituentsInfos[cIter]
 
-        if(math.isnan(constInfo['windCapacity'])):
+        if(pd.isna(constInfo['windCapacity'])):
             continue
 
         highestGenerationDateTime = soFarHighestWindLookUp[constInfo['entity_tag']]['ts']

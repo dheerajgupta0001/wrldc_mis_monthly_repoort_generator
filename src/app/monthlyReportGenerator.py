@@ -26,8 +26,12 @@ from src.app.section_1_9.section_1_9 import fetchSection1_9Context
 from src.app.section_1_11.section_1_11_solar import fetchSection1_11_SolarContext
 from src.app.section_1_11.section_1_11_wind_c import fetchSection1_11_wind_cContext
 from src.app.section_1_11.section_1_11_solar_c import fetchSection1_11_solar_cContext
+<<<<<<< HEAD
 from src.app.section_1_11.section_1_11_windPlf import fetchSection1_11_windPLF
 
+=======
+from src.app.section_reservoir.section_reservoir import fetchReservoirContext
+>>>>>>> origin
 
 from src.utils.addMonths import addMonths
 from src.typeDefs.section_1_3.section_1_3_a import ISection_1_3_a
@@ -62,8 +66,13 @@ class MonthlyReportGenerator:
         '1_9': True,
         '1_11_solar': True,
         '1_11_wind_c': True,
+<<<<<<< HEAD
         '1_11_solar_c':True,
         '1_11_windPlf':True
+=======
+        '1_11_solar_c': True,
+        'reservoir': True
+>>>>>>> origin
     }
 
     def __init__(self, appDbConStr: str, secCtrls: dict = {}):
@@ -436,21 +445,20 @@ class MonthlyReportGenerator:
                     "error while fetching section 1_11_solar_c"
                 )
                 print(err)
-        if self.sectionCtrls["1_11_windPlf"]:
-            # get section 1.11.windPlf data
+
+        if self.sectionCtrls["reservoir"]:
+            # get section reservoir data
             try:
-                secData_1_11_windPlf = fetchSection1_11_windPLF(
-                    self.appDbConStr, startDt, endDt
-                )
-                reportContext.update(secData_1_11_windPlf)
+                secData_reservoir = fetchReservoirContext(
+                    self.appDbConStr, startDt, endDt)
+                reportContext.update(secData_reservoir)
                 print(
-                    "section 1_11_windPLF context setting complete"
-                )
+                    "section reservoir context setting complete")
             except Exception as err:
                 print(
-                    "error while fetching section 1_11_windPLF "
-                )
+                    "error while fetching section reservoir")
                 print(err)
+
         return reportContext
 
     def generateReportWithContext(self, reportContext: IReportCxt, tmplPath: str, dumpFolder: str) -> bool:
@@ -509,6 +517,17 @@ class MonthlyReportGenerator:
                 plot_1_11_solar_path = 'assets/section_1_11_solar.png'
                 plot_1_11_solar_img = InlineImage(doc, plot_1_11_solar_path)
                 reportContext['plot_1_11_solar'] = plot_1_11_solar_img
+
+            # populate all reservoir section plot images in word file
+            if self.sectionCtrls["reservoir"]:
+                plot_reservoir_base_path = 'assets/reservoir_section'
+                reportContext['reservoir_section'] = []
+                for imgItr in range(reportContext['num_plts_sec_reservoir']):
+                    imgPath = '{0}_{1}.png'.format(
+                        plot_reservoir_base_path, imgItr)
+                    img = InlineImage(doc, imgPath)
+                    imgObj = {"img": img}
+                    reportContext['reservoir_section'].append(imgObj)
 
             doc.render(reportContext)
 
