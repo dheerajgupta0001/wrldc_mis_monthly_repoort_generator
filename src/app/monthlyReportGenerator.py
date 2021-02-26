@@ -26,6 +26,8 @@ from src.app.section_1_9.section_1_9 import fetchSection1_9Context
 from src.app.section_1_11.section_1_11_solar import fetchSection1_11_SolarContext
 from src.app.section_1_11.section_1_11_wind_c import fetchSection1_11_wind_cContext
 from src.app.section_1_11.section_1_11_solar_c import fetchSection1_11_solar_cContext
+from src.app.section_1_11.section_1_11_windPlf import fetchSection1_11_windPLF
+
 
 from src.utils.addMonths import addMonths
 from src.typeDefs.section_1_3.section_1_3_a import ISection_1_3_a
@@ -60,7 +62,8 @@ class MonthlyReportGenerator:
         '1_9': True,
         '1_11_solar': True,
         '1_11_wind_c': True,
-        '1_11_solar_c':True
+        '1_11_solar_c':True,
+        '1_11_windPlf':True
     }
 
     def __init__(self, appDbConStr: str, secCtrls: dict = {}):
@@ -431,6 +434,21 @@ class MonthlyReportGenerator:
             except Exception as err:
                 print(
                     "error while fetching section 1_11_solar_c"
+                )
+                print(err)
+        if self.sectionCtrls["1_11_windPlf"]:
+            # get section 1.11.windPlf data
+            try:
+                secData_1_11_windPlf = fetchSection1_11_windPLF(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_11_windPlf)
+                print(
+                    "section 1_11_windPLF context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_11_windPLF "
                 )
                 print(err)
         return reportContext
