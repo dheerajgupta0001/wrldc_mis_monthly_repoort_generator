@@ -27,7 +27,7 @@ from src.app.section_1_11.section_1_11_solar import fetchSection1_11_SolarContex
 from src.app.section_1_11.section_1_11_wind_c import fetchSection1_11_wind_cContext
 from src.app.section_1_11.section_1_11_solar_c import fetchSection1_11_solar_cContext
 from src.app.section_reservoir.section_reservoir import fetchReservoirContext
-
+from src.app.section_1_12.section_1_12 import fetchSection1_12Context
 from src.utils.addMonths import addMonths
 from src.typeDefs.section_1_3.section_1_3_a import ISection_1_3_a
 from src.typeDefs.section_1_3.section_1_3_b import ISection_1_3_b
@@ -62,7 +62,8 @@ class MonthlyReportGenerator:
         '1_11_solar': True,
         '1_11_wind_c': True,
         '1_11_solar_c': True,
-        'reservoir': True
+        'reservoir': True,
+        '1_12': True
     }
 
     def __init__(self, appDbConStr: str, secCtrls: dict = {}):
@@ -450,6 +451,21 @@ class MonthlyReportGenerator:
                 print(
                     "error while fetching section reservoir")
                 print(err)
+        # get section 1.12 inter regional data
+        if self.sectionCtrls["1_12"]:
+            try:
+                secData_1_12 = fetchSection1_12Context(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_12)
+                print(
+                    "section 1_12 context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_12"
+                )
+                print(err)
 
         return reportContext
 
@@ -520,6 +536,17 @@ class MonthlyReportGenerator:
                     img = InlineImage(doc, imgPath)
                     imgObj = {"img": img}
                     reportContext['reservoir_section'].append(imgObj)
+
+            # populate all inter regioanl section plot images in word file
+            if self.sectionCtrls["1_12"]:
+                plot_inter_regional_base_path = 'assets/section_1_12'
+                reportContext['inter_regioanl_section'] = []
+                for imgItr in range(reportContext['num_plts_sec_inter_regional']):
+                    imgPath = '{0}_{1}.png'.format(
+                        plot_inter_regional_base_path, imgItr)
+                    img = InlineImage(doc, imgPath)
+                    imgObj = {"img": img}
+                    reportContext['inter_regioanl_section'].append(imgObj)
 
             doc.render(reportContext)
 
