@@ -1,4 +1,4 @@
-from src.typeDefs.section_1_1.section_1_1_1 import ISection_1_1_1
+from src.typeDefs.section_2_3.section_2_3 import ISection_2_3_1, ISection_2_3_2
 import datetime as dt
 from src.repos.metricsData.metricsDataRepo import MetricsDataRepo
 from src.utils.addMonths import addMonths
@@ -9,7 +9,7 @@ import matplotlib.dates as mdates
 from src.utils.convertDtToDayNum import convertDtToDayNum
 
 
-def fetchSection2_3_MaxContext(appDbConnStr: str, startDt: dt.datetime, endDt: dt.datetime) -> ISection_1_1_1:
+def fetchSection2_3_MaxContext(appDbConnStr: str, startDt: dt.datetime, endDt: dt.datetime) -> ISection_2_3_1:
     monthDtObj = dt.datetime(startDt.year, startDt.month, 1)
     month_name = dt.datetime.strftime(startDt, "%b' %y")
     full_month_name = dt.datetime.strftime(startDt, "%B %Y")
@@ -34,7 +34,7 @@ def fetchSection2_3_MaxContext(appDbConnStr: str, startDt: dt.datetime, endDt: d
     wrUnResDemDf= wrUnResDemDf[ (wrUnResDemDf.index>=maxDtSrtT) & (wrUnResDemDf.index<=maxDtEndT)]
 
     # create a plotting area and get the figure, axes handle in return
-    fig, ax = plt.subplots(figsize=(7.5, 4.8))
+    fig, ax = plt.subplots(figsize=(7.5, 2.5))
     # set plot title
     pltTitle="WR"
     ax.set_title(pltTitle)
@@ -87,7 +87,7 @@ def fetchSection2_3_MaxContext(appDbConnStr: str, startDt: dt.datetime, endDt: d
             constUnResDemDf["time_stamp"] = dateList
 
             # create a plotting area and get the figure, axes handle in return
-            fig, ax = plt.subplots(figsize=(7.5, 4.8))
+            fig, ax = plt.subplots(figsize=(7.5, 2.5))
             # set plot title
             pltTitle = itr['display_name']
             ax.set_title(pltTitle)
@@ -107,10 +107,10 @@ def fetchSection2_3_MaxContext(appDbConnStr: str, startDt: dt.datetime, endDt: d
             numPages+=1
 
 
-    sectionData = {'num_plts_sec_2_3_Max': numPages}
+    sectionData = {'num_plts_sec_max_hourly': numPages}
     return sectionData
 
-def fetchSection2_3_MinContext(appDbConnStr: str, startDt: dt.datetime, endDt: dt.datetime) -> ISection_1_1_1:
+def fetchSection2_3_MinContext(appDbConnStr: str, startDt: dt.datetime, endDt: dt.datetime) -> ISection_2_3_2:
     monthDtObj = dt.datetime(startDt.year, startDt.month, 1)
     month_name = dt.datetime.strftime(startDt, "%b' %y")
     full_month_name = dt.datetime.strftime(startDt, "%B %Y")
@@ -135,7 +135,7 @@ def fetchSection2_3_MinContext(appDbConnStr: str, startDt: dt.datetime, endDt: d
     wrUnResDemDf= wrUnResDemDf[ (wrUnResDemDf.index>=minDtSrtT) & (wrUnResDemDf.index<=minDtEndT)]
 
     # create a plotting area and get the figure, axes handle in return
-    fig, ax = plt.subplots(figsize=(7.5, 4.8))
+    fig, ax = plt.subplots(figsize=(7.5, 2.5))
     # set plot title
     pltTitle="WR"
     ax.set_title(pltTitle)
@@ -187,7 +187,7 @@ def fetchSection2_3_MinContext(appDbConnStr: str, startDt: dt.datetime, endDt: d
             constUnResDemDf["time_stamp"] = dateList
 
             # create a plotting area and get the figure, axes handle in return
-            fig, ax = plt.subplots(figsize=(7.5, 4.8))
+            fig, ax = plt.subplots(figsize=(7.5, 2.5))
             # set plot title
             pltTitle = itr['display_name']
             ax.set_title(pltTitle)
@@ -205,5 +205,5 @@ def fetchSection2_3_MinContext(appDbConnStr: str, startDt: dt.datetime, endDt: d
             fig.savefig('assets/section_2_3_2_{0}.png'.format(numPages))
             numPages+=1
 
-    sectionData = {'num_plts_sec_2_3_Min': numPages}
+    sectionData = {'num_plts_sec_min_hourly': numPages}
     return sectionData

@@ -583,6 +583,29 @@ class MonthlyReportGenerator:
                     imgObj = {"img": img}
                     reportContext['inter_regioanl_section'].append(imgObj)
 
+            # populate all max hourly section plot images in word file
+            if self.sectionCtrls["2_3_Max"]:
+                plot_max_hourly_base_path = 'assets/section_2_3_1'
+                reportContext['max_hourly_section'] = []
+                for imgItr in range(reportContext['num_plts_sec_max_hourly']):
+                    imgPath = '{0}_{1}.png'.format(
+                        plot_max_hourly_base_path, imgItr)
+                    img = InlineImage(doc, imgPath)
+                    imgObj = {"img": img}
+                    reportContext['max_hourly_section'].append(imgObj)
+
+            # populate all min hourly section plot images in word file
+            if self.sectionCtrls["2_3_Min"]:
+                plot_min_hourly_base_path = 'assets/section_2_3_2'
+                reportContext['min_hourly_section'] = []
+                for imgItr in range(reportContext['num_plts_sec_min_hourly']):
+                    imgPath = '{0}_{1}.png'.format(
+                        plot_min_hourly_base_path, imgItr)
+                    img = InlineImage(doc, imgPath)
+                    imgObj = {"img": img}
+                    reportContext['min_hourly_section'].append(imgObj)
+
+
             doc.render(reportContext)
 
             # derive document path and save
