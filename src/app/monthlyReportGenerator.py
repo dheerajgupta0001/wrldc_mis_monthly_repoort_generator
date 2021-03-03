@@ -28,6 +28,7 @@ from src.app.section_1_11.section_1_11_wind_c import fetchSection1_11_wind_cCont
 from src.app.section_1_11.section_1_11_solar_c import fetchSection1_11_solar_cContext
 from src.app.section_reservoir.section_reservoir import fetchReservoirContext
 from src.app.section_1_12.section_1_12 import fetchSection1_12Context
+from src.app.section_2_3.section_2_3 import fetchSection2_3_MaxContext,fetchSection2_3_MinContext
 from src.utils.addMonths import addMonths
 from src.typeDefs.section_1_3.section_1_3_a import ISection_1_3_a
 from src.typeDefs.section_1_3.section_1_3_b import ISection_1_3_b
@@ -63,7 +64,9 @@ class MonthlyReportGenerator:
         '1_11_wind_c': True,
         '1_11_solar_c': True,
         'reservoir': True,
-        '1_12': True
+        '1_12': True,
+        '2_3_Max':True,
+        '2_3_Min':True
     }
 
     def __init__(self, appDbConStr: str, secCtrls: dict = {}):
@@ -464,6 +467,38 @@ class MonthlyReportGenerator:
             except Exception as err:
                 print(
                     "error while fetching section 1_12"
+                )
+                print(err)
+
+        # get section 2_3_max data
+        if self.sectionCtrls["2_3_Max"]:
+            try:
+                secData_2_3_Max = fetchSection2_3_MaxContext(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_2_3_Max)
+                print(
+                    "section 2_3_Max context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 2_3_Max"
+                )
+                print(err)
+    
+        # get section 2_3_min data
+        if self.sectionCtrls["2_3_Min"]:
+            try:
+                secData_2_3_Min = fetchSection2_3_MinContext(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_2_3_Min)
+                print(
+                    "section 2_3_Min context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 2_3_Min"
                 )
                 print(err)
 
