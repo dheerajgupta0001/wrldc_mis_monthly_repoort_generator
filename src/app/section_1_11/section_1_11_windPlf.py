@@ -72,8 +72,8 @@ def fetchSection1_11_windPLF(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
             newHighestWindTime = prevHighestWindObj["ts"]
 
                
-        # mRepo.insertSoFarHighest(
-        #     constInfo['entity_tag'], "soFarHighestWindGen", startDt, newHighestWind, newHighestWindTime)
+        mRepo.insertSoFarHighest(
+            constInfo['entity_tag'], "soFarHighestWindGen", startDt, newHighestWind, newHighestWindTime)
 
         so_far_high_gen_str = str(round(soFarHighestGenLookUp[constInfo['entity_tag']]['value'])) + ' on ' + dt.datetime.strftime(soFarHighestGenLookUp[constInfo['entity_tag']]['ts'],'%d-%b-%Y') + ' at ' + dt.datetime.strftime(soFarHighestGenLookUp[constInfo['entity_tag']]['ts'],'%H:%S')
                               

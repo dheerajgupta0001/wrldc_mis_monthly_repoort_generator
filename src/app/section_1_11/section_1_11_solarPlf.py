@@ -72,8 +72,8 @@ def fetchSection1_11_solarPLF(appDbConnStr: str, startDt: dt.datetime, endDt: dt
             newHighestSolarTime = prevHighestSolarObj["ts"]
 
                
-        # mRepo.insertSoFarHighest(
-        #     constInfo['entity_tag'], "soFarHighestWindGen", startDt, newHighestSolar, newHighestSolarTime)
+        mRepo.insertSoFarHighest(
+            constInfo['entity_tag'], "soFarHighestSolarGen", startDt, newHighestSolar, newHighestSolarTime)
 
         so_far_high_gen_str = str(round(soFarHighestGenLookUp[constInfo['entity_tag']]['value'])) + ' on ' + dt.datetime.strftime(soFarHighestGenLookUp[constInfo['entity_tag']]['ts'],'%d-%b-%Y') + ' at ' + dt.datetime.strftime(soFarHighestGenLookUp[constInfo['entity_tag']]['ts'],'%H:%S')
                               
