@@ -17,4 +17,10 @@ class IReservoirDataRecord(TypedDict):
     time_stamp: dt.datetime
     entity_tag: str
     metric_tag: str
+    data_value: float
+
+class IGenerationLinesDataRecord(TypedDict):
+    time_stamp: dt.datetime
+    entity_tag: str
+    generator_tag: str
     data_value: float 

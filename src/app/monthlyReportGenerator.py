@@ -27,9 +27,10 @@ from src.app.section_1_11.section_1_11_solar import fetchSection1_11_SolarContex
 from src.app.section_1_11.section_1_11_wind_c import fetchSection1_11_wind_cContext
 from src.app.section_1_11.section_1_11_solar_c import fetchSection1_11_solar_cContext
 from src.app.section_1_11.section_1_11_windPlf import fetchSection1_11_windPLF
+from src.app.section_1_11.section_1_11_solarPlf import fetchSection1_11_solarPLF
 
 from src.app.section_reservoir.section_reservoir import fetchReservoirContext
-
+from src.app.section_1_12.section_1_12 import fetchSection1_12Context
 from src.utils.addMonths import addMonths
 from src.typeDefs.section_1_3.section_1_3_a import ISection_1_3_a
 from src.typeDefs.section_1_3.section_1_3_b import ISection_1_3_b
@@ -40,33 +41,35 @@ class MonthlyReportGenerator:
     appDbConStr: str = ''
 
     sectionCtrls = {
-        '1_1_1': True,
-        '1_1_2': True,
-        '1_1_3': True,
-        '1_1_4': True,
-        '1_1_freq': True,
-        '1_1_volt': True,
-        '1_1_hydro': True,
-        '1_1_wind_solar': True,
-        '1_4_1': True,
-        '1_4_2': True,
-        '1_3_a': True,
-        '1_3_b': True,
-        '1_5_1': True,
-        '1_5_2': True,
-        '1_5_3': True,
-        '1_6_1': True,
-        '1_6_2': True,
-        '1_7_1': True,
-        '1_7_2': True,
-        '1_7_3': True,
-        '1_9': True,
-        '1_11_solar': True,
-        '1_11_wind_c': True,
-        '1_11_solar_c':True,
+        '1_1_1': False,
+        '1_1_2': False,
+        '1_1_3': False,
+        '1_1_4': False,
+        '1_1_freq': False,
+        '1_1_volt': False,
+        '1_1_hydro': False,
+        '1_1_wind_solar': False,
+        '1_4_1': False,
+        '1_4_2': False,
+        '1_3_a': False,
+        '1_3_b': False,
+        '1_5_1': False,
+        '1_5_2': False,
+        '1_5_3': False,
+        '1_6_1': False,
+        '1_6_2': False,
+        '1_7_1': False,
+        '1_7_2': False,
+        '1_7_3': False,
+        '1_9': False,
+        '1_11_solar': False,
+        '1_11_wind_c': False,
+        '1_11_solar_c':False,
         '1_11_wind_plf':True,
-        '1_11_solar_c': True,
-        'reservoir': True
+        '1_11_solar_c': False,
+        '1_11_solar_plf':True,
+        'reservoir': False,
+        '1_12': False
     }
 
     def __init__(self, appDbConStr: str, secCtrls: dict = {}):
@@ -454,7 +457,21 @@ class MonthlyReportGenerator:
                     "error while fetching section 1_11_solar_c"
                 )
                 print(err)
-
+        if self.sectionCtrls["1_11_solar_plf"]:
+            # get section 1.11.solar.c data
+            try:
+                secData_1_11_solarplf = fetchSection1_11_solarPLF(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_11_solarplf)
+                print(
+                    "section 1_11_solar_plf context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_11_solar_plf"
+                )
+                print(err)
         if self.sectionCtrls["reservoir"]:
             # get section reservoir data
             try:
@@ -466,6 +483,21 @@ class MonthlyReportGenerator:
             except Exception as err:
                 print(
                     "error while fetching section reservoir")
+                print(err)
+        # get section 1.12 inter regional data
+        if self.sectionCtrls["1_12"]:
+            try:
+                secData_1_12 = fetchSection1_12Context(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_12)
+                print(
+                    "section 1_12 context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_12"
+                )
                 print(err)
 
         return reportContext
@@ -537,6 +569,17 @@ class MonthlyReportGenerator:
                     img = InlineImage(doc, imgPath)
                     imgObj = {"img": img}
                     reportContext['reservoir_section'].append(imgObj)
+
+            # populate all inter regioanl section plot images in word file
+            if self.sectionCtrls["1_12"]:
+                plot_inter_regional_base_path = 'assets/section_1_12'
+                reportContext['inter_regioanl_section'] = []
+                for imgItr in range(reportContext['num_plts_sec_inter_regional']):
+                    imgPath = '{0}_{1}.png'.format(
+                        plot_inter_regional_base_path, imgItr)
+                    img = InlineImage(doc, imgPath)
+                    imgObj = {"img": img}
+                    reportContext['inter_regioanl_section'].append(imgObj)
 
             doc.render(reportContext)
 

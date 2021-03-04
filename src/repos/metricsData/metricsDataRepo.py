@@ -13,6 +13,7 @@ from src.repos.metricsData.getSoFarHighestAllEntityData import getSoFarHighestAl
 from src.repos.metricsData.insertSoFarHighest import insertSoFarHighest
 from src.repos.metricsData.getRawFreq import getRawFreq
 from src.repos.metricsData.getReservoirDailyData import getReservoirDailyData
+from src.repos.metricsData.getGenerationLinesDailyData import getGenerationLinesDailyData
 
 
 class MetricsDataRepo():
@@ -89,3 +90,10 @@ class MetricsDataRepo():
             bool: returns true if process is ok
         """
         return getReservoirDailyData(appDbConnStr=self.appDbConnStr, entityName=entityName, metricName=metricName, startDt=startDt, endDt=endDt)
+
+    def getGenerationLinesDailyData(self, entityName: str, generatorName: str, startDt: dt.datetime, endDt: dt.datetime) -> List[IMetricsDataRecord]:
+        """inserts a entity metrics time series data into the app db
+        Returns:
+            bool: returns true if process is ok
+        """
+        return getGenerationLinesDailyData(appDbConnStr=self.appDbConnStr, entityName=entityName, generatorName=generatorName, startDt=startDt, endDt=endDt)

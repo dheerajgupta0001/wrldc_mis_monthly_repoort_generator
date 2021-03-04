@@ -8,6 +8,7 @@ from src.config.appConfig import getReservoirsMappings
 from src.utils.convertDtToDayNumMonth import convertDtToDayNumMonthYear
 import math
 import matplotlib.pyplot as plt
+plt.rcParams.update({'figure.max_open_warning': 0})
 import matplotlib.dates as mdates
 from src.typeDefs.reservoir_section.reservoir_section import IReservoirSection
 
