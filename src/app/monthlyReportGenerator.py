@@ -26,11 +26,10 @@ from src.app.section_1_9.section_1_9 import fetchSection1_9Context
 from src.app.section_1_11.section_1_11_solar import fetchSection1_11_SolarContext
 from src.app.section_1_11.section_1_11_wind_c import fetchSection1_11_wind_cContext
 from src.app.section_1_11.section_1_11_solar_c import fetchSection1_11_solar_cContext
-from src.app.section_1_11.section_1_11_windPlf import fetchSection1_11_windPLF
 from src.app.section_1_11.section_1_11_solarPlf import fetchSection1_11_solarPLF
-
 from src.app.section_reservoir.section_reservoir import fetchReservoirContext
 from src.app.section_1_12.section_1_12 import fetchSection1_12Context
+from src.app.section_2_3.section_2_3 import fetchSection2_3_MaxContext,fetchSection2_3_MinContext
 from src.utils.addMonths import addMonths
 from src.typeDefs.section_1_3.section_1_3_a import ISection_1_3_a
 from src.typeDefs.section_1_3.section_1_3_b import ISection_1_3_b
@@ -41,35 +40,35 @@ class MonthlyReportGenerator:
     appDbConStr: str = ''
 
     sectionCtrls = {
-        '1_1_1': False,
-        '1_1_2': False,
-        '1_1_3': False,
-        '1_1_4': False,
-        '1_1_freq': False,
-        '1_1_volt': False,
-        '1_1_hydro': False,
-        '1_1_wind_solar': False,
-        '1_4_1': False,
-        '1_4_2': False,
-        '1_3_a': False,
-        '1_3_b': False,
-        '1_5_1': False,
-        '1_5_2': False,
-        '1_5_3': False,
-        '1_6_1': False,
-        '1_6_2': False,
-        '1_7_1': False,
-        '1_7_2': False,
-        '1_7_3': False,
-        '1_9': False,
-        '1_11_solar': False,
-        '1_11_wind_c': False,
-        '1_11_solar_c':False,
-        '1_11_wind_plf':True,
-        '1_11_solar_c': False,
+        '1_1_1': True,
+        '1_1_2': True,
+        '1_1_3': True,
+        '1_1_4': True,
+        '1_1_freq': True,
+        '1_1_volt': True,
+        '1_1_hydro': True,
+        '1_1_wind_solar': True,
+        '1_4_1': True,
+        '1_4_2': True,
+        '1_3_a': True,
+        '1_3_b': True,
+        '1_5_1': True,
+        '1_5_2': True,
+        '1_5_3': True,
+        '1_6_1': True,
+        '1_6_2': True,
+        '1_7_1': True,
+        '1_7_2': True,
+        '1_7_3': True,
+        '1_9': True,
+        '1_11_solar': True,
+        '1_11_wind_c': True,
+        '1_11_solar_c': True,
         '1_11_solar_plf':True,
-        'reservoir': False,
-        '1_12': False
+        'reservoir': True,
+        '1_12': True,
+        '2_3_Max':True,
+        '2_3_Min':True
     }
 
     def __init__(self, appDbConStr: str, secCtrls: dict = {}):
@@ -412,6 +411,7 @@ class MonthlyReportGenerator:
                     "error while fetching section 1_11_solar"
                 )
                 print(err)
+
         if self.sectionCtrls["1_11_wind_c"]:
             # get section 1.11.wind.c data
             try:
@@ -427,21 +427,7 @@ class MonthlyReportGenerator:
                     "error while fetching section 1_11_wind_c"
                 )
                 print(err)
-        if self.sectionCtrls["1_11_wind_plf"]:
-            # get section 1.11.wind.c data
-            try:
-                secData_1_11_windplf = fetchSection1_11_windPLF(
-                    self.appDbConStr, startDt, endDt
-                )
-                reportContext.update(secData_1_11_windplf)
-                print(
-                    "section 1_11_wind_plf context setting complete"
-                )
-            except Exception as err:
-                print(
-                    "error while fetching section 1_11_wind_plf"
-                )
-                print(err)
+
         if self.sectionCtrls["1_11_solar_c"]:
             # get section 1.11.wind.c data
             try:
@@ -472,6 +458,7 @@ class MonthlyReportGenerator:
                     "error while fetching section 1_11_solar_plf"
                 )
                 print(err)
+
         if self.sectionCtrls["reservoir"]:
             # get section reservoir data
             try:
@@ -497,6 +484,38 @@ class MonthlyReportGenerator:
             except Exception as err:
                 print(
                     "error while fetching section 1_12"
+                )
+                print(err)
+
+        # get section 2_3_max data
+        if self.sectionCtrls["2_3_Max"]:
+            try:
+                secData_2_3_Max = fetchSection2_3_MaxContext(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_2_3_Max)
+                print(
+                    "section 2_3_Max context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 2_3_Max"
+                )
+                print(err)
+    
+        # get section 2_3_min data
+        if self.sectionCtrls["2_3_Min"]:
+            try:
+                secData_2_3_Min = fetchSection2_3_MinContext(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_2_3_Min)
+                print(
+                    "section 2_3_Min context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 2_3_Min"
                 )
                 print(err)
 
@@ -580,6 +599,29 @@ class MonthlyReportGenerator:
                     img = InlineImage(doc, imgPath)
                     imgObj = {"img": img}
                     reportContext['inter_regioanl_section'].append(imgObj)
+
+            # populate all max hourly section plot images in word file
+            if self.sectionCtrls["2_3_Max"]:
+                plot_max_hourly_base_path = 'assets/section_2_3_1'
+                reportContext['max_hourly_section'] = []
+                for imgItr in range(reportContext['num_plts_sec_max_hourly']):
+                    imgPath = '{0}_{1}.png'.format(
+                        plot_max_hourly_base_path, imgItr)
+                    img = InlineImage(doc, imgPath)
+                    imgObj = {"img": img}
+                    reportContext['max_hourly_section'].append(imgObj)
+
+            # populate all min hourly section plot images in word file
+            if self.sectionCtrls["2_3_Min"]:
+                plot_min_hourly_base_path = 'assets/section_2_3_2'
+                reportContext['min_hourly_section'] = []
+                for imgItr in range(reportContext['num_plts_sec_min_hourly']):
+                    imgPath = '{0}_{1}.png'.format(
+                        plot_min_hourly_base_path, imgItr)
+                    img = InlineImage(doc, imgPath)
+                    imgObj = {"img": img}
+                    reportContext['min_hourly_section'].append(imgObj)
+
 
             doc.render(reportContext)
 
