@@ -2,7 +2,6 @@ import datetime as dt
 from src.typeDefs.voltDataRecord import IVoltDataRecord
 from typing import List
 import cx_Oracle
-cx_Oracle.init_oracle_client(lib_dir="/Users/shekhar/Downloads/instantclient_19_8")
 
 
 def getDailyVoltDataByLevel(appDbConnStr: str, lvl: int, metricName: str, startDt: dt.datetime, endDt: dt.datetime) -> List[IVoltDataRecord]:

@@ -90,5 +90,5 @@ def fetchSection1_11_solarPLF(appDbConnStr: str, startDt: dt.datetime, endDt: dt
         }
         dispRows.append(const_display_row)
 
-    secData: ISection_1_11_PLFCUF = {"so_far_hig_solar_gen": dispRows}
+    secData: ISection_1_11_PLFCUF = {"so_far_hig_solar_gen_plf": dispRows}
     return secData
