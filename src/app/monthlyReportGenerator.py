@@ -25,10 +25,11 @@ from src.app.section_1_7.section_1_7_3 import fetchSection1_7_3Context
 from src.app.section_1_9.section_1_9 import fetchSection1_9Context
 from src.app.section_1_11.section_1_11_solar import fetchSection1_11_SolarContext
 from src.app.section_1_11.section_1_11_wind_c import fetchSection1_11_wind_cContext
+from src.app.section_1_11.section_1_11_GenCurve import fetchSection1_11_GenerationCurve
 from src.app.section_1_11.section_1_11_solar_c import fetchSection1_11_solar_cContext
 from src.app.section_1_11.section_1_11_solarPlf import fetchSection1_11_solarPLF
 from src.app.section_1_11.section_1_11_windPlf import fetchSection1_11_windPLF
-from src.app.section_1_11.section_1_11_wind_a import fetchSection1_11_Wind
+from src.app.section_1_11.section_1_11_wind import fetchSection1_11_Wind
 from src.app.section_reservoir.section_reservoir import fetchReservoirContext
 from src.app.section_1_12.section_1_12 import fetchSection1_12Context
 from src.app.section_2_3.section_2_3 import fetchSection2_3_MaxContext,fetchSection2_3_MinContext
@@ -65,12 +66,13 @@ class MonthlyReportGenerator:
         '1_9': True,
         '1_11_solar': True,
         '1_11_wind':True,
+        '1_11_gen_curve':True,
         '1_11_wind_c': True,
         '1_11_solar_c': True,
         '1_11_solar_plf':True,
         '1_11_wind_plf':True,
-        'reservoir': False,
-        '1_12': False,
+        'reservoir': True,
+        '1_12': True,
         '2_3_Max':False,
         '2_3_Min':False
     }
@@ -431,6 +433,21 @@ class MonthlyReportGenerator:
                     "error while fetching section 1_11_wind"
                 )
                 print(err)
+        if self.sectionCtrls["1_11_gen_curve"]:
+            
+            try:
+                secData_1_11_GenCurve = fetchSection1_11_GenerationCurve(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_11_GenCurve)
+                print(
+                    "section 1_11_GenCurve context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_11_GenCurve"
+                )
+                print(err)
         if self.sectionCtrls["1_11_wind_c"]:
             # get section 1.11.wind.c data
             try:
@@ -620,6 +637,21 @@ class MonthlyReportGenerator:
                     img = InlineImage(doc,imgPath)
                     imgObj = {"img":img}
                     reportContext['plot_1_11_wind'].append(imgObj)
+
+            if self.sectionCtrls['1_11_gen_curve']:
+                plot_1_11_gen_curve_base_path = 'assets/section_1_11'
+                reportContext['plot_1_11_gen_curve'] = []
+                
+                imgPath = '{0}_windGenCurve.png'.format(plot_1_11_gen_curve_base_path)
+                img = InlineImage(doc,imgPath)
+                imgObj = {"img":img}
+                reportContext['plot_1_11_gen_curve'].append(imgObj)
+
+                imgPath1 = '{0}_WindSolarGenCurve.png'.format(plot_1_11_gen_curve_base_path)
+                img1 = InlineImage(doc,imgPath1)
+                imgObj1 = {"img":img1}
+                reportContext['plot_1_11_gen_curve'].append(imgObj1)
+
             
             # populate all reservoir section plot images in word file
             if self.sectionCtrls["reservoir"]:

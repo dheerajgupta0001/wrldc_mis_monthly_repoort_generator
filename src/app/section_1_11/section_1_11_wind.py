@@ -24,7 +24,7 @@ def fetchSection1_11_Wind_B(appDbConnStr: str, startDt: dt.datetime, endDt: dt.d
     constituentsInfos = getREConstituentsMappings()
     mRepo = MetricsDataRepo(appDbConnStr)
 
-    allEntitySoFarHighest = mRepo.getSoFarHighestAllEntityData('soFarHighestSolarGen',startDt)
+    allEntitySoFarHighest = mRepo.getSoFarHighestAllEntityData('soFarHighestWindGen',startDt)
     wrSoFarHighest = {}
     for itr in range(len(allEntitySoFarHighest)):
         if allEntitySoFarHighest[itr]['constituent'] == 'wr':
