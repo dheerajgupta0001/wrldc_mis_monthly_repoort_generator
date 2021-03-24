@@ -73,8 +73,8 @@ class MonthlyReportGenerator:
         '1_11_wind_plf':True,
         'reservoir': True,
         '1_12': True,
-        '2_3_Max':False,
-        '2_3_Min':False
+        '2_3_Max':True,
+        '2_3_Min':True
     }
 
     def __init__(self, appDbConStr: str, secCtrls: dict = {}):

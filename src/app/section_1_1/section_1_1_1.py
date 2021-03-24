@@ -27,7 +27,7 @@ def fetchSection1_1_1Context(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
     wrLastYrDemVals = mRepo.getEntityMetricHourlyData(
         'wr', 'Demand(MW)', lastYrStartDt, lastYrEndDt)
     wrLastYrLoadSheddingVals = mRepo.getEntityMetricHourlyData(
-        'wr', 'Load Shedding(MW)', lastYrStartDt, lastYrStartDt)
+        'wr', 'Load Shedding(MW)', lastYrStartDt, lastYrEndDt)
     wrLastYrUnResDemDf = pd.DataFrame(wrLastYrDemVals+wrLastYrLoadSheddingVals)
     wrLastYrUnResDemDf = wrLastYrUnResDemDf.pivot(
         index='time_stamp', columns='metric_name', values='data_value')
