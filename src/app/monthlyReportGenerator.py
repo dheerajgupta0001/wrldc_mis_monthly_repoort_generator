@@ -30,6 +30,7 @@ from src.app.section_1_11.section_1_11_solar_c import fetchSection1_11_solar_cCo
 from src.app.section_1_11.section_1_11_solarPlf import fetchSection1_11_solarPLF
 from src.app.section_1_11.section_1_11_windPlf import fetchSection1_11_windPLF
 from src.app.section_1_11.section_1_11_wind import fetchSection1_11_Wind
+from src.app.section_1_11.section_1_11_solarGen import fetchSection1_11_SolarGen
 from src.app.section_reservoir.section_reservoir import fetchReservoirContext
 from src.app.section_1_12.section_1_12 import fetchSection1_12Context
 from src.app.section_2_3.section_2_3 import fetchSection2_3_MaxContext,fetchSection2_3_MinContext
@@ -71,6 +72,7 @@ class MonthlyReportGenerator:
         '1_11_solar_c': True,
         '1_11_solar_plf':True,
         '1_11_wind_plf':True,
+        '1_11_solarGen':True,
         'reservoir': True,
         '1_12': True,
         '2_3_Max':True,
@@ -509,6 +511,20 @@ class MonthlyReportGenerator:
                 )
                 print(err)
 
+        if self.sectionCtrls["1_11_solarGen"]:
+            try:
+                secData_1_11_solarGen = fetchSection1_11_SolarGen(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_11_solarGen)
+                print(
+                    "section 1_11_solar_gen context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_11_solar_gen"
+                )
+                print(err)
         if self.sectionCtrls["reservoir"]:
             # get section reservoir data
             try:
@@ -629,7 +645,7 @@ class MonthlyReportGenerator:
                 plot_1_11_solar_img = InlineImage(doc, plot_1_11_solar_path)
                 reportContext['plot_1_11_solar'] = plot_1_11_solar_img
             
-            if self.sectionCtrls['1_11_wind']:
+            if self.sectionCtrls["1_11_wind"]:
                 plot_1_11_wind_base_path = 'assets/section_1_11_wind'
                 reportContext['plot_1_11_wind'] = []
                 for imgItr in range(1,3):
@@ -637,6 +653,15 @@ class MonthlyReportGenerator:
                     img = InlineImage(doc,imgPath)
                     imgObj = {"img":img}
                     reportContext['plot_1_11_wind'].append(imgObj)
+            
+            if self.sectionCtrls["1_11_solarGen"]:
+                plot_1_11_wind_base_path = 'assets/section_1_11_solar'
+                reportContext['plot_1_11_solarGen'] = []
+                for imgItr in range(1,3):
+                    imgPath = '{0}_{1}.png'.format(plot_1_11_wind_base_path,imgItr)
+                    img = InlineImage(doc,imgPath)
+                    imgObj = {"img":img}
+                    reportContext['plot_1_11_solarGen'].append(imgObj)
 
             if self.sectionCtrls['1_11_gen_curve']:
                 plot_1_11_gen_curve_base_path = 'assets/section_1_11'
