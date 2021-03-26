@@ -10,13 +10,15 @@ appConfig = getJsonConfig()
 
 # get app db connection string from config file
 appDbConStr: str = appConfig['appDbConnStr']
+outageDbConStr :str = appConfig['outageDbConnStr']
+
 dumpFolder: str = appConfig['dumpFolder']
 
 # generate report word file monthly_rep_template
 tmplPath: str = "templates/monthly_rep_template.docx"
 
 # create weekly report
-mnthlyRprtGntr = MonthlyReportGenerator(appDbConStr)
+mnthlyRprtGntr = MonthlyReportGenerator(appDbConStr,outageDbConStr)
 monthDt = dt.datetime(2021,2,1)
 mnthlyRprtGntr.generateMonthlyReport(monthDt, tmplPath, dumpFolder)
 print('Report generation Done')

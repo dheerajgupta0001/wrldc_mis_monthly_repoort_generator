@@ -23,6 +23,7 @@ from src.app.section_1_7.section_1_7_1 import fetchSection1_7_1Context
 from src.app.section_1_7.section_1_7_2 import fetchSection1_7_2Context
 from src.app.section_1_7.section_1_7_3 import fetchSection1_7_3Context
 from src.app.section_1_9.section_1_9 import fetchSection1_9Context
+from src.app.section_1_10.section_1_10 import fetchSection1_10Context
 from src.app.section_1_11.section_1_11_solar import fetchSection1_11_SolarContext
 from src.app.section_1_11.section_1_11_wind_c import fetchSection1_11_wind_cContext
 from src.app.section_1_11.section_1_11_GenCurve import fetchSection1_11_GenerationCurve
@@ -42,7 +43,7 @@ from src.typeDefs.section_1_3.section_1_3_b import ISection_1_3_b
 
 class MonthlyReportGenerator:
     appDbConStr: str = ''
-
+    outageDbConnStr :str = ''
     sectionCtrls = {
         '1_1_1': True,
         '1_1_2': True,
@@ -65,6 +66,7 @@ class MonthlyReportGenerator:
         '1_7_2': True,
         '1_7_3': True,
         '1_9': True,
+        '1_10':True,
         '1_11_solar': True,
         '1_11_wind':True,
         '1_11_gen_curve':True,
@@ -79,8 +81,9 @@ class MonthlyReportGenerator:
         '2_3_Min':True
     }
 
-    def __init__(self, appDbConStr: str, secCtrls: dict = {}):
+    def __init__(self, appDbConStr: str, outageDbConnStr:str ,secCtrls: dict = {}):
         self.appDbConStr = appDbConStr
+        self.outageDbConnStr = outageDbConnStr
         self.sectionCtrls.update(secCtrls)
 
     def getReportContextObj(self, monthDt: dt.datetime) -> IReportCxt:
@@ -403,6 +406,23 @@ class MonthlyReportGenerator:
                     "error while fetching section 1_9"
                 )
                 print(err)
+        if self.sectionCtrls["1_10"]:
+            # get section 1.10 data
+            
+
+            try:
+                secData_1_10 = fetchSection1_10Context(
+                    self.outageDbConnStr, startDt, endDt
+                )
+                reportContext.update(secData_1_10)
+                print(
+                    "section 1_10 context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_10"
+                )
+                print(err)
 
         if self.sectionCtrls["1_11_solar"]:
             # get section 1.9 data
@@ -639,7 +659,12 @@ class MonthlyReportGenerator:
                     img = InlineImage(doc, imgPath)
                     imgObj = {"img": img}
                     reportContext['plot_1_7_3'].append(imgObj)
-            
+
+            if self.sectionCtrls["1_10"]:
+                plot_1_10_path = 'assets/section_1_10_generation_outage.png'
+                plot_1_10_img = InlineImage(doc, plot_1_10_path)
+                reportContext['plot_1_10'] = plot_1_10_img
+
             if self.sectionCtrls["1_11_solar"]:
                 plot_1_11_solar_path = 'assets/section_1_11_solar.png'
                 plot_1_11_solar_img = InlineImage(doc, plot_1_11_solar_path)

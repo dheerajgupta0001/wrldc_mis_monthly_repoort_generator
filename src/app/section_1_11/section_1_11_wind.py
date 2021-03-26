@@ -72,7 +72,7 @@ def fetchSection1_11_Wind_B(appDbConnStr: str, startDt: dt.datetime, endDt: dt.d
 
 
         ax.yaxis.grid(True)
-        ax.legend(bbox_to_anchor=(0.5,-0.1,0.0, 0.0), loc='center',
+        ax.legend(bbox_to_anchor=(0.5,-0.3,0.0, 0.0), loc='center',
                       ncol=4, borderaxespad=0.)
 
     
@@ -116,7 +116,7 @@ def fetchSection1_11_Wind_A(appDbConnStr: str, startDt: dt.datetime, endDt: dt.d
 
         pltTitle = 'Total Wind Generation (MUs) {0} '.format(startDt.strftime('%b-%y'))
 
-        fig, ax = plt.subplots(figsize=(7.5, 4.5))
+        fig, ax = plt.subplots(figsize=(7.5, 5.5))
 
         ax.set_title(pltTitle)
         ax.set_ylabel('Mus')
@@ -131,7 +131,7 @@ def fetchSection1_11_Wind_A(appDbConnStr: str, startDt: dt.datetime, endDt: dt.d
 
 
         ax.yaxis.grid(True)
-        ax.legend(bbox_to_anchor=(0.5,-0.1,0.0, 0.0), loc='center',
+        ax.legend(bbox_to_anchor=(0.5,-0.4,0.0, 0.0), loc='center',
                       ncol=4, borderaxespad=0.)
 
     

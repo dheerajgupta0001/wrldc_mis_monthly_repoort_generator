@@ -1,6 +1,6 @@
 from typing import List
 import datetime as dt
-from src.typeDefs.metricsDataRecord import IMetricsDataRecord, IFreqMetricsDataRecord, IReservoirDataRecord
+from src.typeDefs.metricsDataRecord import IMetricsDataRecord, IFreqMetricsDataRecord, IReservoirDataRecord , IOutageDataRecord
 from src.typeDefs.soFarHighestDataRecord import ISoFarHighestDataRecord
 from src.typeDefs.voltDataRecord import IVoltDataRecord
 from src.typeDefs.rawFreqRecord import IRawFreqRecord
@@ -14,6 +14,7 @@ from src.repos.metricsData.insertSoFarHighest import insertSoFarHighest
 from src.repos.metricsData.getRawFreq import getRawFreq
 from src.repos.metricsData.getReservoirDailyData import getReservoirDailyData
 from src.repos.metricsData.getGenerationLinesDailyData import getGenerationLinesDailyData
+from src.repos.metricsData.getOutageDailyData import getOutageData
 
 
 class MetricsDataRepo():
@@ -97,3 +98,8 @@ class MetricsDataRepo():
             bool: returns true if process is ok
         """
         return getGenerationLinesDailyData(appDbConnStr=self.appDbConnStr, entityName=entityName, generatorName=generatorName, startDt=startDt, endDt=endDt)
+
+    def getOutageData(self, shutdownType: str,  startDt: dt.datetime, endDt: dt.datetime) -> List[IOutageDataRecord]:
+        """fetches type of outage data from the app db
+        """
+        return getOutageData(appDbConnStr=self.appDbConnStr,shutdownType=shutdownType , startDt = startDt , endDt = endDt)

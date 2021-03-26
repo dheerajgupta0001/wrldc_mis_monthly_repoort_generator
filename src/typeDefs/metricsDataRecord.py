@@ -24,3 +24,7 @@ class IGenerationLinesDataRecord(TypedDict):
     entity_tag: str
     generator_tag: str
     data_value: float 
+
+class IOutageDataRecord(TypedDict):
+    capacity:int
+    time_stamp:int
