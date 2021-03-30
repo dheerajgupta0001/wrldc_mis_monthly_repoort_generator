@@ -32,6 +32,7 @@ from src.app.section_1_11.section_1_11_solarPlf import fetchSection1_11_solarPLF
 from src.app.section_1_11.section_1_11_windPlf import fetchSection1_11_windPLF
 from src.app.section_1_11.section_1_11_wind import fetchSection1_11_Wind
 from src.app.section_1_11.section_1_11_solarGen import fetchSection1_11_SolarGen
+from src.app.section_1_11.section_1_11_loadCurve import fetchSection1_11_LoadCurve
 from src.app.section_reservoir.section_reservoir import fetchReservoirContext
 from src.app.section_1_12.section_1_12 import fetchSection1_12Context
 from src.app.section_2_3.section_2_3 import fetchSection2_3_MaxContext,fetchSection2_3_MinContext
@@ -45,40 +46,41 @@ class MonthlyReportGenerator:
     appDbConStr: str = ''
     outageDbConnStr :str = ''
     sectionCtrls = {
-        '1_1_1': True,
-        '1_1_2': True,
-        '1_1_3': True,
-        '1_1_4': True,
-        '1_1_freq': True,
-        '1_1_volt': True,
-        '1_1_hydro': True,
-        '1_1_wind_solar': True,
-        '1_4_1': True,
-        '1_4_2': True,
-        '1_3_a': True,
-        '1_3_b': True,
-        '1_5_1': True,
-        '1_5_2': True,
-        '1_5_3': True,
-        '1_6_1': True,
-        '1_6_2': True,
-        '1_7_1': True,
-        '1_7_2': True,
-        '1_7_3': True,
-        '1_9': True,
-        '1_10':True,
-        '1_11_solar': True,
-        '1_11_wind':True,
-        '1_11_gen_curve':True,
-        '1_11_wind_c': True,
-        '1_11_solar_c': True,
-        '1_11_solar_plf':True,
-        '1_11_wind_plf':True,
-        '1_11_solarGen':True,
-        'reservoir': True,
-        '1_12': True,
-        '2_3_Max':True,
-        '2_3_Min':True
+        '1_1_1': False,
+        '1_1_2': False,
+        '1_1_3': False,
+        '1_1_4': False,
+        '1_1_freq': False,
+        '1_1_volt': False,
+        '1_1_hydro': False,
+        '1_1_wind_solar': False,
+        '1_4_1': False,
+        '1_4_2': False,
+        '1_3_a': False,
+        '1_3_b': False,
+        '1_5_1': False,
+        '1_5_2': False,
+        '1_5_3': False,
+        '1_6_1': False,
+        '1_6_2': False,
+        '1_7_1': False,
+        '1_7_2': False,
+        '1_7_3': False,
+        '1_9': False,
+        '1_10':False,
+        '1_11_solar': False,
+        '1_11_wind':False,
+        '1_11_gen_curve':False,
+        '1_11_wind_c': False,
+        '1_11_solar_c': False,
+        '1_11_solar_plf':False,
+        '1_11_wind_plf':False,
+        '1_11_solarGen':False,
+        '1_11_loadCurve':True,
+        'reservoir': False,
+        '1_12': False,
+        '2_3_Max':False,
+        '2_3_Min':False
     }
 
     def __init__(self, appDbConStr: str, outageDbConnStr:str ,secCtrls: dict = {}):
@@ -545,6 +547,21 @@ class MonthlyReportGenerator:
                     "error while fetching section 1_11_solar_gen"
                 )
                 print(err)
+                
+        if self.sectionCtrls["1_11_loadCurve"]:
+            try:
+                secData_1_11_loadCurve = fetchSection1_11_LoadCurve(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_11_loadCurve)
+                print(
+                    "section 1_11_loadCurve context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_11_loadCurve"
+                )
+                print(err)        
         if self.sectionCtrls["reservoir"]:
             # get section reservoir data
             try:
