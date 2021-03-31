@@ -61,7 +61,7 @@ def fetchSection1_5_2Context(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
     ax.set_title(pltTitle)
     # set x and y labels
     ax.set_xlabel('MONTH')
-    ax.set_ylabel('MW')
+    ax.set_ylabel('MU')
 
     # set x axis locator as month
     ax.xaxis.set_major_locator(mdates.MonthLocator())

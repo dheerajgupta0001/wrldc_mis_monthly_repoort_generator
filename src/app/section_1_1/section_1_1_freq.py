@@ -47,7 +47,7 @@ def fetchSection1_1_freq_Context(appDbConnStr: str, startDt: dt.datetime, endDt:
     wrMinFreqDf = pd.DataFrame(wrMinFreqVals)
     wrMinFreqDf.set_index('time_stamp', inplace=True)
     wrMinFreqDf['data_value'] = pd.to_numeric(wrMinFreqDf['data_value'])
-    wrMinFreqDate = wrMinFreqDf['data_value'].idxmax()
+    wrMinFreqDate = wrMinFreqDf['data_value'].idxmin()
     min_freq = round(wrMinFreqDf['data_value'].min(), 3)
 
     wrMinFreqTimeVals = mRepo.getFreqDailyData('time min f', startDt, endDt)
@@ -63,7 +63,7 @@ def fetchSection1_1_freq_Context(appDbConnStr: str, startDt: dt.datetime, endDt:
         'bet_band': bet_band,
         'avg_freq': avg_freq,
         'fdi': fdi,
-        'max_freq': max_freq_time_str,
+        'max_freq': max_freq,
         'max_freq_time_str': max_freq_time_str,
         'min_freq': min_freq,
         'min_freq_time_str': min_freq_time_str

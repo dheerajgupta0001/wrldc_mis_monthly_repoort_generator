@@ -719,7 +719,11 @@ class MonthlyReportGenerator:
                 imgObj1 = {"img":img1}
                 reportContext['plot_1_11_gen_curve'].append(imgObj1)
 
-            
+            if self.sectionCtrls['1_11_loadCurve']:
+                plot_1_11_netloadCurve_path = 'assets/section_1_11_netLoadCurve.png'
+                plot_1_11_netLoadCurve = InlineImage(doc, plot_1_11_netloadCurve_path)
+                reportContext['plot_1_11_netloadCurve'] = plot_1_11_netLoadCurve
+
             # populate all reservoir section plot images in word file
             if self.sectionCtrls["reservoir"]:
                 plot_reservoir_base_path = 'assets/reservoir_section'

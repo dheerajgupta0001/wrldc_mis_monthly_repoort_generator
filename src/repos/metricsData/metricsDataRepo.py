@@ -15,7 +15,7 @@ from src.repos.metricsData.getRawFreq import getRawFreq
 from src.repos.metricsData.getReservoirDailyData import getReservoirDailyData
 from src.repos.metricsData.getGenerationLinesDailyData import getGenerationLinesDailyData
 from src.repos.metricsData.getOutageDailyData import getOutageData
-
+from src.repos.metricsData.getEntityREDataHourly import getEntityREHourlyData
 
 class MetricsDataRepo():
     """Repository class for entity metrics data
@@ -103,3 +103,6 @@ class MetricsDataRepo():
         """fetches type of outage data from the app db
         """
         return getOutageData(appDbConnStr=self.appDbConnStr,shutdownType=shutdownType , startDt = startDt , endDt = endDt)
+    
+    def getEntityREHourlyData(self , entity:str , startDt: dt.datetime, endDt: dt.datetime):
+        return getEntityREHourlyData(appDbConnStr=self.appDbConnStr , entityName = entity , startDt = startDt , endDt = endDt)
