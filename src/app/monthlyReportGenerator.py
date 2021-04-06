@@ -35,6 +35,7 @@ from src.app.section_1_11.section_1_11_solarGen import fetchSection1_11_SolarGen
 from src.app.section_1_11.section_1_11_loadCurve import fetchSection1_11_LoadCurve
 from src.app.section_reservoir.section_reservoir import fetchReservoirContext
 from src.app.section_1_12.section_1_12 import fetchSection1_12Context
+from src.app.section_2_1.section_2_1 import fetchSection2_1
 from src.app.section_2_3.section_2_3 import fetchSection2_3_MaxContext,fetchSection2_3_MinContext
 from src.utils.addMonths import addMonths
 from src.typeDefs.section_1_3.section_1_3_a import ISection_1_3_a
@@ -46,7 +47,7 @@ class MonthlyReportGenerator:
     appDbConStr: str = ''
     outageDbConnStr :str = ''
     sectionCtrls = {
-        '1_1_1': False,
+        '1_1_1': True,
         '1_1_2': False,
         '1_1_3': False,
         '1_1_4': False,
@@ -75,10 +76,12 @@ class MonthlyReportGenerator:
         '1_11_solar_c': False,
         '1_11_solar_plf':False,
         '1_11_wind_plf':False,
-        '1_11_solarGen':False,
-        '1_11_loadCurve':True,
+        '1_11_solarGen':True,
+        '1_11_loadCurve':False,
         'reservoir': False,
         '1_12': False,
+        '2_1':True,
+        '2_2':True,
         '2_3_Max':False,
         '2_3_Min':False
     }
@@ -590,6 +593,21 @@ class MonthlyReportGenerator:
                 )
                 print(err)
 
+        if self.sectionCtrls["2_1"]:
+            try:
+                secData_2_1 = fetchSection2_1(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_2_1)
+                print(
+                    "section 2_1 context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 2_1"
+                )
+                print(err)
+
         # get section 2_3_max data
         if self.sectionCtrls["2_3_Max"]:
             try:
@@ -745,6 +763,27 @@ class MonthlyReportGenerator:
                     img = InlineImage(doc, imgPath)
                     imgObj = {"img": img}
                     reportContext['inter_regioanl_section'].append(imgObj)
+
+            if self.sectionCtrls['2_1']:
+                plot_2_1_basePath = 'assets/section_2_1'
+                reportContext['plot_2_1'] = []
+                
+                imgPath = '{0}_{1}.png'.format(
+                        plot_2_1_basePath, 'loadDurationCurve')
+                img = InlineImage(doc, imgPath)
+                imgObj = {"img": img}
+                reportContext['plot_2_1'].append(imgObj)
+
+            if self.sectionCtrls['2_2']:
+                plot_2_2_basePath = 'assets/section_2_2'
+                reportContext['plot_2_2'] = []
+
+                imgPath = '{0}_{1}.png'.format(
+                        plot_2_2_basePath, 'frequencyDurationCurve')
+                img = InlineImage(doc, imgPath)
+                imgObj = {"img": img}
+                reportContext['plot_2_2'].append(imgObj)
+
 
             # populate all max hourly section plot images in word file
             if self.sectionCtrls["2_3_Max"]:
