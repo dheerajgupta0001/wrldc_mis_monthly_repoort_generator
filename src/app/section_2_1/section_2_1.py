@@ -29,15 +29,15 @@ def fetchSection2_1_LoadDurationCurve(appDbConnStr: str, startDt: dt.datetime, e
 
     currentMonthMW = mRepo.getEntityMetricHourlyData('wr','Demand(MW)', startDt , endDt)
     df = pd.DataFrame(currentMonthMW)
-    currentMonthMWVals = deriveDurationVals(df['data_value'],10)
+    currentMonthMWVals = deriveDurationVals(df['data_value'],100)
 
     pastMonthMW = mRepo.getEntityMetricHourlyData('wr','Demand(MW)',addMonths(startDt,-1) , addMonths(endDt,-1))
     df = pd.DataFrame(pastMonthMW)
-    pastMonthMWVals = deriveDurationVals(df['data_value'],10)
+    pastMonthMWVals = deriveDurationVals(df['data_value'],100)
 
     pastYearMW = mRepo.getEntityMetricHourlyData('wr','Demand(MW)',addMonths(startDt,-12) , addMonths(endDt,-12))
     df = pd.DataFrame(pastYearMW)
-    pastYearMWVals = deriveDurationVals(df['data_value'],10)
+    pastYearMWVals = deriveDurationVals(df['data_value'],100)
 
     pltTitle = 'Load Duration Curve {0}, {1} & {2}'.format(startDt.strftime('%b-%y') , addMonths(startDt,-1).strftime('%b-%y') , addMonths(startDt,-12).strftime('%b-%y'))
 
@@ -70,7 +70,7 @@ def fetchSection2_1_LoadDurationCurve(appDbConnStr: str, startDt: dt.datetime, e
     ax.set_facecolor("#cbffff")
 
     fig.savefig('assets/section_2_1_loadDurationCurve.png')
-    # plt.show()
+    plt.show()
     # plt.close()
 
     secData: dict = {}
