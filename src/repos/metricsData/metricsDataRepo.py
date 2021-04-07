@@ -16,6 +16,7 @@ from src.repos.metricsData.getReservoirDailyData import getReservoirDailyData
 from src.repos.metricsData.getGenerationLinesDailyData import getGenerationLinesDailyData
 from src.repos.metricsData.getOutageDailyData import getOutageData
 from src.repos.metricsData.getEntityREDataHourly import getEntityREHourlyData
+from src.repos.metricsData.readRRASData import getRRASData
 
 class MetricsDataRepo():
     """Repository class for entity metrics data
@@ -106,3 +107,6 @@ class MetricsDataRepo():
     
     def getEntityREHourlyData(self , entity:str , startDt: dt.datetime, endDt: dt.datetime):
         return getEntityREHourlyData(appDbConnStr=self.appDbConnStr , entityName = entity , startDt = startDt , endDt = endDt)
+
+    def getRRASData(self , filePath:str , startDt:dt.datetime ,  endDt:dt.datetime):
+        return getRRASData(filePath , startDt , endDt)

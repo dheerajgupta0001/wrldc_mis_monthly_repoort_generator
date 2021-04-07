@@ -35,6 +35,7 @@ from src.app.section_1_11.section_1_11_solarGen import fetchSection1_11_SolarGen
 from src.app.section_1_11.section_1_11_loadCurve import fetchSection1_11_LoadCurve
 from src.app.section_reservoir.section_reservoir import fetchReservoirContext
 from src.app.section_1_12.section_1_12 import fetchSection1_12Context
+from src.app.section_1_13.section_1_13 import fetchSection1_13Context
 from src.app.section_2_1.section_2_1 import fetchSection2_1
 from src.app.section_2_3.section_2_3 import fetchSection2_3_MaxContext,fetchSection2_3_MinContext
 from src.utils.addMonths import addMonths
@@ -80,6 +81,7 @@ class MonthlyReportGenerator:
         '1_11_loadCurve':False,
         'reservoir': False,
         '1_12': False,
+        '1_13':True,
         '2_1':True,
         '2_2':True,
         '2_3_Max':False,
@@ -592,7 +594,22 @@ class MonthlyReportGenerator:
                     "error while fetching section 1_12"
                 )
                 print(err)
-
+        if self.sectionCtrls["1_13"]:
+            try:
+                from src.config.appConfig import getJsonConfig
+                appConfig = getJsonConfig()
+                filePath = appConfig['rrasFilePath']
+                secData_1_13 = fetchSection1_13Context(self.appDbConStr ,filePath, startDt, endDt
+                )
+                reportContext.update(secData_1_13)
+                print(
+                    "section 1_13 context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_13"
+                )
+                print(err)
         if self.sectionCtrls["2_1"]:
             try:
                 secData_2_1 = fetchSection2_1(
