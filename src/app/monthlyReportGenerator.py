@@ -81,7 +81,7 @@ class MonthlyReportGenerator:
         '1_11_loadCurve':True,
         'reservoir': True,
         '1_12': True,
-        '1_13':True,
+        '1_13':False,
         '2_1':True,
         '2_2':True,
         '2_3_Max':True,
