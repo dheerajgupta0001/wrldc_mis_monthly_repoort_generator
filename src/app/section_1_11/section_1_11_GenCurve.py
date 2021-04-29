@@ -70,7 +70,7 @@ def fetchSection1_11_WindSolarCombinedWR(appDbConnStr: str, startDt: dt.datetime
         fig.subplots_adjust(bottom=0.25, top=0.8)
 
         fig.savefig('assets/section_1_11_WindSolarGenCurve.png')
-        plt.close()
+        # plt.close()
 
     secData: dict = {}
     
@@ -130,7 +130,7 @@ def fetchSection1_11_WindGenCurveContext(appDbConnStr: str, startDt: dt.datetime
         fig.subplots_adjust(bottom=0.25, top=0.8)
 
         fig.savefig('assets/section_1_11_windGenCurve.png')
-        plt.close()
+        # plt.close()
 
     secData: dict = {}
     

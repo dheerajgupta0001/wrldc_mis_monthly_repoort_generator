@@ -141,8 +141,8 @@ def fetchSection1_10Context(appDbConnStr: str, startDt: dt.datetime, endDt: dt.d
     fig.subplots_adjust(bottom=0.25, top=0.8)
 
     fig.savefig('assets/section_1_10_generation_outage.png')
-    plt.show()
-    plt.close()
+    # plt.show()
+    # plt.close()
     return sectionData
 
 def calculateTotal(plannedMonthlyData,forcedMonthlyData):

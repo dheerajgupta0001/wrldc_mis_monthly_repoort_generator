@@ -63,7 +63,7 @@ def fetchSection1_11_LoadCurve(appDbConnStr: str, startDt: dt.datetime, endDt: d
     fig.subplots_adjust(bottom=0.25, top=0.8)
 
     fig.savefig('assets/section_1_11_netLoadCurve.png')
-    plt.close()
+    # plt.close()
 
     secData: dict = {}
     

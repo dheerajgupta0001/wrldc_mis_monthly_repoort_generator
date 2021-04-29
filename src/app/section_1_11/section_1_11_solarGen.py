@@ -81,7 +81,7 @@ def fetchSection1_11_Solar_B(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
         fig.subplots_adjust(bottom=0.25, top=0.8)
 
         fig.savefig('assets/section_1_11_solar_2.png')
-        plt.close()
+        # plt.close()
 
     secData: dict = { 'data' : wrSoFarHighest['data_value'] , 'date': dt.datetime.strftime(wrSoFarHighest['data_time'],'%d.%m.%Y') ,'time':dt.datetime.strftime(wrSoFarHighest['data_time'],'%H:%M')}
     return secData
@@ -141,7 +141,7 @@ def fetchSection1_11_Solar_A(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
 
         fig.savefig('assets/section_1_11_solar_1.png')
         
-        plt.close()
+        # plt.close()
 
 
     secData: dict = {}
