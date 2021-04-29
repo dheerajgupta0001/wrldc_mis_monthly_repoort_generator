@@ -77,11 +77,11 @@ def fetchSection1_3_aContext(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
     for i in dataRecords.index:
         energyReq: ISection_1_3_a = {
             'entity': dataRecords['entity_tag'][i],
-            'reqMu_X': round(dataRecords['Requirement (MU)_x'][i], 2),
-            'availMu_X': round(dataRecords['Consumption(MU)_x'][i], 2),
+            'reqMu_X': round(dataRecords['Requirement (MU)_x'][i]),
+            'availMu_X': round(dataRecords['Consumption(MU)_x'][i]),
             'shortage_X': round(dataRecords['shortage_x'][i], 2),
-            'reqMu_Y': round(dataRecords['Requirement (MU)_y'][i], 2),
-            'availMu_Y': round(dataRecords['Consumption(MU)_y'][i], 2),
+            'reqMu_Y': round(dataRecords['Requirement (MU)_y'][i]),
+            'availMu_Y': round(dataRecords['Consumption(MU)_y'][i]),
             'shortage_Y': round(dataRecords['shortage_y'][i], 2)
         }
         energyReqAvailList.append(energyReq)

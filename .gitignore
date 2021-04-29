@@ -11,7 +11,7 @@ config.json
 assets/
 dumps/
 *.DS_Store
-
+templates/.~lock.monthly_rep_template.docx#
 
 # Distribution / packaging 
 .Python build/ 

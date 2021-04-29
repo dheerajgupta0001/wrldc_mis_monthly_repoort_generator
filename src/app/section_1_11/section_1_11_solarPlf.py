@@ -42,18 +42,20 @@ def fetchSection1_11_solarPLF(appDbConnStr: str, startDt: dt.datetime, endDt: dt
         maxGenDf = maxGenDf.pivot(
             index='time_stamp',columns='metric_name',values='data_value'
         )
-        if(len(solarEnerConsumption) == 0):
+        solarEnerConsumptionSum = pd.DataFrame(solarEnerConsumption).groupby('entity_tag').sum().iloc[0]['data_value']
+
+        if(len(energyConsumption) == 0):
+            # THis is for central sector as we don't have consumption data
             # calculate mu from mw
-            df = pd.DataFrame(maxGenData)
-            average = df.groupby('entity_tag').mean()
-            solarEnerConsumptionSumDf = average * 0.024 * numOfDays #To Calculate Avg MU from MW
-            solarEnerConsumption = solarEnerConsumptionSumDf.iloc[0]['data_value']
+            # df = pd.DataFrame(maxGenData)
+            # average = df.groupby('entity_tag').mean()
+            # solarEnerConsumptionSumDf = average * 0.024 * numOfDays #To Calculate Avg MU from MW
+            # solarEnerConsumptionSum = solarEnerConsumptionSumDf.iloc[0]['data_value']
             EnerConsumptionSum = 0
             penetrationLevel = 0
         else:
-            solarEnerConsumptionSum = pd.DataFrame(solarEnerConsumption).groupby('entity_tag').sum().iloc[0]['data_value']
+            # solarEnerConsumptionSum = pd.DataFrame(solarEnerConsumption).groupby('entity_tag').sum().iloc[0]['data_value']
             EnerConsumptionSum = pd.DataFrame(energyConsumption).groupby('entity_tag').sum().iloc[0]['data_value']
-            
             penetrationLevel = round((solarEnerConsumptionSum/EnerConsumptionSum) * 100 ,2)
 
         maxSolar = maxGenDf["Solar(MW)"].max()
@@ -74,7 +76,13 @@ def fetchSection1_11_solarPLF(appDbConnStr: str, startDt: dt.datetime, endDt: dt
                
         mRepo.insertSoFarHighest(
             constInfo['entity_tag'], "soFarHighestSolarGen", startDt, newHighestSolar, newHighestSolarTime)
-
+        soFarHighestAllEntityGenVals = mRepo.getSoFarHighestAllEntityData(
+        'soFarHighestSolarGen', startDt)
+        soFarHighestGenLookUp = {}
+        for v in soFarHighestAllEntityGenVals:
+            soFarHighestGenLookUp[v['constituent']] = {
+            'value': v['data_value'], 'ts': v['data_time']}
+        
         so_far_high_gen_str = str(round(soFarHighestGenLookUp[constInfo['entity_tag']]['value'])) + ' on ' + dt.datetime.strftime(soFarHighestGenLookUp[constInfo['entity_tag']]['ts'],'%d-%b-%Y') + ' at ' + dt.datetime.strftime(soFarHighestGenLookUp[constInfo['entity_tag']]['ts'],'%H:%S')
                               
         const_display_row: IPLFCUFDataRow = {

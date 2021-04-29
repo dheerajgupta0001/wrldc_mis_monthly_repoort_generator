@@ -11,18 +11,24 @@ def fetchSection1_1_WindSolarContext(appDbConnStr: str, startDt: dt.datetime, en
     # get solar mu
     solarMuVals = mRepo.getEntityMetricDailyData(
         "wr", "Solar(MU)", startDt, endDt)
-
+    cgsSolarMuVals = mRepo.getEntityMetricDailyData(
+        "wr","CGS Solar(Mus)",startDt , endDt)
+    
     tot_month_solar_gen_mu = 0
-    for v in solarMuVals:
-        tot_month_solar_gen_mu += v["data_value"]
+    for s,c in zip(solarMuVals,cgsSolarMuVals):
+        tot_month_solar_gen_mu += s["data_value"] + c["data_value"]
     avg_month_solar_gen_mu = tot_month_solar_gen_mu/len(solarMuVals)
 
     # get solar mu for last year
     solarMuLastYrVals = mRepo.getEntityMetricDailyData(
         "wr", "Solar(MU)", addMonths(startDt, -12), addMonths(endDt, -12))
+
+    cgsSolarMuLastYrVals = mRepo.getEntityMetricDailyData(
+        "wr", "CGS Solar(Mus)", addMonths(startDt, -12), addMonths(endDt, -12))
+
     tot_last_year_solar_gen_mu = 0
-    for v in solarMuLastYrVals:
-        tot_last_year_solar_gen_mu += v["data_value"]
+    for s,c in zip(solarMuLastYrVals,cgsSolarMuLastYrVals):
+        tot_last_year_solar_gen_mu += s["data_value"] + c["data_value"]
 
     tot_last_year_solar_gen_mu_perc = round(100 *
                                             (tot_month_solar_gen_mu - tot_last_year_solar_gen_mu) /
@@ -50,18 +56,21 @@ def fetchSection1_1_WindSolarContext(appDbConnStr: str, startDt: dt.datetime, en
     # get wind mu
     windMuVals = mRepo.getEntityMetricDailyData(
         "wr", "Wind(MU)", startDt, endDt)
-
+    cgsWindMuVals = mRepo.getEntityMetricDailyData(
+        "wr", "CGS Wind(Mus)", startDt, endDt)
     tot_month_wind_gen_mu = 0
-    for v in windMuVals:
-        tot_month_wind_gen_mu += v["data_value"]
+    for w,c in zip(windMuVals,cgsWindMuVals):
+        tot_month_wind_gen_mu += w["data_value"] + c["data_value"]
     avg_month_wind_gen_mu = tot_month_wind_gen_mu/len(windMuVals)
 
     # get wind mu for last year
     windMuLastYrVals = mRepo.getEntityMetricDailyData(
         "wr", "Wind(MU)", addMonths(startDt, -12), addMonths(endDt, -12))
+    cgsWindMuLastYrVals = mRepo.getEntityMetricDailyData(
+        "wr", "CGS Wind(Mus)", addMonths(startDt, -12), addMonths(endDt, -12))
     tot_last_year_wind_gen_mu = 0
-    for v in windMuLastYrVals:
-        tot_last_year_wind_gen_mu += v["data_value"]
+    for w,c in zip(windMuLastYrVals,cgsWindMuLastYrVals):
+        tot_last_year_wind_gen_mu += w["data_value"] + c["data_value"]
 
     tot_last_year_wind_gen_mu_perc = round(100 *
                                            (tot_month_wind_gen_mu - tot_last_year_wind_gen_mu) /

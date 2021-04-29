@@ -42,16 +42,18 @@ def fetchSection1_11_windPLF(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
         maxGenDf = maxGenDf.pivot(
             index='time_stamp',columns='metric_name',values='data_value'
         )
-        if(len(windEnerConsumption) == 0):
+        windEnerConsumptionSum = pd.DataFrame(windEnerConsumption).groupby('entity_tag').sum().iloc[0]['data_value']
+
+        if(len(energyConsumption) == 0):
+            # This is for central sector as we dont have consumption data
             # calculate mu from mw
-            df = pd.DataFrame(maxGenData)
-            average = df.groupby('entity_tag').mean()
-            windEnerConsumptionSumDf = average * 0.024 * numOfDays #To Calculate Avg MU from MW
-            windEnerConsumptionSum = windEnerConsumptionSumDf.iloc[0]['data_value']
+            # df = pd.DataFrame(maxGenData)
+            # average = df.groupby('entity_tag').mean()
+            # windEnerConsumptionSumDf = average * 0.024 * numOfDays #To Calculate Avg MU from MW
+            # windEnerConsumptionSum = windEnerConsumptionSumDf.iloc[0]['data_value']
             EnerConsumptionSum = 0
             penetrationLevel = 0
         else:
-            windEnerConsumptionSum = pd.DataFrame(windEnerConsumption).groupby('entity_tag').sum().iloc[0]['data_value']
             EnerConsumptionSum = pd.DataFrame(energyConsumption).groupby('entity_tag').sum().iloc[0]['data_value']
             penetrationLevel = round((windEnerConsumptionSum/EnerConsumptionSum) * 100 ,2)
 
@@ -74,7 +76,12 @@ def fetchSection1_11_windPLF(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
                
         mRepo.insertSoFarHighest(
             constInfo['entity_tag'], "soFarHighestWindGen", startDt, newHighestWind, newHighestWindTime)
-
+        soFarHighestAllEntityGenVals = mRepo.getSoFarHighestAllEntityData(
+        'soFarHighestWindGen', startDt)
+        soFarHighestGenLookUp = {}
+        for v in soFarHighestAllEntityGenVals:
+            soFarHighestGenLookUp[v['constituent']] = {
+            'value': v['data_value'], 'ts': v['data_time']}
         so_far_high_gen_str = str(round(soFarHighestGenLookUp[constInfo['entity_tag']]['value'])) + ' on ' + dt.datetime.strftime(soFarHighestGenLookUp[constInfo['entity_tag']]['ts'],'%d-%b-%Y') + ' at ' + dt.datetime.strftime(soFarHighestGenLookUp[constInfo['entity_tag']]['ts'],'%H:%S')
                               
         const_display_row: IPLFCUFDataRow = {

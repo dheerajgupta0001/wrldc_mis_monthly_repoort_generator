@@ -116,12 +116,12 @@ def fetchSection1_11_WindGenCurveContext(appDbConnStr: str, startDt: dt.datetime
         ax.xaxis.set_major_formatter(mdates.DateFormatter('%d.%m.%y %H:%M'))
 
         clr = ['#00ccff', '#ff8533', '#ff0000', '#9900ff','#00ff88']
-        for col in range(len(pltDataDf.columns)-1):
-            ax.plot(pltDataDf['Hours'], pltDataDf[pltDataDf.columns[col+1]], color=clr[col], label=pltDataDf.columns[col+1])
+        for col in range(1,len(pltDataDf.columns)):
+            ax.plot(pltDataDf['Hours'], pltDataDf[pltDataDf.columns[col]], color=clr[col-1], label=pltDataDf.columns[col])
 
 
         ax.yaxis.grid(True)
-        ax.legend(bbox_to_anchor=(0.5,-0.46,0.0, 0.0), loc='center',
+        ax.legend(loc='best',
                       ncol=4, borderaxespad=0.)
 
     

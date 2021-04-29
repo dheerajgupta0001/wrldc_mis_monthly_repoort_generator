@@ -125,9 +125,9 @@ def fetchSection1_11_Wind_A(appDbConnStr: str, startDt: dt.datetime, endDt: dt.d
         ax.xaxis.set_major_locator(mdates.DayLocator(interval=2))
         ax.xaxis.set_major_formatter(mdates.DateFormatter('%d-%b-%Y'))
 
-        clr = ['#00ccff', '#ff8533', '#ff0000', '#9900ff']
-        for col in range(len(pltDataDf.columns)-1):
-            ax.plot(pltDataDf['Date'], pltDataDf[pltDataDf.columns[col+1]], color=clr[col], label=pltDataDf.columns[col+1])
+        clr = ['#00ccff', '#ff8533', '#ff0000', '#9900ff','#ff3300']
+        for col in range(1,len(pltDataDf.columns)):
+            ax.plot(pltDataDf['Date'], pltDataDf[pltDataDf.columns[col]], color=clr[col-1], label=pltDataDf.columns[col])
 
 
         ax.yaxis.grid(True)

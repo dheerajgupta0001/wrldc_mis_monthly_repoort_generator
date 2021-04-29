@@ -89,24 +89,24 @@ def fetchSection1_11_Solar_A(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
 
     constituentsInfos = getREConstituentsMappings()
     mRepo = MetricsDataRepo(appDbConnStr)
-    windDataObj:list = []
+    solarDataObj:list = []
     for cIter in range(len(constituentsInfos)):
         constInfo = constituentsInfos[cIter]
 
         if(math.isnan(constInfo['solarCapacity'])):
             continue
         
-        windEnerGeneration = mRepo.getEntityMetricDailyData(
+        solarEnerGeneration = mRepo.getEntityMetricDailyData(
             constInfo['entity_tag'], 'Solar(MU)' ,startDt, endDt)
 
-        windDataObj.append(windEnerGeneration)
+        solarDataObj.append(solarEnerGeneration)
     
-    if(len(windDataObj) > 0):
+    if(len(solarDataObj) > 0):
         pltDataObj:list = []
         
-        for temp in range(len(windDataObj)):
+        for temp in range(len(solarDataObj)):
             pltDataObj = pltDataObj + [{'Date': x["time_stamp"], 'colName': x['entity_tag'],
-                   'val': x["data_value"]} for x in windDataObj[temp] ]
+                   'val': x["data_value"]} for x in solarDataObj[temp] ]
         
         pltDataDf = pd.DataFrame(pltDataObj)
     
@@ -125,13 +125,13 @@ def fetchSection1_11_Solar_A(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
         ax.xaxis.set_major_locator(mdates.DayLocator(interval=2))
         ax.xaxis.set_major_formatter(mdates.DateFormatter('%d-%b-%Y'))
 
-        clr = ['#00ccff', '#ff8533', '#ff0000', '#9900ff','#ff3300']
-        for col in range(len(pltDataDf.columns)-1):
-            ax.plot(pltDataDf['Date'], pltDataDf[pltDataDf.columns[col+1]], color=clr[col], label=pltDataDf.columns[col+1])
+        clr = ['#00ccff', '#ff8533', '#ff0000', '#9900ff','#ff3300','#44ff66']
+        for col in range(1,len(pltDataDf.columns)):
+            ax.plot(pltDataDf['Date'], pltDataDf[pltDataDf.columns[col]], color=clr[col-1], label=pltDataDf.columns[col])
 
 
         ax.yaxis.grid(True)
-        ax.legend(bbox_to_anchor=(0.5,-0.46,0.0, 0.0), loc='center',
+        ax.legend(loc='best',
                       ncol=4, borderaxespad=0.)
 
     
@@ -140,7 +140,9 @@ def fetchSection1_11_Solar_A(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
         fig.subplots_adjust(bottom=0.25, top=0.8)
 
         fig.savefig('assets/section_1_11_solar_1.png')
+        
         plt.close()
+
 
     secData: dict = {}
     return secData

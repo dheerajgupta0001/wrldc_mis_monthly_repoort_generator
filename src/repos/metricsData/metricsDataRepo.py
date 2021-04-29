@@ -17,6 +17,8 @@ from src.repos.metricsData.getGenerationLinesDailyData import getGenerationLines
 from src.repos.metricsData.getOutageDailyData import getOutageData
 from src.repos.metricsData.getEntityREDataHourly import getEntityREHourlyData
 from src.repos.metricsData.readRRASData import getRRASData
+from src.repos.metricsData.getReservoirMonthlyData import getReservoirMonthlyData
+
 
 class MetricsDataRepo():
     """Repository class for entity metrics data
@@ -110,3 +112,10 @@ class MetricsDataRepo():
 
     def getRRASData(self , filePath:str , startDt:dt.datetime ,  endDt:dt.datetime):
         return getRRASData(filePath , startDt , endDt)
+    
+    def getReservoirMonthlyData(self, startDt: dt.datetime, endDt: dt.datetime) -> List[IReservoirDataRecord]:
+        """fetches an entity metrics time series data from the app db
+        Returns:
+            bool: returns true if process is ok
+        """
+        return getReservoirMonthlyData(appDbConnStr=self.appDbConnStr, startDt=startDt, endDt=endDt)

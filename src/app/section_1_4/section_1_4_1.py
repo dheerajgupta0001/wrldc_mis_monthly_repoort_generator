@@ -23,7 +23,7 @@ def fetchSection1_4_1Context(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
         cDemVals = mRepo.getEntityMetricHourlyData(
             cTag, 'Demand(MW)', startDt, endDt)
         cLsVals = mRepo.getEntityMetricHourlyData(
-            'wr', 'Load Shedding(MW)', startDt, endDt)
+            cTag, 'Load Shedding(MW)', startDt, endDt)
         cDemDf = pd.DataFrame(cDemVals+cLsVals)
         cDemDf = cDemDf.pivot(
             index="time_stamp", columns="metric_name", values="data_value")

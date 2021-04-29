@@ -11,7 +11,7 @@ def fetchSection1_11_wind_cContext(appDbConnStr: str, startDt: dt.datetime, endD
     mRepo = MetricsDataRepo(appDbConnStr)
 
     soFarHighestAllEntityVals = mRepo.getSoFarHighestAllEntityData(
-        'soFarHighestWindGen', addMonths(startDt, -1))
+        'soFarHighestWindGen', startDt)
     soFarHighestWindLookUp = {}
     for v in soFarHighestAllEntityVals:
         soFarHighestWindLookUp[v['constituent']] = {

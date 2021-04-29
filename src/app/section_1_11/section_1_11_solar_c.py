@@ -12,7 +12,7 @@ def fetchSection1_11_solar_cContext(appDbConnStr: str, startDt: dt.datetime, end
     mRepo = MetricsDataRepo(appDbConnStr)
 
     soFarHighestAllEntityVals = mRepo.getSoFarHighestAllEntityData(
-        'soFarHighestSolarGen', addMonths(startDt, -1))
+        'soFarHighestSolarGen', startDt)
     soFarHighestWindLookUp = {}
     for v in soFarHighestAllEntityVals:
         soFarHighestWindLookUp[v['constituent']] = {
