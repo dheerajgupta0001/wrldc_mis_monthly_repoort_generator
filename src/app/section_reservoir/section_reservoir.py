@@ -97,7 +97,7 @@ def fetchReservoirContext(appDbConnStr: str, startDt: dt.datetime, endDt: dt.dat
             fig.subplots_adjust(bottom=0.25, top=0.8)
             fig.savefig('assets/reservoir_section_{0}.png'.format(numPages))
             # fig.savefig('assets/reservoir_section/{0}-{1}.png'.format(itr['entity_tag'], currYear))
-            plt.close()
+            # plt.close()
             numPages += 1
 
         prevFinYrMetricList: List = []
@@ -170,7 +170,7 @@ def fetchReservoirContext(appDbConnStr: str, startDt: dt.datetime, endDt: dt.dat
 
             # fig.savefig('assets/reservoir_section/{0}-{1}.png'.format(itr['entity_tag'],
             #                                         lastFinYrEndDt))
-            plt.close()
+            # plt.close()
             numPages += 1
 
     sectionData: IReservoirSection = {'num_plts_sec_reservoir': numPages}

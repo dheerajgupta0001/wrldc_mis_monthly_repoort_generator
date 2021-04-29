@@ -70,7 +70,7 @@ def fetchSection2_1_LoadDurationCurve(appDbConnStr: str, startDt: dt.datetime, e
     ax.set_facecolor("#cbffff")
 
     fig.savefig('assets/section_2_1_loadDurationCurve.png')
-    plt.show()
+    # plt.show()
     # plt.close()
 
     secData: dict = {}
