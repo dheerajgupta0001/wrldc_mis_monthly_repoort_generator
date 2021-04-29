@@ -70,7 +70,7 @@ class MonthlyReportGenerator:
         '1_7_2': False,
         '1_7_3': False,
         '1_9': False,
-        '1_10':False,
+        '1_10':True,
         '1_11_solar': False,
         '1_11_wind':False,
         '1_11_gen_curve':False,

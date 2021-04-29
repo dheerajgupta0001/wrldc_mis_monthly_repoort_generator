@@ -2,12 +2,15 @@
 import datetime as dt
 from src.config.appConfig import getJsonConfig, initConfigs
 from src.app.monthlyReportGenerator import MonthlyReportGenerator
-
+import cx_Oracle
 initConfigs()
 
 # get app config
 appConfig = getJsonConfig()
-
+cxOraclePath = appConfig['cxOraclePath']
+if not cxOraclePath == '':
+    cx_Oracle.init_oracle_client(lib_dir= cxOraclePath)
+    
 # get app db connection string from config file
 appDbConStr: str = appConfig['appDbConnStr']
 outageDbConStr :str = appConfig['outageDbConnStr']

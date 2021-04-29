@@ -84,6 +84,8 @@ def fetchSection1_10Context(appDbConnStr: str, startDt: dt.datetime, endDt: dt.d
     resultDf = monthDf.merge(prevMonthDf, left_on='idx', right_on='idx',how='outer')
     resultDf = resultDf.sort_values(by=['idx'])
     # resultDf['date'] = resultDf['date'].dt.strftime()
+    resultDf['dateStr'] = resultDf['date'].apply(lambda x: x.strftime('%d-%b-%Y') if type(x) is dt.datetime else x)
+
     # if(len(monthDates) < len(prevMonthDates)):
     #     itr = len(monthDates)
     #     while itr <= len(prevMonthDates)-1:
