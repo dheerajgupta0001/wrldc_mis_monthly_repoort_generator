@@ -39,7 +39,7 @@ def fetchReservoirMonthlyTableContext(appDbConnStr: str, startDt: dt.datetime, e
     reservoirMonthlyDf.reset_index(inplace=True)
     reservoirMonthlyDf['Date'] = reservoirMonthlyDf['Date'].dt.strftime('%b %y')
     # reservoirMonthlyDf = reservoirMonthlyDf.drop(['Date'], axis=1)
-    print("testing")
+    # print("testing")
 
     reservoirTableList: ISection_reservoir_table["schedule_drawal"] = []
 
