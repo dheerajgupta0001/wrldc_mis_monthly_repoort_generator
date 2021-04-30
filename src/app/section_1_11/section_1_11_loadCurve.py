@@ -49,9 +49,9 @@ def fetchSection1_11_LoadCurve(appDbConnStr: str, startDt: dt.datetime, endDt: d
 
     # ax.stackplot(x, y , labels=['Wind+Solar' ,'Net Load', 'WR Demand'],baseline='sym')
 
-    ax.fill_between(x,y[0],color='red',alpha=0.5,label='Wind+Solar')
-    ax.fill_between(x,y[1],color='blue',alpha=0.5,label='Net Load')
-    ax.fill_between(x,y[2],color='black',alpha=0.5,label='WR Demand')
+    ax.fill_between(x,y[0],color='#3f9a3c',alpha=1,label='Wind+Solar',zorder=3)
+    ax.fill_between(x,y[1],color='#b03b3d',alpha=1,label='Net Load',zorder=2)
+    ax.fill_between(x,y[2],color='#5aeaeb',alpha=1,label='WR Demand',zorder=1)
 
     ax.yaxis.grid(True)
     ax.legend(bbox_to_anchor=(0.5,-0.2,0.0, 0.0), loc='center',
@@ -63,6 +63,7 @@ def fetchSection1_11_LoadCurve(appDbConnStr: str, startDt: dt.datetime, endDt: d
     fig.subplots_adjust(bottom=0.25, top=0.8)
 
     fig.savefig('assets/section_1_11_netLoadCurve.png')
+    # plt.show()
     # plt.close()
 
     secData: dict = {}
