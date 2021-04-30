@@ -21,10 +21,10 @@ def fetchSection1_1_freq_Context(appDbConnStr: str, startDt: dt.datetime, endDt:
     wrAvgFreqDf['data_value'] = pd.to_numeric(wrAvgFreqDf['data_value'])
     avg_freq = round(wrAvgFreqDf['data_value'].mean(), 3)
 
-    wrFdiVals = mRepo.getFreqDailyData('FDI', startDt, endDt)
+    wrFdiVals = mRepo.getFreqDailyData('Hrs Out of IEGC', startDt, endDt)
     wrFdiVals = pd.DataFrame(wrFdiVals)
-    wrFdiVals['data_value'] = pd.to_numeric(wrFdiVals['data_value'])
-    fdi = round(wrFdiVals['data_value'].mean(), 3)
+    wrFdiVals['data_value'] = pd.to_numeric(wrFdiVals['data_value']/24)
+    fdi = round(wrFdiVals['data_value'], 2)
     # print(fdi)
 
     wrMaxFreqVals = mRepo.getFreqDailyData('max inst f', startDt, endDt)

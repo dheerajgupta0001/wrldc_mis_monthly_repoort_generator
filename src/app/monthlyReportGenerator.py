@@ -53,7 +53,7 @@ class MonthlyReportGenerator:
         '1_1_2': False,
         '1_1_3': False,
         '1_1_4': False,
-        '1_1_freq': False,
+        '1_1_freq': True,
         '1_1_volt': False,
         '1_1_hydro': False,
         '1_1_wind_solar': False,
