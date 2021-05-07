@@ -95,10 +95,27 @@ def fetchSection1_11_Wind_A(appDbConnStr: str, startDt: dt.datetime, endDt: dt.d
 
         if(math.isnan(constInfo['windCapacity'])):
             continue
-        
-        windEnerGeneration = mRepo.getEntityMetricDailyData(
-            constInfo['entity_tag'], 'Wind(MU)' ,startDt, endDt)
 
+        if(constInfo['entity_tag'] == 'wr'):
+
+            windEnerGeneration = mRepo.getEntityMetricDailyData(
+                constInfo['entity_tag'], 'Wind(MU)' ,startDt, endDt)
+            cgsWindEnerGeneration =  mRepo.getEntityMetricDailyData(
+                constInfo['entity_tag'], 'CGS Wind(Mus)' ,startDt, endDt)
+            
+            for w,c in zip(windEnerGeneration,cgsWindEnerGeneration):
+                w['data_value'] += c['data_value']
+
+        elif constInfo['entity_tag'] == 'central':
+            windEnerGeneration = mRepo.getEntityMetricDailyData(
+            'wr', 'CGS Wind(Mus)' ,startDt, endDt)
+            for c in windEnerGeneration:
+                c['entity_tag'] = 'central'
+
+        else:
+            windEnerGeneration = mRepo.getEntityMetricDailyData(
+            constInfo['entity_tag'], 'Wind(MU)' ,startDt, endDt)
+            
         windDataObj.append(windEnerGeneration)
     
     if(len(windDataObj) > 0):
@@ -140,6 +157,7 @@ def fetchSection1_11_Wind_A(appDbConnStr: str, startDt: dt.datetime, endDt: dt.d
         fig.subplots_adjust(bottom=0.25, top=0.8)
 
         fig.savefig('assets/section_1_11_wind_1.png')
+        # plt.show()
         # plt.close()
 
     secData: dict = {}

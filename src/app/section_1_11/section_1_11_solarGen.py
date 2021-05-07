@@ -95,8 +95,24 @@ def fetchSection1_11_Solar_A(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
 
         if(math.isnan(constInfo['solarCapacity'])):
             continue
+
+        if(constInfo['entity_tag'] == 'wr'):
+            solarEnerGeneration = mRepo.getEntityMetricDailyData(
+            constInfo['entity_tag'], 'Solar(MU)' ,startDt, endDt)
+            cgsSolarGeneration = mRepo.getEntityMetricDailyData(
+            constInfo['entity_tag'], 'CGS Solar(Mus)' ,startDt, endDt)
+            
+            for s,c in zip(solarEnerGeneration,cgsSolarGeneration):
+                s['data_value'] += c['data_value']
+
+        elif constInfo['entity_tag'] == 'central':
+            solarEnerGeneration = mRepo.getEntityMetricDailyData(
+            'wr', 'CGS Solar(Mus)' ,startDt, endDt)
+            for c in solarEnerGeneration:
+                c['entity_tag'] = 'central'
         
-        solarEnerGeneration = mRepo.getEntityMetricDailyData(
+        else:
+            solarEnerGeneration = mRepo.getEntityMetricDailyData(
             constInfo['entity_tag'], 'Solar(MU)' ,startDt, endDt)
 
         solarDataObj.append(solarEnerGeneration)
@@ -140,7 +156,7 @@ def fetchSection1_11_Solar_A(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
         fig.subplots_adjust(bottom=0.25, top=0.8)
 
         fig.savefig('assets/section_1_11_solar_1.png')
-        
+        # plt.show()
         # plt.close()
 
 
