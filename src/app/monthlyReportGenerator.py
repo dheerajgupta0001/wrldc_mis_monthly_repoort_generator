@@ -49,45 +49,45 @@ class MonthlyReportGenerator:
     appDbConStr: str = ''
     outageDbConnStr :str = ''
     sectionCtrls = {
-        '1_1_1': False,
-        '1_1_2': False,
-        '1_1_3': False,
-        '1_1_4': False,
-        '1_1_freq': False,
-        '1_1_volt': False,
-        '1_1_hydro': False,
-        '1_1_wind_solar': False,
-        '1_4_1': False,
-        '1_4_2': False,
-        '1_3_a': False,
-        '1_3_b': False,
-        '1_5_1': False,
-        '1_5_2': False,
-        '1_5_3': False,
-        '1_6_1': False,
-        '1_6_2': False,
-        '1_7_1': False,
-        '1_7_2': False,
-        '1_7_3': False,
-        '1_9': False,
-        '1_10':False,
-        '1_11_solar': False,
-        '1_11_wind':False,
-        '1_11_gen_curve':False,
-        '1_11_wind_c': False,
-        '1_11_solar_c': False,
-        '1_11_solar_plf':False,
-        '1_11_wind_plf':False,
+        '1_1_1': True,
+        '1_1_2': True,
+        '1_1_3': True,
+        '1_1_4': True,
+        '1_1_freq': True,
+        '1_1_volt': True,
+        '1_1_hydro': True,
+        '1_1_wind_solar': True,
+        '1_4_1': True,
+        '1_4_2': True,
+        '1_3_a': True,
+        '1_3_b': True,
+        '1_5_1': True,
+        '1_5_2': True,
+        '1_5_3': True,
+        '1_6_1': True,
+        '1_6_2': True,
+        '1_7_1': True,
+        '1_7_2': True,
+        '1_7_3': True,
+        '1_9': True,
+        '1_10':True,
+        '1_11_solar': True,
+        '1_11_wind':True,
+        '1_11_gen_curve':True,
+        '1_11_wind_c': True,
+        '1_11_solar_c': True,
+        '1_11_solar_plf':True,
+        '1_11_wind_plf':True,
         '1_11_solarGen':True,
-        '1_11_loadCurve':False,
-        'reservoir': False,
-        'reservoir_table':False,
-        '1_12': False,
+        '1_11_loadCurve':True,
+        'reservoir': True,
+        'reservoir_table':True,
+        '1_12': True,
         '1_13':False,
-        '2_1':False,
-        '2_2':False,
-        '2_3_Max':False,
-        '2_3_Min':False
+        '2_1':True,
+        '2_2':True,
+        '2_3_Max':True,
+        '2_3_Min':True
     }
 
     def __init__(self, appDbConStr: str, outageDbConnStr:str ,secCtrls: dict = {}):
@@ -432,6 +432,35 @@ class MonthlyReportGenerator:
                     "error while fetching section 1_10"
                 )
                 print(err)
+        if self.sectionCtrls["1_11_solar_plf"]:
+            try:
+                secData_1_11_solarplf = fetchSection1_11_solarPLF(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_11_solarplf)
+                print(
+                    "section 1_11_solar_plf context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_11_solar_plf"
+                )
+                print(err)
+
+        if self.sectionCtrls["1_11_wind_plf"]:
+            try:
+                secData_1_11_windplf = fetchSection1_11_windPLF(
+                    self.appDbConStr, startDt, endDt
+                )
+                reportContext.update(secData_1_11_windplf)
+                print(
+                    "section 1_11_wind_plf context setting complete"
+                )
+            except Exception as err:
+                print(
+                    "error while fetching section 1_11_wind_plf"
+                )
+                print(err)
 
         if self.sectionCtrls["1_11_solar"]:
             # get section 1.9 data
@@ -510,36 +539,7 @@ class MonthlyReportGenerator:
                     "error while fetching section 1_11_solar_c"
                 )
                 print(err)
-        if self.sectionCtrls["1_11_solar_plf"]:
-            try:
-                secData_1_11_solarplf = fetchSection1_11_solarPLF(
-                    self.appDbConStr, startDt, endDt
-                )
-                reportContext.update(secData_1_11_solarplf)
-                print(
-                    "section 1_11_solar_plf context setting complete"
-                )
-            except Exception as err:
-                print(
-                    "error while fetching section 1_11_solar_plf"
-                )
-                print(err)
-
-        if self.sectionCtrls["1_11_wind_plf"]:
-            try:
-                secData_1_11_windplf = fetchSection1_11_windPLF(
-                    self.appDbConStr, startDt, endDt
-                )
-                reportContext.update(secData_1_11_windplf)
-                print(
-                    "section 1_11_wind_plf context setting complete"
-                )
-            except Exception as err:
-                print(
-                    "error while fetching section 1_11_wind_plf"
-                )
-                print(err)
-
+        
         if self.sectionCtrls["1_11_solarGen"]:
             try:
                 secData_1_11_solarGen = fetchSection1_11_SolarGen(

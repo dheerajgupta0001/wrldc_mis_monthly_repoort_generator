@@ -31,7 +31,11 @@ def fetchSection1_11_solarPLF(appDbConnStr: str, startDt: dt.datetime, endDt: dt
         maxGenData = mRepo.getEntityMetricHourlyData(
             constInfo["entity_tag"], "Solar(MW)", startDt, endDt)
         
-        solarEnerConsumption = mRepo.getEntityMetricDailyData(
+        if constInfo['entity_tag'] == 'central':
+            solarEnerConsumption = mRepo.getEntityMetricDailyData(
+            'wr', 'CGS Solar(Mus)' ,startDt, endDt)
+        else:   
+            solarEnerConsumption = mRepo.getEntityMetricDailyData(
             constInfo['entity_tag'], 'Solar(MU)' ,startDt, endDt)
         
         energyConsumption = mRepo.getEntityMetricDailyData(
@@ -76,14 +80,14 @@ def fetchSection1_11_solarPLF(appDbConnStr: str, startDt: dt.datetime, endDt: dt
                
         mRepo.insertSoFarHighest(
             constInfo['entity_tag'], "soFarHighestSolarGen", startDt, newHighestSolar, newHighestSolarTime)
-        soFarHighestAllEntityGenVals = mRepo.getSoFarHighestAllEntityData(
-        'soFarHighestSolarGen', startDt)
-        soFarHighestGenLookUp = {}
-        for v in soFarHighestAllEntityGenVals:
-            soFarHighestGenLookUp[v['constituent']] = {
-            'value': v['data_value'], 'ts': v['data_time']}
+        # soFarHighestAllEntityGenVals = mRepo.getSoFarHighestAllEntityData(
+        # 'soFarHighestSolarGen', startDt)
+        # soFarHighestGenLookUp = {}
+        # for v in soFarHighestAllEntityGenVals:
+        #     soFarHighestGenLookUp[v['constituent']] = {
+        #     'value': v['data_value'], 'ts': v['data_time']}
         
-        so_far_high_gen_str = str(round(soFarHighestGenLookUp[constInfo['entity_tag']]['value'])) + ' on ' + dt.datetime.strftime(soFarHighestGenLookUp[constInfo['entity_tag']]['ts'],'%d-%b-%Y') + ' at ' + dt.datetime.strftime(soFarHighestGenLookUp[constInfo['entity_tag']]['ts'],'%H:%S')
+        so_far_high_gen_str = str(round(newHighestSolar)) + ' on ' + dt.datetime.strftime(newHighestSolarTime,'%d-%b-%Y') + ' at ' + dt.datetime.strftime(newHighestSolarTime,'%H:%S')
                               
         const_display_row: IPLFCUFDataRow = {
             'entity': constInfo['display_name'],

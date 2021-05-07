@@ -31,7 +31,11 @@ def fetchSection1_11_windPLF(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
         maxGenData = mRepo.getEntityMetricHourlyData(
             constInfo["entity_tag"], "Wind(MW)", startDt, endDt)
         
-        windEnerConsumption = mRepo.getEntityMetricDailyData(
+        if constInfo['entity_tag'] == 'central':
+            windEnerConsumption = mRepo.getEntityMetricDailyData(
+            'wr', 'CGS Wind(Mus)' ,startDt, endDt)
+        else:
+            windEnerConsumption = mRepo.getEntityMetricDailyData(
             constInfo['entity_tag'], 'Wind(MU)' ,startDt, endDt)
         
         energyConsumption = mRepo.getEntityMetricDailyData(
@@ -76,13 +80,13 @@ def fetchSection1_11_windPLF(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
                
         mRepo.insertSoFarHighest(
             constInfo['entity_tag'], "soFarHighestWindGen", startDt, newHighestWind, newHighestWindTime)
-        soFarHighestAllEntityGenVals = mRepo.getSoFarHighestAllEntityData(
-        'soFarHighestWindGen', startDt)
-        soFarHighestGenLookUp = {}
-        for v in soFarHighestAllEntityGenVals:
-            soFarHighestGenLookUp[v['constituent']] = {
-            'value': v['data_value'], 'ts': v['data_time']}
-        so_far_high_gen_str = str(round(soFarHighestGenLookUp[constInfo['entity_tag']]['value'])) + ' on ' + dt.datetime.strftime(soFarHighestGenLookUp[constInfo['entity_tag']]['ts'],'%d-%b-%Y') + ' at ' + dt.datetime.strftime(soFarHighestGenLookUp[constInfo['entity_tag']]['ts'],'%H:%S')
+        # soFarHighestAllEntityGenVals = mRepo.getSoFarHighestAllEntityData(
+        # 'soFarHighestWindGen', startDt)
+        # soFarHighestGenLookUp = {}
+        # for v in soFarHighestAllEntityGenVals:
+        #     soFarHighestGenLookUp[v['constituent']] = {
+        #     'value': v['data_value'], 'ts': v['data_time']}
+        so_far_high_gen_str = str(round(newHighestWind)) + ' on ' + dt.datetime.strftime(newHighestWindTime,'%d-%b-%Y') + ' at ' + dt.datetime.strftime(newHighestWindTime,'%H:%S')
                               
         const_display_row: IPLFCUFDataRow = {
             'entity': constInfo['display_name'],
