@@ -25,7 +25,7 @@ def fetchSection1_1_freq_Context(appDbConnStr: str, startDt: dt.datetime, endDt:
     wrFdiVals = pd.DataFrame(wrFdiVals)
     wrFdiVals['data_value'] = pd.to_numeric(wrFdiVals['data_value'])
     wrFdiVals['data_value'] = wrFdiVals['data_value']/24
-    fdi = round(wrFdiVals['data_value'], 2)
+    fdi = round(wrFdiVals['data_value'].mean(), 2)
     # print(fdi)
 
     wrMaxFreqVals = mRepo.getFreqDailyData('max inst f', startDt, endDt)
