@@ -61,7 +61,7 @@ def fetchSection1_11_WindSolarCombinedWR(appDbConnStr: str, startDt: dt.datetime
 
 
         ax.yaxis.grid(True)
-        ax.legend(bbox_to_anchor=(0.5,-0.46,0.0, 0.0), loc='center',
+        ax.legend( loc='best',
                       ncol=4, borderaxespad=0.)
 
     

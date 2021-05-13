@@ -49,7 +49,7 @@ def fetchReservoirContext(appDbConnStr: str, startDt: dt.datetime, endDt: dt.dat
 
             # derive plot title
             pltTitle = '{0} {1}-{2}'.format(itr['entity_tag'],
-                                            prevFinYear, currYear)
+                                            currYear, currYear+1)
 
             # create a plotting area and get the figure, axes handle in return
             fig, ax = plt.subplots(figsize=(7.5, 4.5))
