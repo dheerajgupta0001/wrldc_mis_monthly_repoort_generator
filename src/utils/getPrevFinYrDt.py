@@ -10,3 +10,14 @@ def getPrevFinYrDt(t: dt.datetime):
             t2 = addMonths(t2, -1)
         return t2
     return t2
+
+def getFinYrDt(t: dt.datetime):
+    if t.month == 4:
+        return t
+    t2 = addMonths(t, -1)
+    if not t2.month == 4:
+        t2 = addMonths(t2, -1)
+        while not t2.month == 4:
+            t2 = addMonths(t2, -1)
+        return t2
+    return t2

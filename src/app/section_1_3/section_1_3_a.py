@@ -3,7 +3,7 @@ import datetime as dt
 from typing import List
 from src.repos.metricsData.metricsDataRepo import MetricsDataRepo
 from src.utils.addMonths import addMonths
-from src.utils.getPrevFinYrDt import getPrevFinYrDt
+from src.utils.getPrevFinYrDt import getPrevFinYrDt,getFinYrDt
 import pandas as pd
 from src.config.appConfig import getConstituentsMappings
 import numpy as np
@@ -19,7 +19,7 @@ def fetchSection1_3_aContext(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
 
     dataRecords = pd.DataFrame()
     mRepo = MetricsDataRepo(appDbConnStr)
-    prevFinYrStartDt = getPrevFinYrDt(startDt)
+    prevFinYrStartDt = getFinYrDt(startDt)
     # get WR Unrestricted demand hourly values for this month and prev yr month
     allEntityReqMuVals = mRepo.getAllEntityMetricMonthlyData(
         'Requirement (MU)', startDt, endDt)
