@@ -3,7 +3,7 @@ from src.repos.metricsData.metricsDataRepo import MetricsDataRepo
 from src.utils.addMonths import addMonths
 import pandas as pd
 from src.utils.convertDtToDayNum import convertDtToDayNum
-from src.utils.getPrevFinYrDt import getPrevFinYrDt
+from src.utils.getPrevFinYrDt import getPrevFinYrDt,getFinYrDt
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
@@ -13,7 +13,7 @@ def fetchSection1_5_1Context(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
     # and WR demand from 2 years back fin year to last fin year
     # example: For Jan 21, we require data from 1-Apr-2019 to 31-Mar-2020 and 1-Apr-2020 to 31 Jan 21
 
-    finYrStart = getPrevFinYrDt(startDt)
+    finYrStart = getFinYrDt(startDt)
     prevFinYrStart = getPrevFinYrDt(finYrStart)
 
     finYrName = '{0}-{1}'.format(finYrStart.year, (finYrStart.year+1) % 100)

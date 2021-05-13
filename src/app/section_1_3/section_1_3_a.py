@@ -19,7 +19,7 @@ def fetchSection1_3_aContext(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
 
     dataRecords = pd.DataFrame()
     mRepo = MetricsDataRepo(appDbConnStr)
-    prevFinYrStartDt = getFinYrDt(startDt)
+    prevFinYrStartDt = getPrevFinYrDt(startDt)
     # get WR Unrestricted demand hourly values for this month and prev yr month
     allEntityReqMuVals = mRepo.getAllEntityMetricMonthlyData(
         'Requirement (MU)', startDt, endDt)
