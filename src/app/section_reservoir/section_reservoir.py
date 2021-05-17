@@ -2,7 +2,7 @@ import datetime as dt
 from typing import List, Any
 from src.repos.metricsData.metricsDataRepo import MetricsDataRepo
 from src.utils.addMonths import addMonths
-from src.utils.getPrevFinYrDt import getPrevFinYrDt
+from src.utils.getPrevFinYrDt import getPrevFinYrDt, getFinYrDt
 import pandas as pd
 from src.config.appConfig import getReservoirsMappings
 from src.utils.convertDtToDayNumMonth import convertDtToDayNumMonthYear
@@ -18,9 +18,9 @@ def fetchReservoirContext(appDbConnStr: str, startDt: dt.datetime, endDt: dt.dat
 
     numPages = 0
     mRepo = MetricsDataRepo(appDbConnStr)
-    prevFinYrStartDt = getPrevFinYrDt(startDt)
+    prevFinYrStartDt = getFinYrDt(startDt)
     prevFinYear = dt.datetime.strftime(prevFinYrStartDt, "%Y")
-    currYear = int(prevFinYear) + 1
+    currYear = int(prevFinYear)
 
     # last financial year details
     lastFinYrStartDt = getPrevFinYrDt(prevFinYrStartDt)

@@ -83,7 +83,7 @@ class MonthlyReportGenerator:
         'reservoir': True,
         'reservoir_table':True,
         '1_12': True,
-        '1_13':False,
+        '1_13':True,
         '2_1':True,
         '2_2':True,
         '2_3_Max':True,
