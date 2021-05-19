@@ -66,7 +66,7 @@ def fetchSection1_11_solarPLF(appDbConnStr: str, startDt: dt.datetime, endDt: dt
         maxSolarDt = maxGenDf["Solar(MW)"].idxmax()
 
 
-        plf = ( solarEnerConsumptionSum * 1000 ) / (int(constInfo['solarCapacity'])*24*numOfDays )
+        plf = ( solarEnerConsumptionSum * 1000 ) / (int(constInfo['solarCapacity'])*12*numOfDays )
         cuf = maxSolar * 100 / (int(constInfo['solarCapacity']))
 
         prevHighestSolarObj = soFarHighestGenLookUp[constInfo["entity_tag"]]

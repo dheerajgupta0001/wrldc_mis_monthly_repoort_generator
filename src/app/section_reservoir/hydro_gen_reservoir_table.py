@@ -2,7 +2,7 @@ import datetime as dt
 from typing import List, Any
 from src.repos.metricsData.metricsDataRepo import MetricsDataRepo
 from src.utils.addMonths import addMonths
-from src.utils.getPrevFinYrDt import getPrevFinYrDt
+from src.utils.getPrevFinYrDt import getPrevFinYrDt,getFinYrDt
 import pandas as pd
 from src.config.appConfig import getReservoirsMappings
 from src.utils.convertDtToDayNumMonth import convertDtToDayNumMonthYear
@@ -14,7 +14,7 @@ def fetchReservoirMonthlyTableContext(appDbConnStr: str, startDt: dt.datetime, e
     # reservoirInfo = getReservoirsMappings()
 
     mRepo = MetricsDataRepo(appDbConnStr)
-    finYrStartDt = getPrevFinYrDt(startDt)
+    finYrStartDt = getFinYrDt(startDt)
     mRepo = MetricsDataRepo(appDbConnStr)
     reservoirMonthlyVals = mRepo.getReservoirMonthlyData(finYrStartDt, endDt)
     reservoirMonthlyDf = pd.DataFrame(reservoirMonthlyVals)
