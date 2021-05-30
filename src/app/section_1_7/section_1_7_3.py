@@ -45,6 +45,9 @@ def fetchSection1_7_3Context(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
                 # set x and y labels
                 ax.set_xlabel('Date')
                 ax.set_ylabel('kV')
+                #c0c0c0
+                ax.set_facecolor("#c0c0c0")
+
                 # enable y axis grid lines
                 ax.yaxis.grid(True)
                 for stnIter in range(pageStartStnInd, pageEndStnInd+1):

@@ -123,6 +123,8 @@ def fetchSection1_10Context(appDbConnStr: str, startDt: dt.datetime, endDt: dt.d
     ax.set_title(pltTitle)
     ax.set_ylabel('MW')
     ax.set_xlabel('Date')
+    
+    ax.set_facecolor("#c0d9f1")
 
     ax.xaxis.set_major_locator(mdates.DayLocator(interval=2))
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%d-%b-%Y"))

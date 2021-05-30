@@ -83,6 +83,8 @@ def fetchSection1_4_2Context(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
     # set x and y labels
     ax.set_xlabel('Date')
     ax.set_ylabel('MW')
+    ax.set_facecolor("#c6d9f1")
+    fig.patch.set_facecolor('#fac090')
     # plot data and get the line artist object in return
     laThisMonth, = ax.plot(
         pltDataDf.index.values, pltDataDf[monthName].values, color='#ff0000')

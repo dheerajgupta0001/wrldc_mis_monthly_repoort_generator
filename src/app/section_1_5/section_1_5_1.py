@@ -71,11 +71,11 @@ def fetchSection1_5_1Context(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
 
     # plot data and get the line artist object in return
     laThisYr, = ax.plot(pltDataDf.index.values,
-                        pltDataDf[finYrName].values, color='#0000ff')
+                        pltDataDf[finYrName].values, color='#ff0000')
     laThisYr.set_label(finYrName)
 
     laLastYear, = ax.plot(pltDataDf.index.values,
-                          pltDataDf[prevFinYrName].values, color='#ff0000')
+                          pltDataDf[prevFinYrName].values, color='#0000ff')
     laLastYear.set_label(prevFinYrName)
 
     # enable axis grid lines

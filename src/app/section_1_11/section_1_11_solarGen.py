@@ -138,6 +138,8 @@ def fetchSection1_11_Solar_A(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
         ax.set_ylabel('Mus')
         ax.set_xlabel('Date')
 
+        ax.set_facecolor("#ffffdc")
+
         ax.xaxis.set_major_locator(mdates.DayLocator(interval=2))
         ax.xaxis.set_major_formatter(mdates.DateFormatter('%d-%b-%Y'))
 
