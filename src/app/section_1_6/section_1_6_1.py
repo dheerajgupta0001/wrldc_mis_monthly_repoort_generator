@@ -153,6 +153,9 @@ def fetchSection1_6_1Context(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
     fig, ax = plt.subplots(figsize=(7.5, 4.5))
     # set plot title
     ax.set_title(pltTitle)
+    
+    fig.patch.set_facecolor('#dce6f2')
+
     # plot data and get the line artist object in return
     width = 0.4
     plt.bar(pltFreqGraphDf['Date'], freqLessVals,
