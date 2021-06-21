@@ -49,10 +49,10 @@ def fetchSection1_4_1Context(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
             freqAtMaxReq = freqSamples[0]["frequency"]
         freqCorrAtMaxReq = 0
         # TODO find freq correction at max req
+        demMetAtMaxReq = maxReq - lsAtMaxReq
         if freqAtMaxReq < 50:
             freqCorrAtMaxReq = 0.035*demMetAtMaxReq*(50-freqAtMaxReq)
         reqPlusFreqCorrAtMaxReq = maxReq + freqCorrAtMaxReq
-        demMetAtMaxReq = maxReq - lsAtMaxReq
         dem_data_1_4_1.extend([
             {
                 'state_name': cName,
