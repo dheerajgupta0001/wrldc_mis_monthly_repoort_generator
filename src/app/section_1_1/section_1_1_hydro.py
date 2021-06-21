@@ -10,13 +10,16 @@ def fetchSection1_1_hydroContext(appDbConnStr: str, startDt: dt.datetime, endDt:
     # get hydro mu
     hydroMuVals = mRepo.getEntityMetricDailyData(
         "wr", "Hydro(MU)", startDt, endDt)
+    cgsHrdroMuVals = mRepo.getEntityMetricDailyData(
+        "wr", "CGS Hydro(Mus)", startDt, endDt)
 
     maxHydroMuObj = hydroMuVals[0]
     tot_month_hydro_gen_mu = 0
-    for v in hydroMuVals:
-        tot_month_hydro_gen_mu += v["data_value"]
-        if v["data_value"] > maxHydroMuObj["data_value"]:
-            maxHydroMuObj = v
+    for h,c in zip(hydroMuVals,cgsHrdroMuVals):
+        tot_month_hydro_gen_mu += h["data_value"] + c["data_value"]
+        iterationSum = h["data_value"] + c["data_value"]
+        if iterationSum > maxHydroMuObj["data_value"]:
+            maxHydroMuObj["data_value"] = iterationSum
     avg_month_hydro_gen_mu = tot_month_hydro_gen_mu/len(hydroMuVals)
     max_month_hydro_gen_mu = round(maxHydroMuObj["data_value"], 2)
     max_month_hydro_gen_mu_date = dt.datetime.strftime(
@@ -25,9 +28,11 @@ def fetchSection1_1_hydroContext(appDbConnStr: str, startDt: dt.datetime, endDt:
     # get hydro mu for last year
     hydroMuLastYrVals = mRepo.getEntityMetricDailyData(
         "wr", "Hydro(MU)", addMonths(startDt, -12), addMonths(endDt, -12))
+    cgsHrdroMuLastYrVals = mRepo.getEntityMetricDailyData(
+        "wr", "CGS Hydro(Mus)", addMonths(startDt, -12), addMonths(endDt, -12))
     tot_last_year_hydro_gen_mu = 0
-    for v in hydroMuLastYrVals:
-        tot_last_year_hydro_gen_mu += v["data_value"]
+    for h,c in zip(hydroMuLastYrVals,cgsHrdroMuLastYrVals):
+        tot_last_year_hydro_gen_mu += h["data_value"] + c["data_value"]
 
     tot_last_year_hydro_gen_mu_perc = round(100 *
                                             (tot_month_hydro_gen_mu - tot_last_year_hydro_gen_mu) /
