@@ -34,6 +34,13 @@ def fetchSection1_11_windPLF(appDbConnStr: str, startDt: dt.datetime, endDt: dt.
         if constInfo['entity_tag'] == 'central':
             windEnerConsumption = mRepo.getEntityMetricDailyData(
             'wr', 'CGS Wind(Mus)' ,startDt, endDt)
+        elif constInfo['entity_tag'] == 'wr':
+            windEnerConsumption = mRepo.getEntityMetricDailyData(
+            'wr', "Wind(MU)" ,startDt, endDt)
+            cgsWindEnerConsumption = mRepo.getEntityMetricDailyData(
+            'wr', 'CGS Wind(Mus)' ,startDt, endDt)
+            for w,c in zip(windEnerConsumption,cgsWindEnerConsumption):
+                w["data_value"] += c["data_value"]
         else:
             windEnerConsumption = mRepo.getEntityMetricDailyData(
             constInfo['entity_tag'], 'Wind(MU)' ,startDt, endDt)

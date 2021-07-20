@@ -34,6 +34,13 @@ def fetchSection1_11_solarPLF(appDbConnStr: str, startDt: dt.datetime, endDt: dt
         if constInfo['entity_tag'] == 'central':
             solarEnerConsumption = mRepo.getEntityMetricDailyData(
             'wr', 'CGS Solar(Mus)' ,startDt, endDt)
+        elif constInfo['entity_tag'] == 'wr':
+            solarEnerConsumption = mRepo.getEntityMetricDailyData(
+            'wr', "Solar(MU)" ,startDt, endDt)
+            cgsSolarEnerConsumption = mRepo.getEntityMetricDailyData(
+            'wr', 'CGS Solar(Mus)' ,startDt, endDt)
+            for w,c in zip(solarEnerConsumption,cgsSolarEnerConsumption):
+                w["data_value"] += c["data_value"]
         else:   
             solarEnerConsumption = mRepo.getEntityMetricDailyData(
             constInfo['entity_tag'], 'Solar(MU)' ,startDt, endDt)
